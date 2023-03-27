@@ -1,6 +1,61 @@
 *,
 *::before,
 *::after {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  font-family: sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
+
+body {
+  background: darkgray;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#text {
+  position: absolute;
+  font-size: 5em;
+  color: white;
+}
+
+.header #pic2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100vh;
+  pointer-events: none;
+  
+}
+
+.header #pic1 {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100vh;
+  pointer-events: none;
+  
+}
+
+.sec {
+  position: relative;
+  background: darkgray;
+  padding: 100px;
+}
+
+.sec h2 {
+  font-size: 3em;
+  color: white;
+  margin-bottom: 10px;
+}
+
