@@ -15,6 +15,31 @@ body {
   overflow-x: hidden;
 }
 
+.navigation {
+  position: absolute;
+  top: 0;
+  left:0;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  z-index: 100;
+}
+
+.navigation img {
+  width: 40px;
+  height: 40px;
+}
+
+.navigation .links {
+  color: white;
+  text-decoration: none;
+  margin: 10px;
+}
+
+.navigation .git-link {
+  margin: 5px;
+}
+
 .header {
   position: relative;
   display: flex;
@@ -133,7 +158,11 @@ input:valid ~ label {
 .forget label a {
   color: #fff;
   text-decoration: none;
-  margin-left: 15px;
+}
+
+.forget a {
+  color: #fff;
+  text-decoration: none;
 }
 
 .forget label a:hover {

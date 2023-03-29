@@ -17,6 +17,11 @@
     <title>Home</title>
   </head>
   <body>
+    <nav class="navigation">
+      <a target="_blank" class="git-link" href="https://github.com/lyzx07"><img src="static/images/logo.jpg" alt="My Logo"></a>
+      <a class="links" href="#">Register</a>
+      <a class="links" href="#login-link">Login</a>
+    </nav>
     <div class="header">
       <img
         src="https://images.pexels.com/photos/2387793/pexels-photo-2387793.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -31,12 +36,15 @@
     <section class="sec">
       <div class="form-box">
         <div class="form-value">
-          <form action="">
-            <h2>Login</h2>
+          <form id="login-link" action="">
+            <h2>
+              React-i-Rate <br />
+              Login
+            </h2>
             <div class="inputbox">
               <ion-icon name="mail-outline"></ion-icon>
               <input type="email" required />
-              <label for="">Email</label>
+              <label for="user-name">User Name</label>
             </div>
             <div class="inputbox">
               <ion-icon name="lock-closed-outline"></ion-icon>
@@ -44,10 +52,12 @@
               <label for="">Password</label>
             </div>
             <div class="forget">
-              <label for=""
-                ><input type="checkbox" />Remember Me  
-                <a href="#">Forgot Password</a></label
-              >
+              <label for="remember"
+                ><input type="checkbox" />Remember Me
+              </label>
+            </div>
+            <div class="forget">
+              <a href="#">Forgot Username</a><a href="#">Forgot Password</a>
             </div>
             <button>Log in</button>
             <div class="register">
@@ -57,7 +67,14 @@
         </div>
       </div>
     </section>
-
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
     <script src="static/script.js" type="text/javascript"></script>
   </body>
 </html>

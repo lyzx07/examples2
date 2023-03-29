@@ -24,6 +24,7 @@ conn = sqlite3.connect('rate-app.db', check_same_thread=False)
 c = conn.cursor()
 
 
+
 @app.after_request
 def after_request(response):
     """Ensure responses aren't cached"""
