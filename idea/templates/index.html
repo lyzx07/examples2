@@ -18,9 +18,45 @@
   </head>
   <body>
     <nav class="navigation">
-      <a target="_blank" class="git-link" href="https://github.com/lyzx07"><img src="static/images/logo.jpg" alt="My Logo"></a>
-      <a class="links" href="#">Register</a>
-      <a class="links" href="#login-link">Login</a>
+      <a target="_blank" class="git-link" href="https://github.com/lyzx07"
+        ><img src="static/images/logo.jpg" alt="My Logo"
+      /></a>
+      <button class="links" id="btn-modal">Register</button>
+      <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <section class="sec">
+            <div class="form-box">
+              <div class="form-value">
+                <form action="">
+                  <h2>
+                    React-i-Rate <br />
+                    Register
+                  </h2>
+                  <div class="inputbox">
+                    <ion-icon name="mail-outline"></ion-icon>
+                    <input type="email" required />
+                    <label for="user-name">User Name</label>
+                  </div>
+                  <div class="inputbox">
+                    <ion-icon name="lock-closed-outline"></ion-icon>
+                    <input type="password" required />
+                    <label for="password">Password</label>
+                  </div>
+                  <div class="inputbox">
+                    <ion-icon name="lock-closed-outline"></ion-icon>
+                    <input type="password" required />
+                    <label for="confirm">Re-enter Password</label>
+                  </div>
+                  <button>Register</button>
+                </form>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+      <a class="links login" href="#login-link">Login</a>
     </nav>
     <div class="header">
       <img
