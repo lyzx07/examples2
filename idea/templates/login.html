@@ -72,20 +72,20 @@
     <section class="sec">
       <div class="form-box">
         <div class="form-value">
-          <form id="login-link" action="">
+          <form id="login-link" action="/login" method="post">
             <h2>
               React-i-Rate <br />
               Login
             </h2>
             <div class="inputbox">
               <ion-icon name="mail-outline"></ion-icon>
-              <input type="email" required />
-              <label for="user-name">User Name</label>
+              <input id="username" name="username" type="text" required />
+              <label for="username">User Name</label>
             </div>
             <div class="inputbox">
               <ion-icon name="lock-closed-outline"></ion-icon>
-              <input type="password" required />
-              <label for="">Password</label>
+              <input id="password" name="password" type="password" required />
+              <label for="passwprd">Password</label>
             </div>
             <div class="forget">
               <label for="remember"
@@ -95,9 +95,9 @@
             <div class="forget">
               <a href="#">Forgot Username</a><a href="#">Forgot Password</a>
             </div>
-            <button>Log in</button>
+            <button type="submit">Log in</button>
             <div class="register">
-              <p>Don't have a account <a href="#">Register</a></p>
+              <p>Don't have a account <a id="link-modal" href="#myModal" data-toggle="modal" data-target="#myModal">Register</a></p>
             </div>
           </form>
         </div>
