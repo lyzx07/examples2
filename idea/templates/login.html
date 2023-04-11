@@ -14,7 +14,7 @@
 
     <link href="/static/styles.css" rel="stylesheet" />
 
-    <title>Home</title>
+    <title>Login</title>
   </head>
   <body>
     <nav class="navigation">
@@ -29,25 +29,25 @@
           <section class="sec">
             <div class="form-box">
               <div class="form-value">
-                <form action="">
+                <form action="/register" method="post">
                   <h2>
                     React-i-Rate <br />
                     Register
                   </h2>
                   <div class="inputbox">
                     <ion-icon name="mail-outline"></ion-icon>
-                    <input type="email" required />
-                    <label for="user-name">User Name</label>
+                    <input id="username" name="username" type="text" required />
+                    <label for="username">User Name</label>
                   </div>
                   <div class="inputbox">
                     <ion-icon name="lock-closed-outline"></ion-icon>
-                    <input type="password" required />
+                    <input id="password" name="password" type="password" required />
                     <label for="password">Password</label>
                   </div>
                   <div class="inputbox">
                     <ion-icon name="lock-closed-outline"></ion-icon>
-                    <input type="password" required />
-                    <label for="confirm">Re-enter Password</label>
+                    <input id="confirmation" name="confirmation" type="password" required />
+                    <label for="confirmation">Re-enter Password</label>
                   </div>
                   <button>Register</button>
                 </form>
@@ -79,13 +79,13 @@
             </h2>
             <div class="inputbox">
               <ion-icon name="mail-outline"></ion-icon>
-              <input id="username" name="username" type="text" required />
-              <label for="username">User Name</label>
+              <input id="login-username" name="login-username" type="text" required />
+              <label for="login-username">User Name</label>
             </div>
             <div class="inputbox">
               <ion-icon name="lock-closed-outline"></ion-icon>
-              <input id="password" name="password" type="password" required />
-              <label for="passwprd">Password</label>
+              <input id="login-password" name="login-password" type="password" required />
+              <label for="login-password">Password</label>
             </div>
             <div class="forget">
               <label for="remember"
