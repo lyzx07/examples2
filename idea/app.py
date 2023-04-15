@@ -9,6 +9,8 @@ from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from functools import wraps
 
+from helpers import apology, login_required
+
 # Configure application
 app = Flask(__name__)
 
@@ -24,21 +26,6 @@ Session(app)
 conn = sqlite3.connect('rate-app.db', check_same_thread=False)
 c = conn.cursor()
 
-def login_required(f):
-    """
-    Decorate routes to require login.
-
-    https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
-    """
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if session.get("user_id") is None:
-            return redirect("/login")
-        return f(*args, **kwargs)
-    return decorated_function
-
-
-
 
 @app.after_request
 def after_request(response):
@@ -48,8 +35,6 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
-
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
     # Forget any user_id
@@ -57,38 +42,29 @@ def login():
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-        
-        username = request.form.get("login-username")
-        password = request.form.get("login-password")
-        stored_password = c.execute("SELECT hash FROM users WHERE username = ?", (username, )).fetchone()
-        
+
         # Ensure username was submitted
-        if username == '':
-            return "must provide username"
+        if not request.form.get("login-username"):
+            return apology("must provide username", 403)
 
         # Ensure password was submitted
-        elif not password:
-            return "must provide password"
+        elif not request.form.get("login-password"):
+            return apology("must provide password", 403)
+        
+        username = request.form.get("login-username")
 
         # Query database for username
-        rows = c.execute("SELECT * FROM users WHERE username = ?", (username, )).fetchall()
+        rows = c.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchall()
         
-        
-        session["user_id"] = rows[0]["id"]
-        
-        if stored_password and check_password_hash(stored_password[0], password):
-            return redirect("/")
-        else:
-            return "please try again"
-
         # Ensure username exists and password is correct
-        #if len(rows) != 1 or not check_password_hash([0]["hash"], (password, )):
-            #return "invalid username and/or password"
+        if len(rows) != 1 or not check_password_hash(rows[0][2], request.form.get("login-password")):
+            return apology("invalid username and/or password", 403)
 
-        # Remember which user has logged i
+        # Remember which user has logged in
+        session["user_id"] = rows[0][0]
 
         # Redirect user to home page
-        
+        return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
@@ -101,39 +77,45 @@ def index():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    """Register user"""
+
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
-        # get all form information submitted
-        username = request.form.get("username")
-        password = request.form.get("password")
-        confirmation = request.form.get("confirmation")
-        
-        # Execute SQL query to check if the username already exists
-        if username == "" or password == "":
-            return "Please enter user name"
-        elif confirmation != password:
-            return "Please enter same password again"
-        
-        
-        c.execute('SELECT * FROM users WHERE username = ?', (username,))
-        
-        # If the username already exists, return an error
-        if c.fetchone():
-            return "Username already exists"
-        
-        # Otherwise, add the username to the database
-        else:
-            c.execute('INSERT INTO users (username, hash) VALUES (?, ?)', (username, generate_password_hash(password)))
-            conn.commit()
-            
-        newUser = c.execute('SELECT * FROM users WHERE username = ?', (username,))    
-        
-        session["user_id"] = newUser[0]["id"]
+        # Ensure username was submitted
+        if not request.form.get("username"):
+            return apology("must provide username", 403)
 
+        # Ensure password was submitted
+        elif not request.form.get("password"):
+            return apology("must provide password", 403)
+
+        # Ensure password confirmation was submitted
+        elif not request.form.get("confirmation"):
+            return apology("must provide password confirmation", 403)
+
+        # Ensure passwords match
+        elif not request.form.get("password") == request.form.get("confirmation"):
+            return apology("passwords must match", 403)
+        
+        username = request.form.get("username")
+
+        # Query database for username
+        rows = c.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchall()
+
+        # Ensure username does not already exist
+        if len(rows) == 1:
+            return apology("username already exists", 403)
+
+        # Hash password
+        hash = generate_password_hash(request.form.get("password"))
+
+        # Insert into users table
+        c.execute('INSERT INTO users (username, hash) VALUES (?, ?)', (username, hash))
+        # Redirect user to home page
         return redirect("/")
 
+    # User reached route via GET (as by clicking a link or via redirect)
     else:
-        return render_template("login.html")
-
+        return render_template("register.html")
 
