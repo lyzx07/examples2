@@ -35,6 +35,7 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     # Forget any user_id
@@ -73,7 +74,10 @@ def login():
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html")
+    session_id = session.get("user_id")
+    rows = c.execute('SELECT * FROM users WHERE id = ?', (session_id,)).fetchall()
+
+    return render_template("index.html", rows=rows, session_id=session_id)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
