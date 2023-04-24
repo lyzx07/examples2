@@ -122,4 +122,18 @@ def register():
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("register.html")
+    
+@app.route("/pentatonix", methods=["GET", "POST"])
+@login_required
+def pentatonix():
+    return render_template("pentatonix.html")
 
+@app.route("/logout")
+def logout():
+    """Log user out"""
+
+    # Forget any user_id
+    session.clear()
+
+    # Redirect user to login form
+    return redirect("/login")
