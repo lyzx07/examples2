@@ -19,18 +19,13 @@ body {
   background-image: linear-gradient(
       -45deg,
       transparent 75%,
-      hsl(0, 0%, 5%) 75%
+      hsl(0, 0%, 3.5%) 75%
     ),
-    linear-gradient(45deg, transparent 75%, hsl(0, 0%, 5%) 75%),
-    linear-gradient(-135deg, transparent 75%, hsl(0, 0%, 5%) 75%),
-    linear-gradient(135deg, transparent 75%, hsl(0, 0%, 5%) 75%);
+    linear-gradient(45deg, transparent 75%, hsl(0, 0%, 3.5%) 75%),
+    linear-gradient(-135deg, transparent 75%, hsl(0, 0%, 3.5%) 75%),
+    linear-gradient(135deg, transparent 75%, hsl(0, 0%, 3.5%) 75%);
   background-size: 4rem 4rem;
   background-position: 4rem 0, 1rem 0, 0 1rem, 0 0;
-}
-
-p {
-  color: white;
-  z-index: 5000;
 }
 
 .navigation {
@@ -261,4 +256,78 @@ button {
 
 .register p a:hover {
   text-decoration: underline;
+}
+
+/* INDEX CSS */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease-in-out;
+  opacity: 0;
+  z-index: 1;
+  overflow-x: hidden;
+}
+
+.sidebar.open {
+  width: 200px;
+  opacity: 1;
+}
+
+.hamburger-svg {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+  z-index: 9999;
+}
+
+.sidebar-content {
+  padding: 20px;
+}
+
+.h1 {
+  position: relative;
+  margin-top: 25%;
+  font-size: 3em;
+  color: rgb(6, 23, 106);
+  text-shadow: 1px 1px 5px #fff;
+  z-index: 100;
+}
+
+.shape-divider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.shape-divider svg {
+  position: relative;
+  display: block;
+  width: calc(147% + 1.3px);
+  height: 456px;
+}
+
+.shape-divider .shape-fill {
+  fill: #061669;
+}
+
+@media screen and (max-width: 600px) {
+  .h1 {
+    margin-top: 75%;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .h1 {
+    font-size: 2em;
+    margin-top: 90%;
+  }
 }
