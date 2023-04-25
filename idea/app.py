@@ -89,10 +89,16 @@ def register():
         # Ensure username was submitted
         if not request.form.get("username"):
             return apology("must provide username", 403)
+        
+        elif len(request.form.get("username")) < 5 or len(request.form.get("username")) > 20:
+            return apology("username must be at least 5 characters but less that 20", 403)
 
         # Ensure password was submitted
         elif not request.form.get("password"):
             return apology("must provide password", 403)
+        
+        elif len(request.form.get("password")) < 8:
+            return apology("password must be at least 8 characters", 403)
 
         # Ensure password confirmation was submitted
         elif not request.form.get("confirmation"):
