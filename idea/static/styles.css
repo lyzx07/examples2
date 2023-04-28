@@ -31,7 +31,7 @@ body {
 .navigation {
   position: absolute;
   top: 0;
-  left:0;
+  left: 0;
   width: 100%;
   display: flex;
   justify-content: flex-start;
@@ -262,8 +262,9 @@ button {
 
 /* INDEX CSS */
 
-.h1, .h2 {
-  font-size: 3.5em;
+.h1,
+.h2 {
+  font-size: 5em;
   color: rgb(6, 23, 106);
   text-shadow: 1px 1px 5px #fff;
   z-index: 100;
@@ -276,6 +277,10 @@ button {
   -moz-transform: translateX(-50%) translateY(-50%);
   -webkit-transform: translateX(-50%) translateY(-50%);
   transform: translateX(-50%) translateY(-50%);
+}
+
+.cont {
+  margin-top: 10px;
 }
 
 /* The side navigation menu */
@@ -326,14 +331,72 @@ button {
   margin-left: 50px;
 }
 
-/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
+@media only screen and (max-width: 600px) {
+  .h1,
+  .h2 {
+    font-size: 4em;
+  }
+
+  #text {
+    font-size: 2.75em;
+  }
+
+  /* .header #pic1, .header #pic2 {
+    display: none;
+  } */
+
+  .form-box {
+    width: 300px;
+    height: 385px;
+  }
+
+  h2 {
+    font-size: 1.5em;
+  }
+
+  .inputbox {
+    width: 250px;
+  }
+
+  .inputbox label {
+    font-size: 1em;
+  }
+
+  .inputbox input {
+    height: 40px;
+    padding: 0 25px 0 5px;
+  }
+
+  .forget {
+    font-size: 0.8em;
+  }
+
+  button {
+    height: 30px;
+  }
+
+  .modal-content {
+    width: 100%;
+  }
 }
 
-@media screen and (max-width: 300px) {
-  .h1 {
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media only screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  .h1,
+  .h2 {
+    font-size: 2.5em;
+  }
+
+  #text {
     font-size: 2em;
   }
-} 
+}
