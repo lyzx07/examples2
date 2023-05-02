@@ -35,18 +35,32 @@
                     Register
                   </h2>
                   <div class="inputbox">
-                    <ion-icon name="person-circle-outline"></ion-icon>
-                    <input id="username" name="username" type="text" />
-                    <label for="username">User Name</label>
+                    <ion-icon name="mail-outline"></ion-icon>
+                    <input
+                      id="username"
+                      name="username"
+                      type="email"
+                      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                    />
+                    <label for="username">Email Address</label>
                   </div>
                   <div class="inputbox">
                     <ion-icon name="lock-closed-outline"></ion-icon>
-                    <input id="password" name="password" type="password" required />
+                    <input
+                      id="password"
+                      name="password"
+                      type="password"
+                      required
+                    />
                     <label for="password">Password</label>
                   </div>
                   <div class="inputbox">
                     <ion-icon name="lock-closed-outline"></ion-icon>
-                    <input id="confirmation" name="confirmation" type="password" />
+                    <input
+                      id="confirmation"
+                      name="confirmation"
+                      type="password"
+                    />
                     <label for="confirmation">Re-enter Password</label>
                   </div>
                   <button>Register</button>
@@ -78,13 +92,23 @@
               Login
             </h2>
             <div class="inputbox">
-              <ion-icon name="person-circle-outline"></ion-icon>
-              <input id="login-username" name="login-username" type="text" />
-              <label for="login-username">User Name</label>
+              <ion-icon name="mail-outline"></ion-icon>
+              <input
+                id="login-username"
+                name="login-username"
+                type="email"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+              />
+              <label for="login-username">Email Address</label>
             </div>
             <div class="inputbox">
               <ion-icon name="lock-closed-outline"></ion-icon>
-              <input id="login-password" name="login-password" type="password" required />
+              <input
+                id="login-password"
+                name="login-password"
+                type="password"
+                required
+              />
               <label for="login-password">Password</label>
             </div>
             <div class="forget">
@@ -97,12 +121,53 @@
             </div>
             <button type="submit">Log in</button>
             <div class="register">
-              <p>Don't have a account <a id="link-modal" href="#myModal" data-toggle="modal" data-target="#myModal">Register</a></p>
+              <p>
+                Don't have a account
+                <a
+                  id="link-modal"
+                  href="#myModal"
+                  data-toggle="modal"
+                  data-target="#myModal"
+                  >Register</a
+                >
+              </p>
             </div>
           </form>
         </div>
       </div>
     </section>
+    <div class="footer-cont">
+      <footer class="footer">
+        <div class="footer-links text-center">
+          <div class="custom-shape-divider-bottom-1682661039">
+            <svg
+              data-name="Layer 1"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 1200 120"
+              preserveAspectRatio="none"
+            >
+              <path
+                d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
+                class="shape-fill"
+              ></path>
+            </svg>
+          </div>
+          <div class="name">
+            <h4 class="text-center">React-i-Rate</h4>
+            <a href="/contact">Contact</a>
+          </div>
+          <img
+            class="git-link"
+            src="static/images/linx-logo.png"
+            alt="My Logo"
+          />
+          <a href="https://github.com/lyzx07"
+            ><ion-icon name="logo-github"></ion-icon
+          ></a>
+          <a href=""><ion-icon name="logo-linkedin"></ion-icon></a>
+        </div>
+      </footer>
+    </div>
     <script
       type="module"
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"

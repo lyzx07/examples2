@@ -35,11 +35,11 @@ body {
   width: 100%;
   display: flex;
   justify-content: flex-start;
+  align-items: center;
   z-index: 100;
 }
 
-.navigation img {
-  margin-top: 5px;
+.navigation img, .git-link {
   width: 40px;
   height: 40px;
 }
@@ -51,10 +51,6 @@ body {
   text-decoration: none;
   margin: 10px;
   font-weight: normal;
-}
-
-.navigation .login {
-  align-self: center;
 }
 
 .navigation .git-link {
@@ -260,6 +256,50 @@ button {
   text-decoration: underline;
 }
 
+/* FOOTER */
+.custom-shape-divider-bottom-1682661039 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.custom-shape-divider-bottom-1682661039 svg {
+  position: relative;
+  display: block;
+  width: calc(138% + 1.3px);
+  height: 209px;
+}
+
+.custom-shape-divider-bottom-1682661039 .shape-fill {
+  fill: #010125;
+}
+
+.footer-cont {
+  position: relative;
+  margin-top: 150px;
+}
+
+.name {
+  position: relative;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.name a {
+  text-decoration: none;
+}
+
+.footer-links a, .footer-links img {
+  padding: 10px;
+}
+
+.footer-links img {
+  position: relative;
+}
+
 /* INDEX CSS */
 
 .h1,
@@ -332,6 +372,14 @@ button {
 }
 
 @media only screen and (max-width: 600px) {
+  .header #pic1 {
+    display: none;
+  }
+
+  .header #pic2 {
+    width: 100%;
+  }
+
   .h1,
   .h2 {
     font-size: 4em;

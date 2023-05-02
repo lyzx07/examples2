@@ -23,7 +23,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure SQLite database
-conn = sqlite3.connect('rate-app.db', check_same_thread=False)
+conn = sqlite3.connect('rate-app-real.db', check_same_thread=False)
 c = conn.cursor()
 
 

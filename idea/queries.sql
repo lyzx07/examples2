@@ -14,3 +14,8 @@ PRAGMA journal_mode = DELETE;
 BEGIN TRANSACTION;
 INSERT INTO main.rate-app SELECT * FROM journal.rate-app;
 COMMIT;
+
+ALTER TABLE users MODIFY username VARCHAR(255);
+
+ALTER TABLE users
+MODIFY COLUMN username VARCHAR(255);
