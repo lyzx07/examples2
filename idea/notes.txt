@@ -46,3 +46,12 @@ blurb about the band(how started with sing off, avi leaving, matt joining, etc)
 
 lists of superfruit videos solo projects and other side projects
 
+from validate_email import validate_email
+
+# Ensure email was submitted
+if not request.form.get("email"):
+    return apology("must provide email", 403)
+
+# Ensure email is valid
+elif not validate_email(request.form.get("email")):
+    return apology("invalid email", 403)

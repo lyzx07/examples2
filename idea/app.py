@@ -8,6 +8,7 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from functools import wraps
+from validate_email import validate_email
 
 from helpers import apology, login_required
 
@@ -88,10 +89,11 @@ def register():
 
         # Ensure username was submitted
         if not request.form.get("username"):
-            return apology("must provide username", 403)
+            return apology("must provide email address", 403)
         
-        elif len(request.form.get("username")) < 5 or len(request.form.get("username")) > 20:
-            return apology("username must be at least 5 characters but less that 20", 403)
+        # Ensure email is valid
+        elif not validate_email(request.form.get("username")):
+            return apology("invalid email", 403)
 
         # Ensure password was submitted
         elif not request.form.get("password"):
@@ -122,6 +124,7 @@ def register():
 
         # Insert into users table
         c.execute('INSERT INTO users (username, hash) VALUES (?, ?)', (username, hash))
+        conn.commit
         # Redirect user to home page
         return redirect("/")
 
@@ -143,3 +146,5 @@ def logout():
 
     # Redirect user to login form
     return redirect("/login")
+
+conn.close
