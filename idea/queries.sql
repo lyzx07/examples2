@@ -19,3 +19,5 @@ ALTER TABLE users MODIFY username VARCHAR(255);
 
 ALTER TABLE users
 MODIFY COLUMN username VARCHAR(255);
+
+PRAGMA lock_status

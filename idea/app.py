@@ -9,6 +9,7 @@ from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from functools import wraps
 from validate_email import validate_email
+from flask import flash
 
 from helpers import apology, login_required
 
@@ -124,7 +125,12 @@ def register():
 
         # Insert into users table
         c.execute('INSERT INTO users (username, hash) VALUES (?, ?)', (username, hash))
-        conn.commit
+        
+        conn.commit()
+        
+        # Flash message
+        flash('Registration successful. Please login.')
+        
         # Redirect user to home page
         return redirect("/")
 
