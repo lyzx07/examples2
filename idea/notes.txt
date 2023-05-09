@@ -1,7 +1,7 @@
 LOGIN
-add an email column to the users table
+add an email column to the users table CHECK
 
-add email input to registration modal
+add email input to registration modal CHECK
 
 make a php file to deal with the email
 
@@ -11,7 +11,7 @@ blurb about the site and what its for
 
 footer with links to my github account linkedin and any others
 
-my logo displayed in the footer
+my logo displayed in the footer CHECK
 
 HOME
 place where user can input url or callsign of youtube account, which would go into a database
