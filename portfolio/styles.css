@@ -9,6 +9,34 @@
   font-family: "Poppins", sans-serif;
 }
 
-.bg-image {
-    width: 100%;
+body {
+  background-color: black;
 }
+
+.title-cont {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+  color: antiquewhite;
+  width: 100%;
+}
+
+.title-h1 {
+  font-size: 50px;
+}
+
+.section {
+  color: black;
+  background-color: antiquewhite;
+}
+
+.p-title, .title-h2 {
+  border-bottom: 2px solid rgb(47, 19, 170);
+  width: 30%;
+  margin: auto auto;
+}
+
+
