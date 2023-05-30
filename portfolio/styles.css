@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
 
+:root {
+  --purple: #5f1a70;
+}
+
 *,
 *::before,
 *::after {
@@ -9,34 +13,65 @@
   font-family: "Poppins", sans-serif;
 }
 
-body {
-  background-color: black;
-}
-
-.title-cont {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -moz-transform: translateX(-50%) translateY(-50%);
-  -webkit-transform: translateX(-50%) translateY(-50%);
-  transform: translateX(-50%) translateY(-50%);
-  color: antiquewhite;
+body,
+html {
   width: 100%;
+  margin: 0;
 }
 
-.title-h1 {
-  font-size: 50px;
+body {
+  background-color: white;
 }
 
-.section {
+section {
+  padding-block: 3rem;
+  width: 100;
+}
+
+section:nth-child(even) {
   color: black;
-  background-color: antiquewhite;
+  background: white;
 }
 
-.p-title, .title-h2 {
-  border-bottom: 2px solid rgb(47, 19, 170);
-  width: 30%;
-  margin: auto auto;
+section:nth-child(odd) {
+  color: white;
+  background: black;
 }
 
+.wrapper {
+  width: min(100% - 3rem, 65ch);
+  margin-inline: auto;
+  
+}
 
+.logo {
+  position: fixed;
+  left: 535px;
+  transform: translateY(-50%);
+  color: white;
+  width: 100%;
+  margin: 1rem;
+  font-size: 3rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  mix-blend-mode: difference;
+}
+
+.logo-image {
+  width: 250px;
+  height: 250px;
+}
+
+@media only screen and (max-width: 1265px) {
+  .logo {
+    position: relative;
+    top: 0; 
+    left: 0 !important;
+    max-width: 100%;
+  }
+
+  .wrapper {
+    width: 100%;
+    padding: 0 10px 0 10px;
+  }
+}
