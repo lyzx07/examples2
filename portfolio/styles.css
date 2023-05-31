@@ -10,7 +10,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Alice', serif;
 }
 
 body,
@@ -28,12 +28,12 @@ section {
   width: 100;
 }
 
-section:nth-child(even) {
+section:nth-child(odd) {
   color: black;
   background: white;
 }
 
-section:nth-child(odd) {
+section:nth-child(even) {
   color: white;
   background: black;
 }
@@ -44,6 +44,10 @@ section:nth-child(odd) {
   
 }
 
+p {
+  line-height: 1.5;
+}
+
 .logo {
   position: fixed;
   left: 535px;
@@ -52,6 +56,7 @@ section:nth-child(odd) {
   width: 100%;
   margin: 1rem;
   font-size: 3rem;
+  font-family: 'Alice', serif;
   font-weight: 900;
   text-transform: uppercase;
   mix-blend-mode: difference;
@@ -60,6 +65,13 @@ section:nth-child(odd) {
 .logo-image {
   width: 250px;
   height: 250px;
+  border-radius: 10%;
+}
+
+.wrapper .images {
+  margin: 15px;
+  width: 250px;
+  height: 150px;
 }
 
 @media only screen and (max-width: 1265px) {
