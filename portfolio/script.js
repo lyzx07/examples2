@@ -15,22 +15,44 @@ $(document).ready(function () {
   });
 });
 
-// JavaScript code for toggling accordion panels
-var acc = document.getElementsByClassName("accordion");
-var i;
+const images = document.querySelectorAll(".slideshow-images img");
 
-for (i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function () {
-    /* Toggle between adding and removing the "active" class,
-    to highlight the button that controls the panel */
-    this.classList.toggle("active");
+let currentImage = 0;
+images[currentImage].classList.add("active");
 
-    /* Toggle between hiding and showing the active panel */
-    var panel = this.nextElementSibling;
-    if (panel.style.display === "block") {
-      panel.style.display = "none";
+function slideShow() {
+  setInterval(() => {
+    images[currentImage].classList.remove("active");
+    if (currentImage === images.length - 1) {
+      currentImage = 0;
     } else {
-      panel.style.display = "block";
+      currentImage++;
     }
-  });
+    images[currentImage].classList.add("active");
+  }, 5000);
 }
+
+slideShow();
+
+const prev = document.querySelector(".prev");
+const next = document.querySelector(".next");
+
+prev.addEventListener("click", () => {
+  images[currentImage].classList.remove("active");
+  if (currentImage === 0) {
+    currentImage = images.length - 1;
+  } else {
+    currentImage--;
+  }
+  images[currentImage].classList.add("active");
+});
+
+next.addEventListener("click", () => {
+  images[currentImage].classList.remove("active");
+  if (currentImage === images.length - 1) {
+    currentImage = 0;
+  } else {
+    currentImage++;
+  }
+  images[currentImage].classList.add("active");
+});
