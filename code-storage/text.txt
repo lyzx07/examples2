@@ -1,0 +1,27 @@
+Before starting a website development job for a client, you should go over the following things:
+
+Purpose and Scope: 
+Understand the purpose and scope of the website. Ask the client about their business objectives, 
+target audience, and any specific requirements they may have.
+
+Content: 
+Ask the client to provide you with content such as text, images, videos, and other media. If necessary, 
+provide suggestions on improving their content.
+
+Design: 
+Discuss the design or layout of the website with the client. It's important to have a clear understanding 
+of the client's expectations and preferences.
+
+Branding: 
+Understand the client’s branding, style guide, and any existing marketing communications efforts.
+
+Budget and Timeline: 
+Determine the budget and the expected timeline of the project. Discuss any additional expenses that might 
+arise during development such as hosting, domain name, and third-party integrations.
+
+Maintenance and Support: 
+Discuss maintenance and support requirements. Some clients require regular maintenance, feature updates, 
+and support for their website.
+
+
+

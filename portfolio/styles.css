@@ -24,9 +24,8 @@ body {
 }
 
 section {
-  padding-block: 3rem;
-  width: 100;
-  clear: both;
+  padding-block: 5rem;
+  width: 100%;
 }
 
 section:nth-child(odd) {
@@ -40,17 +39,18 @@ section:nth-child(even) {
 }
 
 .wrapper {
-  width: min(100% - 3rem, 65ch);
+  width: min(100% - 3rem, 75ch);
   margin-inline: auto;
 }
 
 p {
-  line-height: 1.5;
+  line-height: 1.5; 
+  font-size: 1.4rem;
 }
 
 .logo {
   position: fixed;
-  left: 535px;
+  left: 40%;
   transform: translateY(-50%);
   color: white;
   width: 100%;
@@ -72,6 +72,10 @@ p {
   margin: 15px;
   width: 250px;
   height: 150px;
+}
+
+.h2-intro {
+  font-size: 2rem;
 }
 
 .collection {
@@ -151,8 +155,21 @@ p {
 }
 
 @media only screen and (max-width: 600px) {
+  p {
+    line-height: 2;
+    font-size: 1.7rem;
+  }
+
   .collection {
-    width: 500px;
+    width: 350px;
+  }
+
+  .top {
+    height: 400px;
+  }
+
+  .bottom {
+    height: 300px;
   }
 
   .card {
@@ -161,4 +178,15 @@ p {
 }
 
 @media only screen and (max-width: 300px) {
+  .collection {
+    width: 275px;
+  }
+
+  .top {
+    height: 550px;
+  }
+
+  .bottom {
+    height: 350px;
+  }
 }
