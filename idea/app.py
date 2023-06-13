@@ -3,13 +3,16 @@ import os
 import sqlite3
 import datetime
 import random
-from flask import Flask, flash, redirect, render_template, request, session, url_for
+import requests
+from flask import Flask, flash, redirect, render_template, request, session, jsonify, url_for
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from functools import wraps
 from validate_email import validate_email
 from flask import flash
+from googleapiclient.discovery import build
+
 
 from helpers import apology, login_required
 
@@ -27,6 +30,10 @@ Session(app)
 # Configure SQLite database
 conn = sqlite3.connect('rate-app-real.db', check_same_thread=False)
 c = conn.cursor()
+
+DEVELOPER_KEY = "AIzaSyDHKne5gUlTY73VT5OlfmhsZBYJqDFgA_Q" # replace with your actual developer key
+YOUTUBE_API_SERVICE_NAME = "youtube"
+YOUTUBE_API_VERSION = "v3"
 
 
 @app.after_request
@@ -154,3 +161,6 @@ def logout():
     return redirect("/login")
 
 conn.close
+
+if __name__ == '__main__':
+    app.run(debug=True)
