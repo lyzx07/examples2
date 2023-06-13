@@ -1,5 +1,5 @@
 // Prompt user for Website information
-let purpose = prompt("What is the purpose of the website?");
+/* let purpose = prompt("What is the purpose of the website?");
 let scope = prompt("What is the scope of the website?");
 let content = prompt("What type of content will be on the website?");
 let design = prompt("What are your design preferences?");
@@ -15,5 +15,5 @@ console.log("Design preferences:", design);
 console.log("Branding guidelines:", branding);
 console.log("Website budget:", budget);
 console.log("Website timeline:", timeline);
-
+ */
 
