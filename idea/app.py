@@ -1,9 +1,11 @@
 import os
 
 import sqlite3
-import datetime
+from datetime import datetime
 import random
 import requests
+import json
+import google.auth
 from flask import Flask, flash, redirect, render_template, request, session, jsonify, url_for
 from flask_session import Session
 from tempfile import mkdtemp
@@ -34,6 +36,7 @@ c = conn.cursor()
 DEVELOPER_KEY = "AIzaSyDHKne5gUlTY73VT5OlfmhsZBYJqDFgA_Q" # replace with your actual developer key
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
+
 
 
 @app.after_request
@@ -80,12 +83,15 @@ def login():
     else:
         return render_template("login.html")
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 @login_required
 def index():
     session_id = session.get("user_id")
     rows = c.execute('SELECT * FROM users WHERE id = ?', (session_id,)).fetchall()
+    
+    youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
 
+    # Pass video count to the Jinja template
     return render_template("index.html", rows=rows, session_id=session_id)
 
 @app.route("/register", methods=["GET", "POST"])
@@ -148,7 +154,38 @@ def register():
 @app.route("/pentatonix", methods=["GET", "POST"])
 @login_required
 def pentatonix():
-    return render_template("pentatonix.html")
+    youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
+
+    # Set channel id 
+    channel_id = "UCmv1CLT6ZcFdTJMHxaR9XeA"
+
+    request = youtube.channels().list(
+            part="statistics,snippet,contentDetails",
+            id=channel_id
+        )
+
+    response = request.execute()
+
+    # Extract necessary data from response
+    video_count = response['items'][0]['statistics']['videoCount']
+    subscriber_count = response['items'][0]['statistics']['subscriberCount']
+    published_at = response['items'][0]['snippet']['publishedAt']
+    created_date = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%S%z")
+    playlist_id = response['items'][0]['contentDetails']['relatedPlaylists']['uploads']
+    videos_list_request = youtube.playlistItems().list(
+                           playlistId=playlist_id,
+                           part="snippet",
+                           maxResults=1)
+    videos_list_response = videos_list_request.execute()
+    last_video_date = videos_list_response['items'][0]['snippet']['publishedAt']
+    last_video_date_obj = datetime.strptime(last_video_date, "%Y-%m-%dT%H:%M:%S%z")
+
+    # Pass all the necessary data to the Jinja template
+    return render_template("pentatonix.html", 
+                            video_count=video_count, 
+                            subscriber_count=subscriber_count, 
+                            created_date=created_date,
+                            last_video_date=last_video_date_obj)
 
 @app.route("/logout")
 def logout():

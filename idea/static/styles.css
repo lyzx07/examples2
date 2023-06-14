@@ -371,6 +371,10 @@ button {
   margin-left: 50px;
 }
 
+.video {
+  color: white;
+}
+
 @media only screen and (max-width: 600px) {
   .header #pic1 {
     display: none;
