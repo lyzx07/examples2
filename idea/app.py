@@ -1,12 +1,12 @@
 import os
 
+from flask import Flask, flash, redirect, render_template, request, session, jsonify, url_for
 import sqlite3
 from datetime import datetime
 import random
 import requests
 import json
 import google.auth
-from flask import Flask, flash, redirect, render_template, request, session, jsonify, url_for
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -90,7 +90,53 @@ def index():
     rows = c.execute('SELECT * FROM users WHERE id = ?', (session_id,)).fetchall()
     
     youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
-
+    
+    if request.method == 'POST':
+        # Get the username from the form data
+        username = request.form['username']
+        
+        search_response = youtube.search().list(
+            q=username,
+            type='channel',
+            part='id'
+        ).execute()
+        
+        # Get channel id from search response
+        channel_id = search_response['items'][0]['id']['channelId']
+        
+        # Call YouTube API to get channel statistics
+        request_query = youtube.channels().list(
+            part='statistics,snippet,contentDetails',
+            id=channel_id
+        )
+        response = request_query.execute()
+        
+        # Extract necessary data from response
+        video_count = response['items'][0]['statistics']['videoCount']
+        subscriber_count = response['items'][0]['statistics']['subscriberCount']
+        published_at = response['items'][0]['snippet']['publishedAt']
+        created_date = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%S%z")
+        formatted_date = created_date.strftime('%m/%d/%Y')
+        playlist_id = response['items'][0]['contentDetails']['relatedPlaylists']['uploads']
+        videos_list_request = youtube.playlistItems().list(
+            playlistId=playlist_id,
+            part='snippet',
+            maxResults=1
+        )
+        videos_list_response = videos_list_request.execute()
+        last_video_date = videos_list_response['items'][0]['snippet']['publishedAt']
+        last_video_date_obj = datetime.strptime(last_video_date, "%Y-%m-%dT%H:%M:%S%z")
+        formatted_last_video_date = last_video_date_obj.strftime('%m/%d/%Y')
+        
+        # Pass all the necessary data to the Jinja template
+        return render_template('index.html', 
+                               video_count=video_count, 
+                               subscriber_count=subscriber_count, 
+                               created_date=created_date,
+                               last_video_date=last_video_date_obj, 
+                               formatted_date=formatted_date,
+                               formatted_last_video_date=formatted_last_video_date)
+        
     # Pass video count to the Jinja template
     return render_template("index.html", rows=rows, session_id=session_id)
 
