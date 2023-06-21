@@ -14,8 +14,6 @@ from functools import wraps
 from validate_email import validate_email
 from flask import flash
 from googleapiclient.discovery import build
-
-
 from helpers import apology, login_required
 
 # Configure application
@@ -36,8 +34,6 @@ c = conn.cursor()
 DEVELOPER_KEY = "AIzaSyDHKne5gUlTY73VT5OlfmhsZBYJqDFgA_Q" # replace with your actual developer key
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
-
-
 
 @app.after_request
 def after_request(response):
@@ -115,8 +111,12 @@ def index():
         video_count = response['items'][0]['statistics']['videoCount']
         subscriber_count = response['items'][0]['statistics']['subscriberCount']
         published_at = response['items'][0]['snippet']['publishedAt']
-        created_date = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%S%z")
-        formatted_date = created_date.strftime('%m/%d/%Y')
+        formatted_date = '-'
+        try:
+            created_date = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%S%z")
+            formatted_date = created_date.strftime('%m/%d/%Y')
+        except ValueError:
+            pass
         playlist_id = response['items'][0]['contentDetails']['relatedPlaylists']['uploads']
         videos_list_request = youtube.playlistItems().list(
             playlistId=playlist_id,
@@ -125,8 +125,13 @@ def index():
         )
         videos_list_response = videos_list_request.execute()
         last_video_date = videos_list_response['items'][0]['snippet']['publishedAt']
-        last_video_date_obj = datetime.strptime(last_video_date, "%Y-%m-%dT%H:%M:%S%z")
-        formatted_last_video_date = last_video_date_obj.strftime('%m/%d/%Y')
+        created_date = '-'
+        formatted_last_video_date = '-'
+        try:
+            last_video_date_obj = datetime.strptime(last_video_date, "%Y-%m-%dT%H:%M:%S%z")
+            formatted_last_video_date = last_video_date_obj.strftime('%m/%d/%Y')
+        except ValueError:
+            pass
         
         # Pass all the necessary data to the Jinja template
         return render_template('index.html', 
