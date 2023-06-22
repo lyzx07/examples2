@@ -379,6 +379,20 @@ ul {
   list-style: none;
 }
 
+li {
+  width: 50%;
+  margin: auto auto;
+  padding: 7px;
+  background-color: rgb(6, 23, 106);
+  border-radius: 50%;
+  box-shadow: 4px 4px 8px #888888;
+  opacity: 0.5;
+}
+
+li a {
+  color: white;
+}
+
 .song-list {
   max-height: 200px;
   overflow: hidden;

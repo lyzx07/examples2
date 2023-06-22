@@ -231,6 +231,7 @@ def pentatonix():
     originals = "PLWxNS1ipfyc9isDBuA8RBIzU2R2mn8R7t"
     christmas = "PLWxNS1ipfyc_vJJt4CujWhG88dzFzBdIf"
     sing_off = "PLWxNS1ipfyc9My5y_XSANuS2ynybceM8A"
+    live = "PLWxNS1ipfyc-JOjPUYomaKigWus1GCXUB"
 
     request_q = youtube.channels().list(
             part="statistics,snippet,contentDetails",
@@ -300,6 +301,54 @@ def pentatonix():
             "title": item['snippet']['title'],
             "videoId": item['snippet']['resourceId']['videoId']
         })  
+        
+    playlist_items_request = youtube.playlistItems().list(
+        part="snippet",
+        playlistId=christmas,
+        maxResults=50
+    )
+    playlist_items_response = playlist_items_request.execute()
+
+    # process the videos in the response and create a list of video titles and IDs
+    xmas = []
+
+    for item in playlist_items_response['items']:
+        xmas.append({
+            "title": item['snippet']['title'],
+            "videoId": item['snippet']['resourceId']['videoId']
+        })      
+        
+    playlist_items_request = youtube.playlistItems().list(
+        part="snippet",
+        playlistId=sing_off,
+        maxResults=50
+    )
+    playlist_items_response = playlist_items_request.execute()
+
+    # process the videos in the response and create a list of video titles and IDs
+    sing = []
+
+    for item in playlist_items_response['items']:
+        sing.append({
+            "title": item['snippet']['title'],
+            "videoId": item['snippet']['resourceId']['videoId']
+        }) 
+        
+    playlist_items_request = youtube.playlistItems().list(
+        part="snippet",
+        playlistId=live,
+        maxResults=50
+    )
+    playlist_items_response = playlist_items_request.execute()
+
+    # process the videos in the response and create a list of video titles and IDs
+    live_performance = []
+
+    for item in playlist_items_response['items']:
+        live_performance.append({
+            "title": item['snippet']['title'],
+            "videoId": item['snippet']['resourceId']['videoId']
+        })                       
 
     # Pass all the necessary data to the Jinja template
     return render_template("pentatonix.html", 
@@ -308,7 +357,10 @@ def pentatonix():
                             created_date=created_date,
                             last_video_date=last_video_date_obj,
                             videos=videos,
-                            original=original, 
+                            original=original,
+                            xmas=xmas,
+                            sing=sing,
+                            live_performance=live_performance, 
                             formatted_last_video_date=formatted_last_video_date,
                             formatted_date=formatted_date)
 
