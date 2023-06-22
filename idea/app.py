@@ -43,6 +43,24 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
+def get_videos_from_playlists(youtube, playlist_ids):
+    videos = {}
+    for playlist_id in playlist_ids:
+        video_list = []
+        request = youtube.playlistItems().list(
+            part="snippet",
+            playlistId=playlist_id,
+            maxResults=50
+        )
+        response = request.execute()
+        for item in response['items']:
+            video = {}
+            video['title'] = item['snippet']['title']
+            video['videoId'] = item['snippet']['resourceId']['videoId']
+            video_list.append(video)
+        videos[playlist_id] = video_list
+    return videos
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -209,19 +227,25 @@ def pentatonix():
 
     # Set channel id 
     channel_id = "UCmv1CLT6ZcFdTJMHxaR9XeA"
+    must_watch = "PLWxNS1ipfyc8yXp2iu64HaUWByl0CmEEi"
+    originals = "PLWxNS1ipfyc9isDBuA8RBIzU2R2mn8R7t"
+    christmas = "PLWxNS1ipfyc_vJJt4CujWhG88dzFzBdIf"
+    sing_off = "PLWxNS1ipfyc9My5y_XSANuS2ynybceM8A"
 
-    request = youtube.channels().list(
+    request_q = youtube.channels().list(
             part="statistics,snippet,contentDetails",
             id=channel_id
         )
 
-    response = request.execute()
+    response = request_q.execute()
+    
 
     # Extract necessary data from response
     video_count = response['items'][0]['statistics']['videoCount']
     subscriber_count = response['items'][0]['statistics']['subscriberCount']
     published_at = response['items'][0]['snippet']['publishedAt']
     created_date = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%S%z")
+    formatted_date = created_date.strftime('%m/%d/%Y')
     playlist_id = response['items'][0]['contentDetails']['relatedPlaylists']['uploads']
     videos_list_request = youtube.playlistItems().list(
                            playlistId=playlist_id,
@@ -230,13 +254,63 @@ def pentatonix():
     videos_list_response = videos_list_request.execute()
     last_video_date = videos_list_response['items'][0]['snippet']['publishedAt']
     last_video_date_obj = datetime.strptime(last_video_date, "%Y-%m-%dT%H:%M:%S%z")
+    formatted_last_video_date = last_video_date_obj.strftime('%m/%d/%Y')
+    
+    playlist_items_request = youtube.playlistItems().list(
+        part="snippet",
+        playlistId=must_watch,
+        maxResults=50
+    )
+    playlist_items_response = playlist_items_request.execute()
+
+    # process the videos in the response and create a list of video titles and IDs
+    videos = []
+
+    while playlist_items_response:
+        for item in playlist_items_response['items']:
+            videos.append({
+                "title": item['snippet']['title'],
+                "videoId": item['snippet']['resourceId']['videoId']
+            })
+
+        nextPageToken = playlist_items_response.get('nextPageToken')
+
+        if nextPageToken:
+            playlist_items_response = youtube.playlistItems().list(
+                part="snippet",
+                playlistId=must_watch,
+                maxResults=50,
+                pageToken=nextPageToken
+            ).execute()
+        else:
+            playlist_items_response = None
+            
+    playlist_items_request = youtube.playlistItems().list(
+        part="snippet",
+        playlistId=originals,
+        maxResults=50
+    )
+    playlist_items_response = playlist_items_request.execute()
+
+    # process the videos in the response and create a list of video titles and IDs
+    original = []
+
+    for item in playlist_items_response['items']:
+        original.append({
+            "title": item['snippet']['title'],
+            "videoId": item['snippet']['resourceId']['videoId']
+        })  
 
     # Pass all the necessary data to the Jinja template
     return render_template("pentatonix.html", 
                             video_count=video_count, 
                             subscriber_count=subscriber_count, 
                             created_date=created_date,
-                            last_video_date=last_video_date_obj)
+                            last_video_date=last_video_date_obj,
+                            videos=videos,
+                            original=original, 
+                            formatted_last_video_date=formatted_last_video_date,
+                            formatted_date=formatted_date)
 
 @app.route("/logout")
 def logout():

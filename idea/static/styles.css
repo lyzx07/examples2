@@ -375,6 +375,20 @@ button {
   color: white;
 }
 
+ul {
+  list-style: none;
+}
+
+.song-list {
+  max-height: 200px;
+  overflow: hidden;
+}
+
+button {
+  color: black;
+  width: 100px;
+}
+
 @media only screen and (max-width: 600px) {
   .header #pic1 {
     display: none;
