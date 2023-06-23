@@ -39,7 +39,8 @@ body {
   z-index: 100;
 }
 
-.navigation img, .git-link {
+.navigation img,
+.git-link {
   width: 40px;
   height: 40px;
 }
@@ -274,7 +275,7 @@ button {
 }
 
 .custom-shape-divider-bottom-1682661039 .shape-fill {
-  fill: #010125;
+  fill:rgb(6, 20, 90);
 }
 
 .footer-cont {
@@ -292,7 +293,8 @@ button {
   text-decoration: none;
 }
 
-.footer-links a, .footer-links img {
+.footer-links a,
+.footer-links img {
   padding: 10px;
 }
 
@@ -372,24 +374,24 @@ button {
 }
 
 .video {
-  color: white;
+  color: rgb(6, 23, 106);
 }
 
 ul {
   list-style: none;
 }
 
-li {
+.song-list li {
   width: 50%;
   margin: auto auto;
-  padding: 7px;
+  padding: 10px;
   background-color: rgb(6, 23, 106);
   border-radius: 50%;
   box-shadow: 4px 4px 8px #888888;
-  opacity: 0.5;
+  opacity: 0.8;
 }
 
-li a {
+.song-list li a {
   color: white;
 }
 
@@ -401,6 +403,88 @@ li a {
 button {
   color: black;
   width: 100px;
+}
+
+.profile-cont {
+  display: flex;
+  justify-content: center;
+}
+
+.profile-pic {
+  --angle: 0deg;
+  border-width: 2rem;
+  border-style: dotted;
+  border-image-source: linear-gradient(
+    var(--angle),
+    #888888,
+    #2172ba,
+    rgb(6, 23, 106) 10em
+  );
+  border-image-slice: 10;
+  height: 350px;
+  width: 350px;
+  animation: 5s rotate linear infinite;
+  -webkit-animation: 10s rotate linear infinite;
+}
+
+.parent {
+  position: relative;
+}
+
+#video-count {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#sub-count {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+#first-vid {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+#last-vid {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.stats {
+  margin: 15px;
+  color: white;
+  opacity: 0.8;
+  background-color: rgb(6, 23, 106);
+}
+
+@keyframes rotate {
+  0% {
+    --angle: 0deg;
+  }
+  50% {
+    --angle: 180deg;
+  }
+  100% {
+    --angle: 360deg;
+  }
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@media only screen and (max-width: 1250px) {
+  #video-count, #sub-count, #first-vid, #last-vid {
+    position: relative;
+    text-align: center;
+  }  
 }
 
 @media only screen and (max-width: 600px) {
@@ -420,10 +504,6 @@ button {
   #text {
     font-size: 2.75em;
   }
-
-  /* .header #pic1, .header #pic2 {
-    display: none;
-  } */
 
   .form-box {
     width: 300px;
@@ -458,6 +538,11 @@ button {
   .modal-content {
     width: 100%;
   }
+
+  .song-list li {
+    width: 90%;
+    padding: 15px;
+  }
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
@@ -478,5 +563,17 @@ button {
 
   #text {
     font-size: 2em;
+  }
+
+  .profile-pic {
+    width: 325px;
+    height: 325px;
+  }
+}
+
+@media only screen and (max-width: 280px) {
+  .profile-pic {
+    width: 270px;
+    height: 270px;
   }
 }

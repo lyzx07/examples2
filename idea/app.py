@@ -348,7 +348,17 @@ def pentatonix():
         live_performance.append({
             "title": item['snippet']['title'],
             "videoId": item['snippet']['resourceId']['videoId']
-        })                       
+        })  
+        
+    channel_request = youtube.channels().list(
+        part="snippet",
+        id=channel_id,
+        fields="items(snippet(thumbnails(medium)))"
+    )
+    channel_response = channel_request.execute()
+
+    profile_picture_url = channel_response['items'][0]['snippet']['thumbnails']['medium']['url']
+                         
 
     # Pass all the necessary data to the Jinja template
     return render_template("pentatonix.html", 
@@ -360,7 +370,8 @@ def pentatonix():
                             original=original,
                             xmas=xmas,
                             sing=sing,
-                            live_performance=live_performance, 
+                            live_performance=live_performance,
+                            profile_picture_url=profile_picture_url, 
                             formatted_last_video_date=formatted_last_video_date,
                             formatted_date=formatted_date)
 
