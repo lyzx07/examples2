@@ -381,6 +381,28 @@ button {
   color: rgb(6, 23, 106);
 }
 
+.phrase-cont {
+  position: relative;
+}
+
+.phrase-p1 {
+  position: absolute;
+  transform: rotate(10deg); 
+  display: inline-block;
+  font-size: 30px;
+  left: 5%;
+  top: 35%;
+}
+
+.phrase-p2 {
+  position: absolute;
+  transform: rotate(-10deg); 
+  display: inline-block;
+  font-size: 30px;
+  right: 5%;
+  top: 35%;
+}
+
 ul {
   list-style: none;
 }
