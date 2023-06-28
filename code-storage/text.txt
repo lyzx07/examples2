@@ -24,4 +24,11 @@ Discuss maintenance and support requirements. Some clients require regular maint
 and support for their website.
 
 
+As the developer, you can either sign up for the hosting account on behalf of the client or guide the 
+client through the sign-up process. If you sign up on behalf of the client, you will typically be asked 
+to provide the client's personal and billing information. However, if the client prefers to have ownership 
+and control of the hosting account, they can sign up directly and provide you with the necessary credentials 
+to access the account. The specific approach will depend on the arrangement and agreement between you and 
+the client.
+
 

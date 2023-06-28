@@ -64,36 +64,26 @@
         Last Created Video: {{ formatted_last_video_date }}
       </h3>
     </div>
-    <div class="video phrase1">
+
+    <div class="video text-center">
       <h2>Pentatonix Must Watch</h2>
-      <div class="phrase-cont">
-        <p class="phrase-p1">
-          "Mitch Slapped"
-        </p>
-        <ul class="song-list text-center">
-          {% for video in videos %}
-          <li>
-            <a
-              href="https://www.youtube.com/watch?v={{ video.videoId }}"
-              target="_blank"
-            >
-              {{ video.title }}
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-      <div class="text-center">
-        <button class="btn-show-more">Show More</button>
-      </div>
+      <ul class="song-list">
+        {% for video in videos %}
+        <li>
+          <a
+            href="https://www.youtube.com/watch?v={{ video.videoId }}"
+            target="_blank"
+          >
+            {{ video.title }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+      <button class="btn-show-more">Show More</button>
     </div>
-    <div class="video phrase2">
+    <div class="video text-center">
       <h2>Pentatonix Originals</h2>
-      <div class="phrase-cont">
-        <p class="phrase-p2">
-          Mitch Slapped
-        </p>
-      <ul class="song-list text-center">
+      <ul class="song-list">
         {% for origin in original %}
         <li>
           <a
@@ -105,78 +95,55 @@
         </li>
         {% endfor %}
       </ul>
-      <div class="text-center">
-        <button class="btn-show-more">Show More</button>
-      </div>
+      <button class="btn-show-more">Show More</button>
     </div>
-    <div class="video phrase1">
+    <div class="video text-center">
       <h2>Pentatonix Live Performance</h2>
-      <div class="phrase-cont">
-        <p class="phrase-p1">
-          Mitch Slapped
-        </p>
-        <ul class="song-list text-center">
-          {% for live in live_performance %}
-          <li>
-            <a
-              href="https://www.youtube.com/watch?v={{ live.videoId }}"
-              target="_blank"
-            >
-              {{ live.title }}
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-      <div class="text-center">
-        <button class="btn-show-more">Show More</button>
-      </div>
+      <ul class="song-list text-center">
+        {% for live in live_performance %}
+        <li>
+          <a
+            href="https://www.youtube.com/watch?v={{ live.videoId }}"
+            target="_blank"
+          >
+            {{ live.title }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+      <button class="btn-show-more">Show More</button>
     </div>
-    <div class="video phrase2">
+    <div class="video text-center">
       <h2>Pentatonix Christmas Videos</h2>
-      <div class="phrase-cont">
-        <p class="phrase-p2">
-          Mitch Slapped
-        </p>
-        <ul class="song-list text-center">
-          {% for x in xmas %}
-          <li>
-            <a
-              href="https://www.youtube.com/watch?v={{ x.videoId }}"
-              target="_blank"
-            >
-              {{ x.title }}
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-      <div class="text-center">
-        <button class="btn-show-more">Show More</button>
-      </div>
+      <ul class="song-list">
+        {% for x in xmas %}
+        <li>
+          <a
+            href="https://www.youtube.com/watch?v={{ x.videoId }}"
+            target="_blank"
+          >
+            {{ x.title }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+      <button class="btn-show-more">Show More</button>
     </div>
-    <div class="video phrase1">
+    <div class="video text-center">
       <h2>Pentatonix The Sing-off</h2>
-      <div class="phrase-cont">
-        <p class="phrase-p1">
-          Mitch Slapped
-        </p>
-        <ul class="song-list text-center">
-          {% for s in sing %}
-          <li>
-            <a
-              href="https://www.youtube.com/watch?v={{ s.videoId }}"
-              target="_blank"
-            >
-              {{ s.title }}
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-      <div class="text-center">
-        <button class="btn-show-more">Show More</button>
-      </div>
+      <ul class="song-list">
+        {% for s in sing %}
+        <li>
+          <a
+            href="https://www.youtube.com/watch?v={{ s.videoId }}"
+            target="_blank"
+          >
+            {{ s.title }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+      <button class="btn-show-more">Show More</button>
     </div>
     <div class="footer-cont">
       <footer class="footer">

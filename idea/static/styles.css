@@ -381,7 +381,7 @@ button {
   color: rgb(6, 23, 106);
 }
 
-.phrase-cont {
+/* .phrase-cont {
   position: relative;
 }
 
@@ -401,7 +401,7 @@ button {
   font-size: 30px;
   right: 5%;
   top: 35%;
-}
+} */
 
 ul {
   list-style: none;
