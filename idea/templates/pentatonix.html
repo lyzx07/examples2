@@ -64,86 +64,175 @@
         Last Created Video: {{ formatted_last_video_date }}
       </h3>
     </div>
-
-    <div class="video text-center">
-      <h2>Pentatonix Must Watch</h2>
-      <ul class="song-list">
-        {% for video in videos %}
-        <li>
-          <a
-            href="https://www.youtube.com/watch?v={{ video.videoId }}"
-            target="_blank"
-          >
-            {{ video.title }}
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
-      <button class="btn-show-more">Show More</button>
+    <h3 class="title text-center">PTX Common Phrases</h3>
+    <div class="phrases text-center">
+      <dl>
+        <dt>"Mitch Slapped"</dt>
+        <dd>
+          -The usually involuntary reaction one has when hearing Mitch's voice
+          for the first time or the 50th time
+        </dd>
+        <dt>"KO'd"</dt>
+        <dd>
+          -When you have been knocked out by the pure talent of Kevin and all
+          his many skills
+        </dd>
+        <dt>"Cello Boxing"</dt>
+        <dd>
+          When Kevin is playing his cello and beatboxing at the same time. A
+          skill he invented and has perfected
+        </dd>
+        <dt>"The Trio"</dt>
+        <dd>
+          Scott, Mitch, and Kirsten are often refered to as the trio being as
+          they have been friends since before highschool
+        </dd>
+        <dt>Pentatonic Scale</dt>
+        <dd>
+          The pentatonic scale is a musical scale that consists of five notes
+          per octave. It is widely used in various styles of music, including
+          folk, blues, rock, and jazz. The name "pentatonic" derives from the
+          Greek words pente (meaning "five") and tonos (meaning "tone").
+        </dd>
+      </dl>
     </div>
-    <div class="video text-center">
-      <h2>Pentatonix Originals</h2>
-      <ul class="song-list">
-        {% for origin in original %}
-        <li>
-          <a
-            href="https://www.youtube.com/watch?v={{ origin.videoId }}"
-            target="_blank"
-          >
-            {{ origin.title }}
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
-      <button class="btn-show-more">Show More</button>
+    <h3 class="title text-center">PTX Common Questions</h3>
+    <div class="phrases text-center">
+      <dl>
+        <dt>Does Kevin(the beatboxer) sing?</dt>
+        <dd>
+          He does indeed sing. He has a beautiful counter tenor voice....more
+          stuff
+        </dd>
+        <dt>How many member changes have there been?</dt>
+        <dd>
+          Only one member has changed. Avi left the group amicably in 2017 and
+          Matt replaced him.
+        </dd>
+        <dt>Is that the same guy/girl?</dt>
+        <dd>
+          Yes it is. Kirsty and Mitch change their looks A LOT, but it is always
+          them.
+        </dd>
+        <dt>Are there any instruments?</dt>
+        <dd>
+          Short answer, no there are not any instruments used unless you see
+          one. The sounds all come from their own voices and bodies. They do
+          have the occassional track that does have some kind of unorganic
+          sound, but those songs are rare.
+        </dd>
+        <dt>Do they sound the same live?</dt>
+        <dd>
+          Absolutely! Sometimes they sound better than their recorded versions.
+          They dont produce songs that can't be performed live.
+        </dd>
+        <dt>Is Scott the lead singer?</dt>
+        <dd>
+          No. Pentatonix doesn't have a lead singer. They take turns depending
+          on what is best for the song. That being said he is considered the
+          motivater and when performing on the Sing-off they did require the
+          group to have a lead of sorts, which was Scott.
+        </dd>
+        <dt>Where is Kevin!!!</dt>
+        <dd>
+          In the very popular performance of Aha in Singapore Kevin is not seen
+          on screen in the begining of the video because he is putting his cello
+          away after doing some cello boxing. He returns later, but is never
+          seen do to the person recording focusing on Mitch.
+        </dd>
+      </dl>
     </div>
-    <div class="video text-center">
-      <h2>Pentatonix Live Performance</h2>
-      <ul class="song-list text-center">
-        {% for live in live_performance %}
-        <li>
-          <a
-            href="https://www.youtube.com/watch?v={{ live.videoId }}"
-            target="_blank"
-          >
-            {{ live.title }}
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
-      <button class="btn-show-more">Show More</button>
+    <h3 class="title text-center">PTX Song Lists</h3>
+    <div class="list-cont">
+      <div class="video item text-center">
+        <h2>Pentatonix Must Watch</h2>
+        <ul class="song-list">
+          {% for video in videos %}
+          <li>
+            <a
+              href="https://www.youtube.com/watch?v={{ video.videoId }}"
+              target="_blank"
+            >
+              {{ video.title }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        <button class="btn-show-more">Show More</button>
+      </div>
+      <div class="video item text-center">
+        <h2>Pentatonix Originals</h2>
+        <ul class="song-list">
+          {% for origin in original %}
+          <li>
+            <a
+              href="https://www.youtube.com/watch?v={{ origin.videoId }}"
+              target="_blank"
+            >
+              {{ origin.title }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        <button class="btn-show-more">Show More</button>
+      </div>
+      <div class="video item text-center">
+        <h2>Pentatonix Live Performance</h2>
+        <ul class="song-list">
+          {% for live in live_performance %}
+          <li>
+            <a
+              href="https://www.youtube.com/watch?v={{ live.videoId }}"
+              target="_blank"
+            >
+              {{ live.title }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        <button class="btn-show-more">Show More</button>
+      </div>
+      <div class="video item text-center">
+        <h2>Pentatonix Christmas Videos</h2>
+        <ul class="song-list">
+          {% for x in xmas %}
+          <li>
+            <a
+              href="https://www.youtube.com/watch?v={{ x.videoId }}"
+              target="_blank"
+            >
+              {{ x.title }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        <button class="btn-show-more">Show More</button>
+      </div>
+      <div class="video item text-center">
+        <h2>Pentatonix The Sing-off</h2>
+        <ul class="song-list">
+          {% for s in sing %}
+          <li>
+            <a
+              href="https://www.youtube.com/watch?v={{ s.videoId }}"
+              target="_blank"
+            >
+              {{ s.title }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        <button class="btn-show-more">Show More</button>
+      </div>
     </div>
-    <div class="video text-center">
-      <h2>Pentatonix Christmas Videos</h2>
-      <ul class="song-list">
-        {% for x in xmas %}
-        <li>
-          <a
-            href="https://www.youtube.com/watch?v={{ x.videoId }}"
-            target="_blank"
-          >
-            {{ x.title }}
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
-      <button class="btn-show-more">Show More</button>
-    </div>
-    <div class="video text-center">
-      <h2>Pentatonix The Sing-off</h2>
-      <ul class="song-list">
-        {% for s in sing %}
-        <li>
-          <a
-            href="https://www.youtube.com/watch?v={{ s.videoId }}"
-            target="_blank"
-          >
-            {{ s.title }}
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
-      <button class="btn-show-more">Show More</button>
+    <h3 class="title text-center">Possible Copyright Issues</h3>
+    <div class="copyright text-center">
+      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Officiis,
+      cumque? Fuga perferendis exercitationem dignissimos in, debitis repellat
+      similique nobis ratione eveniet eaque! Distinctio doloremque sed, a
+      deleniti illum quae commodi optio voluptatum harum, consequuntur,
+      quibusdam modi. Sint obcaecati perspiciatis iusto quisquam, enim molestiae
+      voluptates fugiat dolorem, dolor ratione, odio repellendus?
     </div>
     <div class="footer-cont">
       <footer class="footer">
