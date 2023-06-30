@@ -279,7 +279,7 @@ button {
 }
 
 .custom-shape-divider-bottom-1682661039 .shape-fill {
-  fill:rgb(6, 20, 90);
+  fill: rgb(6, 20, 90);
 }
 
 .footer-cont {
@@ -377,20 +377,38 @@ button {
   margin-left: 50px;
 }
 
+b {
+  font-size: larger;
+  background-color: rgb(6, 23, 106);
+  padding: 5px;
+}
+
+.notes p {
+  font-size: 15px;
+}
+
 .title {
   display: flex;
   flex: 100%;
+  width: 90%;
+  margin: auto auto;
   justify-content: center;
   align-items: center;
   color: white;
   font-size: 5rem;
-  height: 20rem;
+  height: 10rem;
   background-color: rgb(6, 23, 106);
+  border-radius: 10%;
   opacity: 0.8;
 }
 
-.phrases dl, .copyright {
+.phrases dl,
+.notes {
   color: white;
+}
+
+.phrases, .notes {
+  padding: 50px;
 }
 
 .phrases dt {
@@ -404,6 +422,10 @@ button {
 .phrases dd {
   width: 350px;
   margin: auto auto;
+}
+
+.audio {
+  padding: 15px;
 }
 
 .list-cont {
@@ -501,6 +523,7 @@ button {
   color: white;
   opacity: 0.8;
   background-color: rgb(6, 23, 106);
+  border-radius: 10%;
 }
 
 @keyframes rotate {
@@ -522,10 +545,13 @@ button {
 }
 
 @media only screen and (max-width: 1250px) {
-  #video-count, #sub-count, #first-vid, #last-vid {
+  #video-count,
+  #sub-count,
+  #first-vid,
+  #last-vid {
     position: relative;
     text-align: center;
-  }  
+  }
 }
 
 @media only screen and (max-width: 600px) {

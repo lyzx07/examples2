@@ -1,5 +1,6 @@
 import os
 
+
 from flask import Flask, flash, redirect, render_template, request, session, jsonify, url_for
 import sqlite3
 from datetime import datetime
@@ -224,7 +225,7 @@ def register():
 @login_required
 def pentatonix():
     youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
-
+    
     # Set channel id 
     channel_id = "UCmv1CLT6ZcFdTJMHxaR9XeA"
     must_watch = "PLWxNS1ipfyc8yXp2iu64HaUWByl0CmEEi"
