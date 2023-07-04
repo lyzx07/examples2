@@ -358,8 +358,7 @@ def pentatonix():
     )
     channel_response = channel_request.execute()
 
-    profile_picture_url = channel_response['items'][0]['snippet']['thumbnails']['medium']['url']
-                         
+    profile_picture_url = channel_response['items'][0]['snippet']['thumbnails']['medium']['url']                    
 
     # Pass all the necessary data to the Jinja template
     return render_template("pentatonix.html", 

@@ -24,6 +24,11 @@ $(document).ready(function () {
     }
 
     showMore = !showMore; // Toggle state
+
+    // Scroll to the position of the list before the "Show More" button was clicked
+    var scrollPosition = $list.offset().top;
+    window.scrollTo(0, scrollPosition);
   });
 });
+
 

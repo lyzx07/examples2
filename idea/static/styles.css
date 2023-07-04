@@ -379,12 +379,16 @@ button {
 
 b {
   font-size: larger;
-  background-color: rgb(6, 23, 106);
   padding: 5px;
 }
 
 .notes p {
-  font-size: 15px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 .title {
@@ -407,7 +411,8 @@ b {
   color: white;
 }
 
-.phrases, .notes {
+.phrases,
+.notes {
   padding: 50px;
 }
 
@@ -447,7 +452,7 @@ ul {
 .song-list li {
   width: 500px;
   margin-left: 25px;
-  padding: 20px;
+  padding: 30px;
   background-color: rgba(6, 23, 106, 0.8);
   border-radius: 50%;
   box-shadow: 4px 4px 8px #888888;

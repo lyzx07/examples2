@@ -65,15 +65,9 @@
       </h3>
     </div>
     <br /><br /><br /><br />
-    <h3 class="title text-center">How they became Pentatonix</h3>
+    <h3 class="title text-center">The Who and the How of PTX</h3>
     <div class="p-list-cont">
       <div class="notes p-list text-center">
-        <p>
-          They won The Sing Off in 2011. They made a guest starring appearance
-          on America's Got Talent as non-competitors a couple of years after
-          that.
-        </p>
-        <p>The members are:</p>
         <p>
           <b>Scott Hoying:</b><br />
           tall blond guy, natural baritone but has an impressive five-to-six
@@ -109,12 +103,19 @@
           Newest member. Replaced Avi in 2017. Brings great energy to the group
           and has a voice like butter.
         </p>
-        Kirstie, Scott & Mitch grew up together in Arlington, Texas, and began
-        performing together as children in local youth musical theater. They
-        ended up in high school together and performed in the choir. While
-        there, they formed an a cappella group called The Trio which had several
-        performance videos go viral on YouTube, most notably a cover of Lady
-        Gaga's "Telephone".
+        <p>
+          They won The Sing Off in 2011. They made a guest starring appearance
+          on America's Got Talent as non-competitors a couple of years after
+          that.
+        </p>
+        <p>
+          Kirstie, Scott & Mitch grew up together in Arlington, Texas, and began
+          performing together as children in local youth musical theater. They
+          ended up in high school together and performed in the choir. While
+          there, they formed an a cappella group called The Trio which had
+          several performance videos go viral on YouTube, most notably a cover
+          of Lady Gaga's "Telephone".
+        </p>
         <p>
           The three of them are best friends and consider themselves to be
           almost siblings. Scott & Kirstie (who were a class year ahead of
@@ -307,13 +308,21 @@
         <h2>Pentatonix Must Watch</h2>
         <ul class="song-list">
           {% for video in videos %}
-          <li>
+          <li class="check">
             <a
               href="https://www.youtube.com/watch?v={{ video.videoId }}"
               target="_blank"
             >
               {{ video.title }}
             </a>
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                class="toggle-song"
+                data-song-id="{{ video.videoId }}"
+              />
+              <span class="checkmark"></span>
+            </label>
           </li>
           {% endfor %}
         </ul>
@@ -330,6 +339,14 @@
             >
               {{ origin.title }}
             </a>
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                class="toggle-song"
+                data-song-id="{{ origin.videoId }}"
+              />
+              <span class="checkmark"></span>
+            </label>
           </li>
           {% endfor %}
         </ul>
@@ -346,6 +363,14 @@
             >
               {{ live.title }}
             </a>
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                class="toggle-song"
+                data-song-id="{{ live.videoId }}"
+              />
+              <span class="checkmark"></span>
+            </label>
           </li>
           {% endfor %}
         </ul>
@@ -362,6 +387,14 @@
             >
               {{ x.title }}
             </a>
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                class="toggle-song"
+                data-song-id="{{ x.videoId }}"
+              />
+              <span class="checkmark"></span>
+            </label>
           </li>
           {% endfor %}
         </ul>
@@ -378,6 +411,14 @@
             >
               {{ s.title }}
             </a>
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                class="toggle-song"
+                data-song-id="{{ s.videoId }}"
+              />
+              <span class="checkmark"></span>
+            </label>
           </li>
           {% endfor %}
         </ul>
