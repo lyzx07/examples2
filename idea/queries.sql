@@ -21,3 +21,7 @@ ALTER TABLE users
 MODIFY COLUMN username VARCHAR(255);
 
 PRAGMA lock_status
+
+DROP TABLE songs;
+
+DROP TABLE song;

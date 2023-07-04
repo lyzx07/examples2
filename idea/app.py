@@ -32,6 +32,14 @@ Session(app)
 conn = sqlite3.connect('rate-app-real.db', check_same_thread=False)
 c = conn.cursor()
 
+""" c.execute('''CREATE TABLE IF NOT EXISTS tunes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    video_id TEXT NOT NULL);''')
+
+conn.commit() """
+
+
 DEVELOPER_KEY = "AIzaSyDHKne5gUlTY73VT5OlfmhsZBYJqDFgA_Q" # replace with your actual developer key
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
@@ -224,6 +232,7 @@ def register():
 @app.route("/pentatonix", methods=["GET", "POST"])
 @login_required
 def pentatonix():
+    session_id = session.get("user_id")
     youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
     
     # Set channel id 
@@ -287,6 +296,10 @@ def pentatonix():
         else:
             playlist_items_response = None
             
+    for video in videos:
+        c.execute('INSERT INTO tunes (title, video_id) VALUES (?, ?)', (video['title'], video['videoId']))
+        conn.commit()        
+            
     playlist_items_request = youtube.playlistItems().list(
         part="snippet",
         playlistId=originals,
@@ -303,6 +316,10 @@ def pentatonix():
             "videoId": item['snippet']['resourceId']['videoId']
         })  
         
+    for origin in original:
+        c.execute('INSERT INTO tunes (title, video_id) VALUES (?, ?)', (origin['title'], origin['videoId']))
+        conn.commit()    
+        
     playlist_items_request = youtube.playlistItems().list(
         part="snippet",
         playlistId=christmas,
@@ -317,7 +334,11 @@ def pentatonix():
         xmas.append({
             "title": item['snippet']['title'],
             "videoId": item['snippet']['resourceId']['videoId']
-        })      
+        })  
+        
+    for x in xmas:
+        c.execute('INSERT INTO tunes (title, video_id) VALUES (?, ?)', (x['title'], x['videoId']))
+        conn.commit()        
         
     playlist_items_request = youtube.playlistItems().list(
         part="snippet",
@@ -335,6 +356,10 @@ def pentatonix():
             "videoId": item['snippet']['resourceId']['videoId']
         }) 
         
+    for s in sing:
+        c.execute('INSERT INTO tunes (title, video_id) VALUES (?, ?)', (s['title'], s['videoId']))
+        conn.commit()    
+        
     playlist_items_request = youtube.playlistItems().list(
         part="snippet",
         playlistId=live,
@@ -349,7 +374,11 @@ def pentatonix():
         live_performance.append({
             "title": item['snippet']['title'],
             "videoId": item['snippet']['resourceId']['videoId']
-        })  
+        })
+        
+    for live in live_performance:
+        c.execute('INSERT INTO tunes (title, video_id) VALUES (?, ?)', (live['title'], live['videoId']))
+        conn.commit()      
         
     channel_request = youtube.channels().list(
         part="snippet",
@@ -371,7 +400,8 @@ def pentatonix():
                             xmas=xmas,
                             sing=sing,
                             live_performance=live_performance,
-                            profile_picture_url=profile_picture_url, 
+                            profile_picture_url=profile_picture_url,
+                            session_id=session_id, 
                             formatted_last_video_date=formatted_last_video_date,
                             formatted_date=formatted_date)
 
