@@ -297,8 +297,13 @@ def pentatonix():
             playlist_items_response = None
             
     for video in videos:
-        c.execute('INSERT INTO tunes (title, video_id) VALUES (?, ?)', (video['title'], video['videoId']))
-        conn.commit()        
+        title = video['title']
+        video_id = video['videoId']
+        c.execute('SELECT * FROM tunes WHERE title =? AND video_id =?', (title, video_id))
+        result = c.fetchone()
+        if result is None:
+            c.execute('INSERT INTO tunes (title, video_id) VALUES (?,?)', (title, video_id))
+            conn.commit()
             
     playlist_items_request = youtube.playlistItems().list(
         part="snippet",
@@ -317,8 +322,13 @@ def pentatonix():
         })  
         
     for origin in original:
-        c.execute('INSERT INTO tunes (title, video_id) VALUES (?, ?)', (origin['title'], origin['videoId']))
-        conn.commit()    
+        title = origin['title']
+        video_id = origin['videoId']
+        c.execute('SELECT * FROM tunes WHERE title =? AND video_id =?', (title, video_id))
+        result = c.fetchone()
+        if result is None:
+            c.execute('INSERT INTO tunes (title, video_id) VALUES (?,?)', (title, video_id))
+            conn.commit()
         
     playlist_items_request = youtube.playlistItems().list(
         part="snippet",
@@ -337,9 +347,14 @@ def pentatonix():
         })  
         
     for x in xmas:
-        c.execute('INSERT INTO tunes (title, video_id) VALUES (?, ?)', (x['title'], x['videoId']))
-        conn.commit()        
-        
+        title = x['title']
+        video_id = x['videoId']
+        c.execute('SELECT * FROM tunes WHERE title =? AND video_id =?', (title, video_id))
+        result = c.fetchone()
+        if result is None:
+            c.execute('INSERT INTO tunes (title, video_id) VALUES (?,?)', (title, video_id))
+            conn.commit()
+            
     playlist_items_request = youtube.playlistItems().list(
         part="snippet",
         playlistId=sing_off,
@@ -357,8 +372,13 @@ def pentatonix():
         }) 
         
     for s in sing:
-        c.execute('INSERT INTO tunes (title, video_id) VALUES (?, ?)', (s['title'], s['videoId']))
-        conn.commit()    
+        title = s['title']
+        video_id = s['videoId']
+        c.execute('SELECT * FROM tunes WHERE title =? AND video_id =?', (title, video_id))
+        result = c.fetchone()
+        if result is None:
+            c.execute('INSERT INTO tunes (title, video_id) VALUES (?,?)', (title, video_id))
+            conn.commit() 
         
     playlist_items_request = youtube.playlistItems().list(
         part="snippet",
@@ -377,8 +397,13 @@ def pentatonix():
         })
         
     for live in live_performance:
-        c.execute('INSERT INTO tunes (title, video_id) VALUES (?, ?)', (live['title'], live['videoId']))
-        conn.commit()      
+        title = live['title']
+        video_id = live['videoId']
+        c.execute('SELECT * FROM tunes WHERE title =? AND video_id =?', (title, video_id))
+        result = c.fetchone()
+        if result is None:
+            c.execute('INSERT INTO tunes (title, video_id) VALUES (?,?)', (title, video_id))
+            conn.commit()   
         
     channel_request = youtube.channels().list(
         part="snippet",
@@ -387,7 +412,9 @@ def pentatonix():
     )
     channel_response = channel_request.execute()
 
-    profile_picture_url = channel_response['items'][0]['snippet']['thumbnails']['medium']['url']                    
+    profile_picture_url = channel_response['items'][0]['snippet']['thumbnails']['medium']['url']
+    
+                        
 
     # Pass all the necessary data to the Jinja template
     return render_template("pentatonix.html", 

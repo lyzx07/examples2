@@ -31,4 +31,27 @@ $(document).ready(function () {
   });
 });
 
+/* // Get all checkboxes
+const checkboxes = document.querySelectorAll('.toggle-song');
+ */
+/* // Add event listener to each checkbox
+checkboxes.forEach(checkbox => {
+  checkbox.addEventListener('change', () => {
+    // Get song ID from data attribute
+    const songId = checkbox.dataset.songId;
 
+    // Make AJAX request to save song
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/pentatonix');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        console.log(xhr.responseText);
+      } else {
+        console.error(xhr.statusText);
+      }
+    };
+    xhr.send(JSON.stringify({ songId }));
+  });
+});
+ */

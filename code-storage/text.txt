@@ -32,3 +32,149 @@ to access the account. The specific approach will depend on the arrangement and 
 the client.
 
 
+@app.route("/pentatonix", methods=["GET", "POST"])
+@login_required
+def pentatonix():
+    session_id = session.get("user_id")
+    youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
+
+    # Set channel id 
+    channel_id = "UCmv1CLT6ZcFdTJMHxaR9XeA"
+    playlist_ids = ["PLWxNS1ipfyc8yXp2iu64HaUWByl0CmEEi", "PLWxNS1ipfyc9isDBuA8RBIzU2R2mn8R7t", "PLWxNS1ipfyc_vJJt4CujWhG88dzFzBdIf", "PLWxNS1ipfyc9My5y_XSANuS2ynybceM8A", "PLWxNS1ipfyc-JOjPUYomaKigWus1GCXUB"]
+
+    # Get channel statistics and playlist items
+    channel_response = youtube.channels().list(
+        part="statistics,snippet,contentDetails",
+        id=channel_id
+    ).execute()
+
+    video_count = channel_response['items'][0]['statistics']['videoCount']
+    subscriber_count = channel_response['items'][0]['statistics']['subscriberCount']
+    published_at = channel_response['items'][0]['snippet']['publishedAt']
+    created_date = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%S%z")
+    formatted_date = created_date.strftime('%m/%d/%Y')
+    playlist_id = channel_response['items'][0]['contentDetails']['relatedPlaylists']['uploads']
+    videos_list_response = youtube.playlistItems().list(
+        playlistId=playlist_id,
+        part="snippet",
+        maxResults=1
+    ).execute()
+    last_video_date = videos_list_response['items'][0]['snippet']['publishedAt']
+    last_video_date_obj = datetime.strptime(last_video_date, "%Y-%m-%dT%H:%M:%S%z")
+    formatted_last_video_date = last_video_date_obj.strftime('%m/%d/%Y')
+
+    # Get playlist items for each playlist
+    videos = []
+    original = []
+    xmas = []
+    sing = []
+    live_performance = []
+    for playlist_id in playlist_ids:
+        playlist_items_response = youtube.playlistItems().list(
+            part="snippet",
+            playlistId=playlist_id,
+            maxResults=50
+        ).execute()
+
+        # Process the videos in the response and create a list of video titles and IDs
+        for item in playlist_items_response['items']:
+            if playlist_id == "PLWxNS1ipfyc8yXp2iu64HaUWByl0CmEEi":
+                videos.append({
+                    "title": item['snippet']['title'],
+                    "videoId": item['snippet']['resourceId']['videoId']
+                })
+            elif playlist_id == "PLWxNS1ipfyc9isDBuA8RBIzU2R2mn8R7t":
+                original.append({
+                    "title": item['snippet']['title'],
+                    "videoId": item['snippet']['resourceId']['videoId']
+                })
+            elif playlist_id == "PLWxNS1ipfyc_vJJt4CujWhG88dzFzBdIf":
+                xmas.append({
+                    "title": item['snippet']['title'],
+                    "videoId": item['snippet']['resourceId']['videoId']
+                })
+            elif playlist_id == "PLWxNS1ipfyc9My5y_XSANuS2ynybceM8A":
+                sing.append({
+                    "title": item['snippet']['title'],
+                    "videoId": item['snippet']['resourceId']['videoId']
+                })
+            elif playlist_id == "PLWxNS1ipfyc-JOjPUYomaKigWus1GCXUB":
+                live_performance.append({
+                    "title": item['snippet']['title'],
+                    "videoId": item['snippet']['resourceId']['videoId']
+                })
+
+        # Insert new videos into the database
+        for video in videos:
+            title = video['title']
+            video_id = video['videoId']
+            c.execute('SELECT * FROM tunes WHERE title =? AND video_id =?', (title, video_id))
+            result = c.fetchone()
+            if result is None:
+                c.execute('INSERT INTO tunes (title, video_id) VALUES (?,?)', (title, video_id))
+                conn.commit()
+        for origin in original:
+            title = origin['title']
+            video_id = origin['videoId']
+            c.execute('SELECT * FROM tunes WHERE title =? AND video_id =?', (title, video_id))
+            result = c.fetchone()
+            if result is None:
+                c.execute('INSERT INTO tunes (title, video_id) VALUES (?,?)', (title, video_id))
+                conn.commit()
+
+        for x in xmas:
+            title = x['title']
+            video_id = x['videoId']
+            c.execute('SELECT * FROM tunes WHERE title =? AND video_id =?', (title, video_id))
+            result = c.fetchone()
+            if result is None:
+                c.execute('INSERT INTO tunes (title, video_id) VALUES (?,?)', (title, video_id))
+                conn.commit()
+
+        for s in sing:
+            title = s['title']
+            video_id = s['videoId']
+            c.execute('SELECT * FROM tunes WHERE title =? AND video_id =?', (title, video_id))
+            result = c.fetchone()
+            if result is None:
+                c.execute('INSERT INTO tunes (title, video_id) VALUES (?,?)', (title, video_id))
+                conn.commit()
+
+        for live in live_performance:
+            title = live['title']
+            video_id = live['videoId']
+            c.execute('SELECT * FROM tunes WHERE title =? AND video_id =?', (title, video_id))
+            result = c.fetchone()
+            if result is None:
+                c.execute('INSERT INTO tunes (title, video_id) VALUES (?,?)', (title, video_id))
+                conn.commit()
+
+        # Check if there are more pages of results
+        if 'nextPageToken' in playlist_items_response:
+            next_page_token = playlist_items_response['nextPageToken']
+        else:
+            next_page_token = None
+
+    # Get channel profile picture URL
+    channel_response = youtube.channels().list(
+        part="snippet",
+        id=channel_id,
+        fields="items(snippet(thumbnails(medium)))"
+    ).execute()
+    profile_picture_url = channel_response['items'][0]['snippet']['thumbnails']['medium']['url']
+
+    # Pass all the necessary data to the Jinja template
+    return render_template("pentatonix.html", 
+        video_count=video_count, 
+        subscriber_count=subscriber_count, 
+        created_date=created_date,
+        last_video_date=last_video_date_obj,
+        videos=videos,
+        original=original,
+        xmas=xmas,
+        sing=sing,
+        live_performance=live_performance,
+        profile_picture_url=profile_picture_url,
+        session_id=session_id, 
+        formatted_last_video_date=formatted_last_video_date,
+        formatted_date=formatted_date)        
