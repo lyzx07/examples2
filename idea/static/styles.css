@@ -161,6 +161,7 @@ section {
   height: 450px;
   background: transparent;
   border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 30px rgb(6, 23, 106);
   border-radius: 20px;
   backdrop-filter: blur(15px);
   display: flex;
@@ -494,13 +495,13 @@ button {
     var(--angle),
     #888888,
     #2172ba,
-    rgb(6, 23, 106) 10em
+    rgb(6, 23, 106) 8em
   );
   border-image-slice: 10;
   height: 350px;
   width: 350px;
-  animation: 5s rotate linear infinite;
-  -webkit-animation: 10s rotate linear infinite;
+  animation: 5s rotate cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+  -webkit-animation: 10s rotate cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
 }
 
 .parent {
@@ -544,8 +545,14 @@ button {
   0% {
     --angle: 0deg;
   }
+  25% {
+    --angle: 90deg;
+  }
   50% {
     --angle: 180deg;
+  }
+  75% {
+    --angle: 270deg;
   }
   100% {
     --angle: 360deg;
