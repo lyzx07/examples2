@@ -392,7 +392,7 @@ b {
   padding: 5px;
 }
 
-.notes p {
+.notes p, .phrases dl {
   font-family: Arial, sans-serif;
   font-size: 16px;
   line-height: 1.5;
@@ -404,15 +404,16 @@ b {
 .title {
   display: flex;
   flex: 100%;
-  width: 90%;
+  width: fit-content;
   margin: auto auto;
   justify-content: center;
   align-items: center;
   color: white;
   font-size: 5rem;
   height: 10rem;
-  background-color: rgb(6, 23, 106);
-  border-radius: 10%;
+  border-left: 15px solid rgb(6, 23, 106);
+  border-right: 15px solid rgb(6, 23, 106);
+  padding: 10px;
   opacity: 0.8;
 }
 
@@ -434,11 +435,6 @@ b {
   margin: 20px 0 10px 0;
 }
 
-.phrases dd {
-  width: 350px;
-  margin: auto auto;
-}
-
 .audio {
   padding: 15px;
 }
@@ -452,6 +448,10 @@ b {
 
 .video {
   color: rgb(6, 23, 106);
+}
+
+.index-stats {
+  color: white;
 }
 
 ul {
@@ -500,8 +500,32 @@ button {
   border-image-slice: 10;
   height: 350px;
   width: 350px;
-  animation: 5s rotate cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
-  -webkit-animation: 10s rotate cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+  animation: 120s rotate cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+  -webkit-animation: 120s rotate cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+}
+
+@keyframes rotate {
+  0% {
+    --angle: 0deg;
+  }
+  25% {
+    --angle: 90deg;
+  }
+  50% {
+    --angle: 180deg;
+  }
+  75% {
+    --angle: 270deg;
+  }
+  100% {
+    --angle: 360deg;
+  }
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
 }
 
 .parent {
@@ -537,32 +561,8 @@ button {
   padding: 10px;
   color: white;
   opacity: 0.8;
-  background-color: rgb(6, 23, 106);
-  border-radius: 10%;
-}
-
-@keyframes rotate {
-  0% {
-    --angle: 0deg;
-  }
-  25% {
-    --angle: 90deg;
-  }
-  50% {
-    --angle: 180deg;
-  }
-  75% {
-    --angle: 270deg;
-  }
-  100% {
-    --angle: 360deg;
-  }
-}
-
-@property --angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
+  border-left: 15px solid rgb(6, 23, 106);
+  border-right: 15px solid rgb(6, 23, 106);
 }
 
 @media only screen and (max-width: 1250px) {
