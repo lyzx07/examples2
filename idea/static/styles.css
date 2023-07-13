@@ -155,7 +155,7 @@ section {
   width: 100%;
 }
 
-.form-box {
+.form-box, .index-form-box {
   position: relative;
   width: 400px;
   height: 450px;
@@ -167,6 +167,10 @@ section {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.form2-cont {
+  color: white;
 }
 
 h2 {
@@ -392,7 +396,8 @@ b {
   padding: 5px;
 }
 
-.notes p, .phrases dl {
+.notes p,
+.phrases dl {
   font-family: Arial, sans-serif;
   font-size: 16px;
   line-height: 1.5;
@@ -495,13 +500,14 @@ button {
     var(--angle),
     #888888,
     #2172ba,
-    rgb(6, 23, 106) 8em
+    rgb(6, 23, 106)
   );
   border-image-slice: 10;
   height: 350px;
   width: 350px;
-  animation: 120s rotate cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
-  -webkit-animation: 120s rotate cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+  animation: 10s rotate cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+  -webkit-animation: 10s rotate cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+  animation-timing-function: linear;
 }
 
 @keyframes rotate {

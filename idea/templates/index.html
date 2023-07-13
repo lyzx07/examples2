@@ -43,19 +43,29 @@
       <h1 class="text-center h1">React-i-rate</h1>
     </div>
     <div class="form2-cont">
-      <h1>YouTube Video Count</h1>
-      <form method="POST">
-        <input
-          type="text"
-          name="username"
-          placeholder="Enter YouTube username"
-        />
-        <button type="submit">Search</button>
-      </form>
+      <div class="index-form-box">
+        <div class="index-form-value">
+          <form class="text-center" method="POST">
+            <h3>Enter name of YouTube creator</h3>
+            <h4>
+              Can be name of channel or username found after the "@" symbol
+            </h4>
+            <h5>E.g. pentatonix or @PTXofficial<br>without the "@" symbol</h5>
+            <input
+              type="text"
+              name="username"
+              placeholder="Enter YouTube username"
+            />
+            <button type="submit">Search</button>
+          </form>
+        </div>
+      </div>
       <h1>YouTube Statistics</h1>
       <h3 class="index-stats">Video Count: {{ video_count }}</h3>
       <h3 class="index-stats">Subscriber Count: {{ subscriber_count }}</h3>
-      <h3 class="index-stats">First Created Video Date: {{ formatted_date }}</h3>
+      <h3 class="index-stats">
+        First Created Video Date: {{ formatted_date }}
+      </h3>
       <h3 class="index-stats">
         Last Created Video Date: {{ formatted_last_video_date }}
       </h3>
