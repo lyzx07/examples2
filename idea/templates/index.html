@@ -47,22 +47,36 @@
         <div class="index-form-value">
           <form class="text-center" method="POST">
             <h3>Enter name of YouTube creator</h3>
-            <h4>
-              Can be name of channel or username found after the "@" symbol
-            </h4>
-            <h5>E.g. pentatonix or @PTXofficial<br>without the "@" symbol</h5>
+            <h5>
+              Example: pentatonix or @PTXofficial<br />with or without the "@"
+              symbol
+            </h5>
             <input
+              class="input-field"
               type="text"
               name="username"
-              placeholder="Enter YouTube username"
+              placeholder="Enter username"
             />
+            <br><br>
+            <input
+              class="input-field"
+              type="text"
+              name="my-channel"
+              placeholder="Enter Your Username"
+            />
+            <br>
             <button type="submit">Search</button>
           </form>
         </div>
       </div>
       <h1>YouTube Statistics</h1>
+      <img class="pic" src="{{ channel_thumbnail }}" alt="Profile Picture" />
+      <h3 class="index-stats">Channel Name: {{ channel_name }}</h3>
       <h3 class="index-stats">Video Count: {{ video_count }}</h3>
       <h3 class="index-stats">Subscriber Count: {{ subscriber_count }}</h3>
+      <h3 class="index-stats">
+        Channel Description: {{ channel_description }}
+      </h3>
       <h3 class="index-stats">
         First Created Video Date: {{ formatted_date }}
       </h3>

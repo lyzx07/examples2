@@ -39,6 +39,10 @@ c = conn.cursor()
 
 conn.commit() """
 
+""" c.execute('''CREATE TABLE IF NOT EXISTS creators (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+          username TEXT, description TEXT, thumbnail TEXT, subscriberCount INTEGER, 
+          videoCount INTEGER)''')
+conn.commit() """
 
 DEVELOPER_KEY = "AIzaSyDHKne5gUlTY73VT5OlfmhsZBYJqDFgA_Q" # replace with your actual developer key
 YOUTUBE_API_SERVICE_NAME = "youtube"
@@ -117,6 +121,7 @@ def index():
     if request.method == 'POST':
         # Get the username from the form data
         username = request.form['username']
+        my_channel = request.form['my-channel']
         
         search_response = youtube.search().list(
             q=username,
@@ -137,6 +142,9 @@ def index():
         # Extract necessary data from response
         video_count = response['items'][0]['statistics']['videoCount']
         subscriber_count = response['items'][0]['statistics']['subscriberCount']
+        channel_description = response['items'][0]['snippet']['description']
+        channel_name = response['items'][0]['snippet']['title']
+        channel_thumbnail = response['items'][0]['snippet']['thumbnails']['default']['url']
         published_at = response['items'][0]['snippet']['publishedAt']
         formatted_date = '-'
         try:
@@ -167,9 +175,11 @@ def index():
                                created_date=created_date,
                                last_video_date=last_video_date_obj, 
                                formatted_date=formatted_date,
+                               channel_description=channel_description,
+                               channel_thumbnail=channel_thumbnail,
+                               channel_name=channel_name,
                                formatted_last_video_date=formatted_last_video_date)
         
-    # Pass video count to the Jinja template
     return render_template("index.html", rows=rows, session_id=session_id)
 
 @app.route("/register", methods=["GET", "POST"])
