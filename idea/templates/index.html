@@ -64,36 +64,39 @@
         </div>
       </div>
     </div>
-    <div class="save-form-cont">
-      <h1>YouTube Statistics</h1>
-      <img class="pic" src="{{ channel_thumbnail }}" alt="Profile Picture" />
-      <h3 class="index-stats">Channel Name: {{ channel_name }}</h3>
-      <h3 class="index-stats">Video Count: {{ video_count }}</h3>
-      <h3 class="index-stats">Subscriber Count: {{ subscriber_count }}</h3>
-      <h3 class="index-stats">
-        Channel Description: {{ channel_description }}
-      </h3>
-      <h3 class="index-stats">
-        First Created Video Date: {{ formatted_date }}
-      </h3>
-      <h3 class="index-stats">
-        Last Created Video Date: {{ formatted_last_video_date }}
-      </h3>
+    <div class="stats-cont">
+      <div class="stats-info">
+        <h1>YouTube Statistics</h1>
+        <img class="pic" src="{{ channel_thumbnail }}" alt="Profile Picture" />
+        <h3 class="index-stats">Channel Name: {{ channel_name }}</h3>
+        <h3 class="index-stats">Video Count: {{ video_count }}</h3>
+        <h3 class="index-stats">Subscriber Count: {{ subscriber_count }}</h3>
+        <h3 class="index-stats">
+          Channel Description: {{ channel_description }}
+        </h3>
+        <h3 class="index-stats">
+          First Created Video Date: {{ formatted_date }}
+        </h3>
+        <h3 class="index-stats">
+          Last Created Video Date: {{ formatted_last_video_date }}
+        </h3>
+      </div>
     </div>
+    <h2>Saved YouTube Creators</h2>
     <div class="row" id="creator-cards">
       {% for creator in creators %}
-      <div class="card-cont text-center">
-        <div class="card-item">
+      <div class="card card-cont text-center">
+        <div class="card-header card-item">
           <img
             src="{{ creator[3] }}"
             alt="Channel thumbnail"
             class="card-img-top card-image"
           />
           <div class="card-body">
-            <h5 class="card-title">{{ creator[4] }}</h5>
+            <h3 class="card-title">{{ creator[1] }}</h3>
+            <p class="card-text">Subscribers: {{ creator[4] }}</p>
+            <p class="card-text">Videos: {{ creator[5] }}</p>
             <p class="card-text">{{ creator[2] }}</p>
-            <p class="card-text">Subscribers: {{ creator[1] }}</p>
-            <p class="card-text">Videos: {{ creator[0] }}</p>
           </div>
         </div>
       </div>

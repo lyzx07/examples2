@@ -155,7 +155,8 @@ section {
   width: 100%;
 }
 
-.form-box, .index-form-box {
+.form-box,
+.index-form-box {
   position: relative;
   width: 400px;
   height: 450px;
@@ -184,8 +185,34 @@ section {
   width: fit-content;
 }
 
-.form2-cont, .save-form-cont {
+.form2-cont,
+.stats-cont {
   color: white;
+}
+
+.stats-cont {
+  width: 90%;
+  margin: auto auto;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 30px rgb(6, 23, 106);
+  margin-bottom: 20px;
+  margin-top: 20px;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.stats-cont:hover {
+  box-shadow: 0 0 20px white; /* Increase the shadow size on hover */
+}
+
+.stats-info {
+  padding: 10px;
+}
+
+.form2-cont {
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem;
 }
 
 .input-field {
@@ -366,30 +393,43 @@ button {
 }
 
 .card-cont {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 400px;
-  height: 600px;
   background-color: transparent;
-  color: white;
-  margin: 10px;
+  width: 90%;
+  margin: auto auto;
+  color: #333; /* Use a dark gray text color */
+  margin-bottom: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  flex-basis: calc(300px * 3 + 20px * 2); /* set the width of each row of cards */
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 30px rgb(6, 23, 106);
+}
+
+.card-cont:hover {
+  box-shadow: 0 0 20px white; /* Increase the shadow size on hover */
 }
 
 .card-image {
   width: 150px;
   height: auto;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 10px;
 }
 
 .card-item {
-  width: 300px;
-  height: auto;
-  background-color: rgb(6, 23, 106);
-  opacity: 0.8;
+  padding: 20px;
+  font-size: 18px; /* Use a larger font size for the card content */
+  font-weight: bold; /* Use a bold font weight for the card title */
+}
+
+.card-header {
+  color: #fff; /* Use a white text color for the card header */
+  border-radius: 10px 10px 0 0; /* Add rounded corners to the top corners of the header */
+  padding: 10px;
+}
+
+.card-title {
+  margin: 0; /* Remove the default margin from the card title */
+  font-size: 24px; /* Use a larger font size for the card title */
 }
 
 /* The side navigation menu */

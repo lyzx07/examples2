@@ -142,6 +142,9 @@ def index():
 
     if request.method == "POST":
         username = request.form["username"]
+        
+        if not request.form.get("username"):
+            return apology("must provide YouTube Creator", 403)
 
         search_response = (
             youtube.search().list(q=username, type="channel", part="id").execute()
@@ -188,7 +191,8 @@ def index():
             formatted_last_video_date = last_video_date_obj.strftime("%m/%d/%Y")
         except ValueError:
             pass
-
+        
+        
         # Check if the channelId already exists in the "creators" table
         c.execute("SELECT * FROM creators WHERE channelId=?", (channel_id,))
         check = c.fetchone()
