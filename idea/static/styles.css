@@ -169,16 +169,29 @@ section {
   align-items: center;
 }
 
-.index-form-box {
-  height: 250px;
+.form-index {
+  display: flex;
+  flex-direction: column;
 }
 
-.form2-cont {
+.form-index button {
+  align-self: center;
+  margin-top: 15px;
+}
+
+.form-index input {
+  align-self: center;
+  width: fit-content;
+}
+
+.form2-cont, .save-form-cont {
   color: white;
 }
 
 .input-field {
   color: black;
+  background-color: white;
+  opacity: 0.8;
 }
 
 h2 {
@@ -350,6 +363,33 @@ button {
 
 .cont {
   margin-top: 10px;
+}
+
+.card-cont {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 400px;
+  height: 600px;
+  background-color: transparent;
+  color: white;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  flex-basis: calc(300px * 3 + 20px * 2); /* set the width of each row of cards */
+}
+
+.card-image {
+  width: 150px;
+  height: auto;
+}
+
+.card-item {
+  width: 300px;
+  height: auto;
+  background-color: rgb(6, 23, 106);
+  opacity: 0.8;
 }
 
 /* The side navigation menu */

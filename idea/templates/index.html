@@ -45,30 +45,26 @@
     <div class="form2-cont">
       <div class="index-form-box">
         <div class="index-form-value">
-          <form class="text-center" method="POST">
-            <h3>Enter name of YouTube creator</h3>
+          <form class="text-center form-index" method="POST">
+            <h3>Enter name of YouTube Channel</h3>
             <h5>
-              Example: pentatonix or @PTXofficial<br />with or without the "@"
-              symbol
+              <i>
+                Example: pentatonix or @PTXofficial<br />with or without the "@"
+                symbol</i
+              >
             </h5>
             <input
-              class="input-field"
+              class="input-field text-center"
               type="text"
               name="username"
               placeholder="Enter username"
             />
-            <br><br>
-            <input
-              class="input-field"
-              type="text"
-              name="my-channel"
-              placeholder="Enter Your Username"
-            />
-            <br>
-            <button type="submit">Search</button>
+            <button class="search-btn" type="submit">Search</button>
           </form>
         </div>
       </div>
+    </div>
+    <div class="save-form-cont">
       <h1>YouTube Statistics</h1>
       <img class="pic" src="{{ channel_thumbnail }}" alt="Profile Picture" />
       <h3 class="index-stats">Channel Name: {{ channel_name }}</h3>
@@ -83,6 +79,25 @@
       <h3 class="index-stats">
         Last Created Video Date: {{ formatted_last_video_date }}
       </h3>
+    </div>
+    <div class="row" id="creator-cards">
+      {% for creator in creators %}
+      <div class="card-cont text-center">
+        <div class="card-item">
+          <img
+            src="{{ creator[3] }}"
+            alt="Channel thumbnail"
+            class="card-img-top card-image"
+          />
+          <div class="card-body">
+            <h5 class="card-title">{{ creator[4] }}</h5>
+            <p class="card-text">{{ creator[2] }}</p>
+            <p class="card-text">Subscribers: {{ creator[1] }}</p>
+            <p class="card-text">Videos: {{ creator[0] }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
     </div>
     <div class="footer-cont">
       <footer class="footer">
