@@ -125,7 +125,6 @@ def login():
         return render_template("login.html")
 
 
-
 @app.route("/", methods=["GET", "POST"])
 @login_required
 def index():
@@ -135,99 +134,102 @@ def index():
     youtube = build(
         YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY
     )
-    
+
     # Retrieve data from the "creators" table
     c.execute("SELECT * FROM creators")
     creators = c.fetchall()
 
     if request.method == "POST":
-        username = request.form["username"]
-        
-        if not request.form.get("username"):
-            return apology("must provide YouTube Creator", 403)
+        form_name = request.form.get("form_name")
 
-        search_response = (
-            youtube.search().list(q=username, type="channel", part="id").execute()
-        )
+        if form_name == "form1":
+            username = request.form["username"]
+            if not request.form.get("username"):
+                return apology("must provide YouTube Creator", 403)
 
-        # Get channel id from search response
-        channel_id = search_response["items"][0]["id"]["channelId"]
-
-        # Call YouTube API to get channel statistics
-        request_query = youtube.channels().list(
-            part="statistics,snippet,contentDetails", id=channel_id
-        )
-        response = request_query.execute()
-
-        # Extract necessary data from response
-        video_count = response["items"][0]["statistics"]["videoCount"]
-        subscriber_count = response["items"][0]["statistics"]["subscriberCount"]
-        channel_description = response["items"][0]["snippet"]["description"]
-        channel_name = response["items"][0]["snippet"]["title"]
-        channel_thumbnail = response["items"][0]["snippet"]["thumbnails"]["default"][
-            "url"
-        ]
-        published_at = response["items"][0]["snippet"]["publishedAt"]
-        created_date = "-"
-        formatted_date = "-"
-        try:
-            created_date = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%S%z")
-            formatted_date = created_date.strftime("%m/%d/%Y")
-        except ValueError:
-            pass
-        playlist_id = response["items"][0]["contentDetails"]["relatedPlaylists"][
-            "uploads"
-        ]
-        videos_list_request = youtube.playlistItems().list(
-            playlistId=playlist_id, part="snippet", maxResults=1
-        )
-        videos_list_response = videos_list_request.execute()
-        last_video_date = videos_list_response["items"][0]["snippet"]["publishedAt"]
-        formatted_last_video_date = "-"
-        try:
-            last_video_date_obj = datetime.strptime(
-                last_video_date, "%Y-%m-%dT%H:%M:%S%z"
+            search_response = (
+                youtube.search().list(q=username, type="channel", part="id").execute()
             )
-            formatted_last_video_date = last_video_date_obj.strftime("%m/%d/%Y")
-        except ValueError:
-            pass
-        
-        
-        # Check if the channelId already exists in the "creators" table
-        c.execute("SELECT * FROM creators WHERE channelId=?", (channel_id,))
-        check = c.fetchone()
 
-        # If the channelId does not exist, add data to the "creators" table
-        if check is None:
-            c.execute(
-                "INSERT INTO creators (videoCount, subscriberCount, description, thumbnail, username, channelId) VALUES (?,?,?,?,?,?)",
-                (
-                    video_count,
-                    subscriber_count,
-                    channel_description,
-                    channel_thumbnail,
-                    channel_name,
-                    channel_id,
-                ),
+            # Get channel id from search response
+            channel_id = search_response["items"][0]["id"]["channelId"]
+
+            # Call YouTube API to get channel statistics
+            request_query = youtube.channels().list(
+                part="statistics,snippet,contentDetails", id=channel_id
             )
-            conn.commit()
-            
-        # Pass all the necessary data to the Jinja template
-        return render_template(
-            "index.html",
-            video_count=video_count,
-            subscriber_count=subscriber_count,
-            created_date=created_date,
-            last_video_date=last_video_date_obj,
-            formatted_date=formatted_date,
-            channel_description=channel_description,
-            channel_thumbnail=channel_thumbnail,
-            channel_name=channel_name,
-            formatted_last_video_date=formatted_last_video_date,
-            creators=creators,
-        )
+            response = request_query.execute()
 
-    return render_template("index.html", rows=rows, session_id=session_id, creators=creators)
+            # Extract necessary data from response
+            video_count = response["items"][0]["statistics"]["videoCount"]
+            subscriber_count = response["items"][0]["statistics"]["subscriberCount"]
+            channel_description = response["items"][0]["snippet"]["description"]
+            channel_name = response["items"][0]["snippet"]["title"]
+            channel_thumbnail = response["items"][0]["snippet"]["thumbnails"]["default"][
+                "url"
+            ]
+            published_at = response["items"][0]["snippet"]["publishedAt"]
+            created_date = "-"
+            formatted_date = "-"
+            try:
+                created_date = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%S%z")
+                formatted_date = created_date.strftime("%m/%d/%Y")
+            except ValueError:
+                pass
+            playlist_id = response["items"][0]["contentDetails"]["relatedPlaylists"][
+                "uploads"
+            ]
+            videos_list_request = youtube.playlistItems().list(
+                playlistId=playlist_id, part="snippet", maxResults=1
+            )
+            videos_list_response = videos_list_request.execute()
+            last_video_date = videos_list_response["items"][0]["snippet"]["publishedAt"]
+            formatted_last_video_date = "-"
+            try:
+                last_video_date_obj = datetime.strptime(
+                    last_video_date, "%Y-%m-%dT%H:%M:%S%z"
+                )
+                formatted_last_video_date = last_video_date_obj.strftime("%m/%d/%Y")
+            except ValueError:
+                pass
+
+            # Check if the channelId already exists in the "creators" table
+            c.execute("SELECT * FROM creators WHERE channelId=?", (channel_id,))
+            check = c.fetchone()
+
+            # If the channelId does not exist, add data to the "creators" table
+            if check is None:
+                c.execute(
+                    "INSERT INTO creators (videoCount, subscriberCount, description, thumbnail, username, channelId) VALUES (?,?,?,?,?,?)",
+                    (
+                        video_count,
+                        subscriber_count,
+                        channel_description,
+                        channel_thumbnail,
+                        channel_name,
+                        channel_id,
+                    ),
+                )
+                conn.commit()
+
+            # Pass all the necessary data to the Jinja template
+            return render_template(
+                "index.html",
+                video_count=video_count,
+                subscriber_count=subscriber_count,
+                created_date=created_date,
+                last_video_date=last_video_date_obj,
+                formatted_date=formatted_date,
+                channel_description=channel_description,
+                channel_thumbnail=channel_thumbnail,
+                channel_name=channel_name,
+                formatted_last_video_date=formatted_last_video_date,
+                creators=creators,
+            )
+
+    return render_template(
+        "index.html", rows=rows, session_id=session_id, creators=creators
+    )
 
 
 @app.route("/register", methods=["GET", "POST"])

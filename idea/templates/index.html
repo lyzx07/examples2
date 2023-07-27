@@ -39,13 +39,17 @@
     <!-- Use any element to open the sidenav -->
     <span class="span-menu glyphicon" onclick="openNav()">&#xe236;</span>
 
-    <div class="cont">
+    <div class="cont-index">
       <h1 class="text-center h1">React-i-rate</h1>
+      <h3 class="text-center h3">Remember the Good, Rate the Rest</h3>
+      <h4 class="text-center h4">
+        Keep Track of, Rate and Comment on YouTube Creators
+      </h4>
     </div>
     <div class="form2-cont">
       <div class="index-form-box">
         <div class="index-form-value">
-          <form class="text-center form-index" method="POST">
+          <form class="text-center form-index" method="POST" action="/"  name="form1">
             <h3>Enter name of YouTube Channel</h3>
             <h5>
               <i>
@@ -59,31 +63,32 @@
               name="username"
               placeholder="Enter username"
             />
+            <input type="hidden" name="form_name" value="form1">
             <button class="search-btn" type="submit">Search</button>
           </form>
         </div>
       </div>
     </div>
-    <div class="stats-cont">
-      <div class="stats-info">
+    <div id="stats-cont" class="stats-cont">
+      <div class="stats-info text-center">
         <h1>YouTube Statistics</h1>
         <img class="pic" src="{{ channel_thumbnail }}" alt="Profile Picture" />
-        <h3 class="index-stats">Channel Name: {{ channel_name }}</h3>
-        <h3 class="index-stats">Video Count: {{ video_count }}</h3>
-        <h3 class="index-stats">Subscriber Count: {{ subscriber_count }}</h3>
-        <h3 class="index-stats">
-          Channel Description: {{ channel_description }}
-        </h3>
-        <h3 class="index-stats">
-          First Created Video Date: {{ formatted_date }}
-        </h3>
-        <h3 class="index-stats">
-          Last Created Video Date: {{ formatted_last_video_date }}
-        </h3>
+        <h3 class="index-stats">Channel Name:</h3>
+        <p class="index-p">{{ channel_name }}</p>
+        <h3 class="index-stats">Video Count:</h3>
+        <p class="index-p">{{ video_count }}</p>
+        <h3 class="index-stats">Subscriber Count:</h3>
+        <p class="index-p">{{ subscriber_count }}</p>
+        <h3 class="index-stats">Channel Description:</h3>
+        <p class="index-p">{{ channel_description }}</p>
+        <h3 class="index-stats">First Created Video Date:</h3>
+        <p class="index-p">{{ formatted_date }}</p>
+        <h3 class="index-stats">Last Created Video Date:</h3>
+        <p class="index-p">{{ formatted_last_video_date }}</p>
       </div>
     </div>
     <h2>Saved YouTube Creators</h2>
-    <div class="row" id="creator-cards">
+    <div class="row creator-cards" id="creator-cards">
       {% for creator in creators %}
       <div class="card card-cont text-center">
         <div class="card-header card-item">
@@ -120,6 +125,8 @@
           </div>
           <div class="name">
             <h4 class="text-center">React-i-Rate</h4>
+            <a href="/">Home</a>
+            <a href="/pentatonix">Pentatonix</a>
             <a href="/contact">Contact</a>
           </div>
           <img
