@@ -136,7 +136,7 @@ def index():
     )
 
     # Retrieve data from the "creators" table
-    c.execute("SELECT * FROM creators")
+    c.execute("SELECT * FROM creators ORDER BY id DESC")
     creators = c.fetchall()
 
     if request.method == "POST":
@@ -165,9 +165,9 @@ def index():
             subscriber_count = response["items"][0]["statistics"]["subscriberCount"]
             channel_description = response["items"][0]["snippet"]["description"]
             channel_name = response["items"][0]["snippet"]["title"]
-            channel_thumbnail = response["items"][0]["snippet"]["thumbnails"]["default"][
-                "url"
-            ]
+            channel_thumbnail = response["items"][0]["snippet"]["thumbnails"][
+                "default"
+            ]["url"]
             published_at = response["items"][0]["snippet"]["publishedAt"]
             created_date = "-"
             formatted_date = "-"
@@ -211,6 +211,9 @@ def index():
                     ),
                 )
                 conn.commit()
+                
+            c.execute("SELECT * FROM creators ORDER BY id DESC")
+            creators = c.fetchall()        
 
             # Pass all the necessary data to the Jinja template
             return render_template(
@@ -224,6 +227,18 @@ def index():
                 channel_thumbnail=channel_thumbnail,
                 channel_name=channel_name,
                 formatted_last_video_date=formatted_last_video_date,
+                creators=creators,
+            )
+        elif form_name == "form2":
+            channel_id = request.form.get("channel_id")
+            c.execute("DELETE FROM creators WHERE channelId =?", (channel_id,))
+            conn.commit()
+            
+            c.execute("SELECT * FROM creators ORDER BY id DESC")
+            creators = c.fetchall()
+            
+            return render_template(
+                "index.html",
                 creators=creators,
             )
 

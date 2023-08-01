@@ -466,6 +466,7 @@ button {
 }
 
 .span-menu {
+  position: fixed;
   color: rgb(6, 23, 106);
   text-shadow: 1px 1px #fff;
   font-size: larger;

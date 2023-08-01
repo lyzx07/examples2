@@ -49,7 +49,12 @@
     <div class="form2-cont">
       <div class="index-form-box">
         <div class="index-form-value">
-          <form class="text-center form-index" method="POST" action="/"  name="form1">
+          <form
+            class="text-center form-index"
+            method="POST"
+            action="/"
+            name="form1"
+          >
             <h3>Enter name of YouTube Channel</h3>
             <h5>
               <i>
@@ -63,7 +68,7 @@
               name="username"
               placeholder="Enter username"
             />
-            <input type="hidden" name="form_name" value="form1">
+            <input type="hidden" name="form_name" value="form1" />
             <button class="search-btn" type="submit">Search</button>
           </form>
         </div>
@@ -103,6 +108,17 @@
             <p class="card-text">Videos: {{ creator[5] }}</p>
             <p class="card-text">{{ creator[2] }}</p>
           </div>
+          <form class="form2" method="POST" action="/" name="form2">
+            <input type="hidden" name="form_name" value="form2" />
+            <input type="hidden" name="channel_id" value="{{ creator[6] }}" />
+            <button
+              class="delete-btn"
+              onclick="return confirm('Are you sure you want to delete this YouTube creator? Doing so will also delete all of your notes on this channel!');"
+              type="submit"
+            >
+              delete
+            </button>
+          </form>
         </div>
       </div>
       {% endfor %}
