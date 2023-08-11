@@ -31,6 +31,8 @@ app = Flask(__name__)
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.config["SESSION_COOKIE_SECURE"] = True
+
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
@@ -41,17 +43,12 @@ Session(app)
 conn = sqlite3.connect("rate-app-real.db", check_same_thread=False)
 c = conn.cursor()
 
-""" c.execute('''CREATE TABLE IF NOT EXISTS tunes (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    video_id TEXT NOT NULL);''')
-
-conn.commit() """
-
-""" c.execute('''CREATE TABLE IF NOT EXISTS creators (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+c.execute(
+    """CREATE TABLE IF NOT EXISTS creators (id INTEGER PRIMARY KEY AUTOINCREMENT, 
           username TEXT, description TEXT, thumbnail TEXT, subscriberCount INTEGER, 
-          videoCount INTEGER)''')
-conn.commit() """
+          videoCount INTEGER, user_id INTEGER NOT NULL, FOREIGN KEY (user_id) REFERENCES users (id))"""
+)
+conn.commit()
 
 DEVELOPER_KEY = (
     "AIzaSyDHKne5gUlTY73VT5OlfmhsZBYJqDFgA_Q"  # replace with your actual developer key
@@ -114,11 +111,16 @@ def login():
         ):
             return apology("invalid username and/or password", 403)
 
-        # Remember which user has logged in
-        session["user_id"] = rows[0][0]
+        c.execute("SELECT * FROM users WHERE username =?", (username,))
+        user = c.fetchone()
 
-        # Redirect user to home page
-        return redirect("/")
+        # Remember which user has logged in
+        session["user_id"] = user[0]
+        session["username"] = username
+        """ session["username"] = user[1] """
+
+        # Redirect to the index route with the username as a query parameter
+        return redirect(url_for("index", username=username))
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
@@ -129,16 +131,20 @@ def login():
 @login_required
 def index():
     session_id = session.get("user_id")
-    rows = c.execute("SELECT * FROM users WHERE id = ?", (session_id,)).fetchall()
+
+    # Retrieve the username from the query parameter
+    username = request.args.get("username")
 
     youtube = build(
         YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY
     )
 
     # Retrieve data from the "creators" table
-    c.execute("SELECT * FROM creators ORDER BY id DESC")
+    c.execute("SELECT * FROM creators WHERE user_id =? ORDER BY id DESC", (session_id,))
     creators = c.fetchall()
 
+    """ print("Result set:", creators)"""
+    
     if request.method == "POST":
         form_name = request.form.get("form_name")
 
@@ -194,13 +200,13 @@ def index():
                 pass
 
             # Check if the channelId already exists in the "creators" table
-            c.execute("SELECT * FROM creators WHERE channelId=?", (channel_id,))
+            c.execute("SELECT * FROM creators WHERE channelId=? AND user_id=?", (channel_id, session_id))
             check = c.fetchone()
 
             # If the channelId does not exist, add data to the "creators" table
             if check is None:
                 c.execute(
-                    "INSERT INTO creators (videoCount, subscriberCount, description, thumbnail, username, channelId) VALUES (?,?,?,?,?,?)",
+                    "INSERT INTO creators (videoCount, subscriberCount, description, thumbnail, username, channelId, user_id) VALUES (?,?,?,?,?,?,?)",
                     (
                         video_count,
                         subscriber_count,
@@ -208,12 +214,14 @@ def index():
                         channel_thumbnail,
                         channel_name,
                         channel_id,
+                        session_id,
                     ),
                 )
                 conn.commit()
-                
-            c.execute("SELECT * FROM creators ORDER BY id DESC")
-            creators = c.fetchall()        
+
+            # Retrieve data from the "creators" table
+            c.execute("SELECT * FROM creators WHERE user_id =? ORDER BY id DESC", (session_id,))
+            creators = c.fetchall()
 
             # Pass all the necessary data to the Jinja template
             return render_template(
@@ -231,19 +239,20 @@ def index():
             )
         elif form_name == "form2":
             channel_id = request.form.get("channel_id")
-            c.execute("DELETE FROM creators WHERE channelId =?", (channel_id,))
+            c.execute("DELETE FROM creators WHERE channelId =? AND user_id=?", (channel_id, session_id))
             conn.commit()
-            
-            c.execute("SELECT * FROM creators ORDER BY id DESC")
+
+            # Retrieve data from the "creators" table
+            c.execute("SELECT * FROM creators WHERE user_id =? ORDER BY id DESC", (session_id,))
             creators = c.fetchall()
-            
+
             return render_template(
                 "index.html",
                 creators=creators,
             )
 
     return render_template(
-        "index.html", rows=rows, session_id=session_id, creators=creators
+        "index.html", session_id=session_id, creators=creators
     )
 
 
