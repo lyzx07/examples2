@@ -114,7 +114,27 @@
             <p class="card-text">Subscribers: {{ creator[4] }}</p>
             <p class="card-text">Videos: {{ creator[5] }}</p>
             <p class="card-text">{{ creator[2] }}</p>
+            <ul>
+              {% for note in notes %}
+              {% if note[2] == creator[7] %}
+              <li>{{ note[0] }} - {{ note[1] }}</li>
+              {% endif %}
+              {% endfor %}
+            </ul>
           </div>
+          <form class="form3" method="POST" action="/" name="form3">
+            <input type="hidden" name="form_name" value="form3" />
+            <input type="hidden" name="channel_id" value="{{ creator[7] }}" />
+            <label for="message">Message:</label>
+            <textarea
+              class="text-center"
+              id="message"
+              name="message"
+              rows="3"
+              cols="20"
+            ></textarea>
+            <button type="submit" name="add_note">Add Note</button>
+          </form>
           <form class="form2" method="POST" action="/" name="form2">
             <input type="hidden" name="form_name" value="form2" />
             <input type="hidden" name="channel_id" value="{{ creator[7] }}" />

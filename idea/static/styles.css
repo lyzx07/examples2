@@ -222,6 +222,10 @@ section {
   opacity: 0.8;
 }
 
+#message {
+  color: black;
+}
+
 h2 {
   font-size: 2em;
   color: #fff;
@@ -594,7 +598,7 @@ ul {
   box-shadow: 4px 4px 8px #888888;
 }
 
-.song-list li a {
+.song-list li a, .song-list li .views {
   color: white;
 }
 

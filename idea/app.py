@@ -48,7 +48,8 @@ c.execute(
           username TEXT, description TEXT, thumbnail TEXT, subscriberCount INTEGER, 
           videoCount INTEGER, user_id INTEGER NOT NULL, FOREIGN KEY (user_id) REFERENCES users (id))"""
 )
-conn.commit()
+
+""" conn.commit() """
 
 DEVELOPER_KEY = (
     "AIzaSyDHKne5gUlTY73VT5OlfmhsZBYJqDFgA_Q"  # replace with your actual developer key
@@ -81,6 +82,11 @@ def get_videos_from_playlists(youtube, playlist_ids):
             video_list.append(video)
         videos[playlist_id] = video_list
     return videos
+
+def get_notes():
+    c.execute('SELECT notes.note, notes.created_at FROM notes INNER JOIN creators ON notes.channel_id = creators.channelId')
+    notes = c.fetchall()
+    return [{'note': note[0], 'created_at': note[1]} for note in notes]
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -142,9 +148,12 @@ def index():
     # Retrieve data from the "creators" table
     c.execute("SELECT * FROM creators WHERE user_id =? ORDER BY id DESC", (session_id,))
     creators = c.fetchall()
+    
+    """ c.execute("SELECT note, created_at FROM notes")
+    notes = c.fetchall() """
 
     """ print("Result set:", creators)"""
-    
+
     if request.method == "POST":
         form_name = request.form.get("form_name")
 
@@ -200,7 +209,10 @@ def index():
                 pass
 
             # Check if the channelId already exists in the "creators" table
-            c.execute("SELECT * FROM creators WHERE channelId=? AND user_id=?", (channel_id, session_id))
+            c.execute(
+                "SELECT * FROM creators WHERE channelId=? AND user_id=?",
+                (channel_id, session_id),
+            )
             check = c.fetchone()
 
             # If the channelId does not exist, add data to the "creators" table
@@ -220,8 +232,20 @@ def index():
                 conn.commit()
 
             # Retrieve data from the "creators" table
-            c.execute("SELECT * FROM creators WHERE user_id =? ORDER BY id DESC", (session_id,))
+            c.execute(
+                "SELECT * FROM creators WHERE user_id =? ORDER BY id DESC",
+                (session_id,),
+            )
             creators = c.fetchall()
+
+            c.execute(
+                "SELECT note, created_at FROM notes WHERE channel_id =? AND user_id=?",
+                (
+                    channel_id,
+                    session_id,
+                ),
+            )
+            notes = c.fetchall()
 
             # Pass all the necessary data to the Jinja template
             return render_template(
@@ -236,24 +260,80 @@ def index():
                 channel_name=channel_name,
                 formatted_last_video_date=formatted_last_video_date,
                 creators=creators,
+                notes=notes,
+                session_id=session_id,
+                channel_id=channel_id,
             )
         elif form_name == "form2":
             channel_id = request.form.get("channel_id")
-            c.execute("DELETE FROM creators WHERE channelId =? AND user_id=?", (channel_id, session_id))
+            c.execute(
+                "DELETE FROM creators WHERE channelId =? AND user_id=?",
+                (channel_id, session_id),
+            )
             conn.commit()
 
             # Retrieve data from the "creators" table
-            c.execute("SELECT * FROM creators WHERE user_id =? ORDER BY id DESC", (session_id,))
+            c.execute(
+                "SELECT * FROM creators WHERE user_id =? ORDER BY id DESC",
+                (session_id,),
+            )
+            creators = c.fetchall()
+
+            c.execute(
+                "SELECT note, created_at FROM notes WHERE channel_id =? AND user_id=?",
+                (
+                    channel_id,
+                    session_id,
+                ),
+            )
+            notes = c.fetchall()
+
+            return render_template(
+                "index.html",
+                creators=creators,
+                notes=notes,
+                session_id=session_id,
+                channel_id=channel_id,
+            )
+
+        elif form_name == "form3":
+            channel_id = request.form.get("channel_id")
+            note = request.form.get("message")
+
+            c.execute(
+                "INSERT INTO notes (user_id, channel_id, note) VALUES (?,?,?)",
+                (session_id, channel_id, note),
+            )
+
+            conn.commit()
+
+            c.execute(
+                "SELECT note, created_at, channel_id FROM notes WHERE channel_id=? AND user_id=?",
+                (
+                    channel_id,
+                    session_id,
+                ),
+            )
+            notes = c.fetchall()
+
+            # Retrieve data from the "creators" table
+            c.execute(
+                "SELECT * FROM creators WHERE user_id =? ORDER BY id DESC",
+                (session_id,),
+            )
             creators = c.fetchall()
 
             return render_template(
                 "index.html",
                 creators=creators,
+                notes=notes,
+                session_id=session_id,
+                channel_id=channel_id,
             )
+            
+             
 
-    return render_template(
-        "index.html", session_id=session_id, creators=creators
-    )
+    return render_template("index.html", session_id=session_id, creators=creators)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -339,15 +419,18 @@ def pentatonix():
 
     # Extract necessary data from response
     video_count = response["items"][0]["statistics"]["videoCount"]
+    """ view_count = response["items"][0]["statistics"]["viewCount"] """
     subscriber_count = response["items"][0]["statistics"]["subscriberCount"]
     published_at = response["items"][0]["snippet"]["publishedAt"]
     created_date = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%S%z")
     formatted_date = created_date.strftime("%m/%d/%Y")
     playlist_id = response["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
+
     videos_list_request = youtube.playlistItems().list(
         playlistId=playlist_id, part="snippet", maxResults=1
     )
     videos_list_response = videos_list_request.execute()
+
     last_video_date = videos_list_response["items"][0]["snippet"]["publishedAt"]
     last_video_date_obj = datetime.strptime(last_video_date, "%Y-%m-%dT%H:%M:%S%z")
     formatted_last_video_date = last_video_date_obj.strftime("%m/%d/%Y")

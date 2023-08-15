@@ -24,7 +24,7 @@ PRAGMA lock_status
 
 DROP TABLE songs;
 
-DROP TABLE creator;
+DROP TABLE note;
 
 ALTER TABLE creators ADD COLUMN user_id INTEGER REFERENCES users(id);
 
@@ -33,3 +33,12 @@ ALTER TABLE creators ADD COLUMN channelId TEXT
 ALTER TABLE creator
 MODIFY COLUMN user_id
 SET NOT NULL;
+
+CREATE TABLE IF NOT EXISTS notes (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    channel_id TEXT NOT NULL,
+    note TEXT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
