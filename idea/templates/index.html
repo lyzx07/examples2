@@ -114,13 +114,19 @@
             <p class="card-text">Subscribers: {{ creator[4] }}</p>
             <p class="card-text">Videos: {{ creator[5] }}</p>
             <p class="card-text">{{ creator[2] }}</p>
+            {% if notes %}
             <ul>
-              {% for note in notes %}
-              {% if note[2] == creator[7] %}
+              {% for note in notes %} {% if note[2] == creator[7] %}
               <li>{{ note[0] }} - {{ note[1] }}</li>
-              {% endif %}
-              {% endfor %}
+              {% endif %} {% endfor %}
             </ul>
+            {% else %}
+            <ul>
+              {% for message in messages %} {% if message[2] == creator[7] %}
+              <li>{{ message[0] }} - {{ message[1] }}</li>
+              {% endif %} {% endfor %}
+            </ul>
+            {% endif %}
           </div>
           <form class="form3" method="POST" action="/" name="form3">
             <input type="hidden" name="form_name" value="form3" />

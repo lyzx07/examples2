@@ -20,6 +20,7 @@ import google.auth
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
+import bcrypt
 from functools import wraps
 from validate_email import validate_email
 from flask import flash
@@ -83,10 +84,13 @@ def get_videos_from_playlists(youtube, playlist_ids):
         videos[playlist_id] = video_list
     return videos
 
+
 def get_notes():
-    c.execute('SELECT notes.note, notes.created_at FROM notes INNER JOIN creators ON notes.channel_id = creators.channelId')
+    c.execute(
+        "SELECT notes.note, notes.created_at FROM notes INNER JOIN creators ON notes.channel_id = creators.channel_id"
+    )
     notes = c.fetchall()
-    return [{'note': note[0], 'created_at': note[1]} for note in notes]
+    return [{"note": note[0], "created_at": note[1]} for note in notes]
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -105,25 +109,25 @@ def login():
             return apology("must provide password", 403)
 
         username = request.form.get("login-username")
+        password = request.form.get("login-password")
 
-        # Query database for username
-        rows = c.execute(
-            "SELECT * FROM users WHERE username = ?", (username,)
-        ).fetchall()
-
-        # Ensure username exists and password is correct
-        if len(rows) != 1 or not check_password_hash(
-            rows[0][2], request.form.get("login-password")
-        ):
-            return apology("invalid username and/or password", 403)
-
-        c.execute("SELECT * FROM users WHERE username =?", (username,))
+        # Query database for user
+        c.execute("SELECT * FROM users WHERE username = ?", (username,))
         user = c.fetchone()
 
-        # Remember which user has logged in
-        session["user_id"] = user[0]
-        session["username"] = username
-        """ session["username"] = user[1] """
+        if user:
+            # Check if password_bcrypt exists
+            if user[3]:
+                # Verify password using bcrypt
+                if bcrypt.checkpw(password.encode('utf-8'), user[3]):
+                    session["user_id"] = user[0]
+                    session["username"] = username
+                    return redirect(url_for("index"))
+            else:
+                # Verify password using werkzeug.security
+                if check_password_hash(user[2], password):
+                    session["user_id"] = user[0]
+                    session["username"] = username
 
         # Redirect to the index route with the username as a query parameter
         return redirect(url_for("index", username=username))
@@ -148,11 +152,13 @@ def index():
     # Retrieve data from the "creators" table
     c.execute("SELECT * FROM creators WHERE user_id =? ORDER BY id DESC", (session_id,))
     creators = c.fetchall()
-    
-    """ c.execute("SELECT note, created_at FROM notes")
-    notes = c.fetchall() """
 
-    """ print("Result set:", creators)"""
+    c.execute(
+        "SELECT note, created_at, channel_id FROM notes WHERE user_id =?", (session_id,)
+    )
+    messages = c.fetchall()
+
+    print("messages set:", messages)
 
     if request.method == "POST":
         form_name = request.form.get("form_name")
@@ -167,11 +173,11 @@ def index():
             )
 
             # Get channel id from search response
-            channel_id = search_response["items"][0]["id"]["channelId"]
+            channelId = search_response["items"][0]["id"]["channelId"]
 
             # Call YouTube API to get channel statistics
             request_query = youtube.channels().list(
-                part="statistics,snippet,contentDetails", id=channel_id
+                part="statistics,snippet,contentDetails", id=channelId
             )
             response = request_query.execute()
 
@@ -208,24 +214,24 @@ def index():
             except ValueError:
                 pass
 
-            # Check if the channelId already exists in the "creators" table
+            # Check if the channel_id already exists in the "creators" table
             c.execute(
-                "SELECT * FROM creators WHERE channelId=? AND user_id=?",
-                (channel_id, session_id),
+                "SELECT * FROM creators WHERE channel_id=? AND user_id=?",
+                (channelId, session_id),
             )
             check = c.fetchone()
 
-            # If the channelId does not exist, add data to the "creators" table
+            # If the channel_id does not exist, add data to the "creators" table
             if check is None:
                 c.execute(
-                    "INSERT INTO creators (videoCount, subscriberCount, description, thumbnail, username, channelId, user_id) VALUES (?,?,?,?,?,?,?)",
+                    "INSERT INTO creators (videoCount, subscriberCount, description, thumbnail, username, channel_id, user_id) VALUES (?,?,?,?,?,?,?)",
                     (
                         video_count,
                         subscriber_count,
                         channel_description,
                         channel_thumbnail,
                         channel_name,
-                        channel_id,
+                        channelId,
                         session_id,
                     ),
                 )
@@ -239,11 +245,8 @@ def index():
             creators = c.fetchall()
 
             c.execute(
-                "SELECT note, created_at FROM notes WHERE channel_id =? AND user_id=?",
-                (
-                    channel_id,
-                    session_id,
-                ),
+                "SELECT note, created_at, channel_id FROM notes WHERE user_id =?",
+                (session_id,),
             )
             notes = c.fetchall()
 
@@ -262,13 +265,19 @@ def index():
                 creators=creators,
                 notes=notes,
                 session_id=session_id,
-                channel_id=channel_id,
+                channelId=channelId,
             )
         elif form_name == "form2":
-            channel_id = request.form.get("channel_id")
+            channelId = request.form.get("channel_id")
             c.execute(
-                "DELETE FROM creators WHERE channelId =? AND user_id=?",
-                (channel_id, session_id),
+                "DELETE FROM creators WHERE channel_id =? AND user_id=?",
+                (channelId, session_id),
+            )
+            conn.commit()
+
+            c.execute(
+                "DELETE FROM notes WHERE channel_id =? AND user_id=?",
+                (channelId, session_id),
             )
             conn.commit()
 
@@ -280,11 +289,8 @@ def index():
             creators = c.fetchall()
 
             c.execute(
-                "SELECT note, created_at FROM notes WHERE channel_id =? AND user_id=?",
-                (
-                    channel_id,
-                    session_id,
-                ),
+                "SELECT note, created_at, channel_id FROM notes WHERE user_id =?",
+                (session_id,),
             )
             notes = c.fetchall()
 
@@ -293,28 +299,42 @@ def index():
                 creators=creators,
                 notes=notes,
                 session_id=session_id,
-                channel_id=channel_id,
+                channelId=channelId,
             )
 
         elif form_name == "form3":
-            channel_id = request.form.get("channel_id")
+            channelId = request.form.get("channel_id")
             note = request.form.get("message")
 
+            if not request.form.get("message"):
+                return apology("must provide note", 403)
+
+            # Check if the exact note has already been entered in the database
             c.execute(
-                "INSERT INTO notes (user_id, channel_id, note) VALUES (?,?,?)",
-                (session_id, channel_id, note),
+                "SELECT * FROM notes WHERE user_id=? AND channel_id=? AND note=?",
+                (session_id, channelId, note),
             )
+            existing_note = c.fetchone()
+
+            if existing_note:
+                # If the exact note has already been entered, do nothing
+                pass
+            else:
+                # If the exact note has not been entered, insert a new note
+                c.execute(
+                    "INSERT INTO notes (user_id, channel_id, note) VALUES (?,?,?)",
+                    (session_id, channelId, note),
+                )
 
             conn.commit()
 
             c.execute(
-                "SELECT note, created_at, channel_id FROM notes WHERE channel_id=? AND user_id=?",
-                (
-                    channel_id,
-                    session_id,
-                ),
+                "SELECT note, created_at, channel_id FROM notes WHERE user_id =?",
+                (session_id,),
             )
             notes = c.fetchall()
+
+            print("notes set:", notes)
 
             # Retrieve data from the "creators" table
             c.execute(
@@ -328,12 +348,13 @@ def index():
                 creators=creators,
                 notes=notes,
                 session_id=session_id,
-                channel_id=channel_id,
+                channelId=channelId,
             )
-            
-             
 
-    return render_template("index.html", session_id=session_id, creators=creators)
+    elif request.method == "GET":
+        return render_template(
+            "index.html", session_id=session_id, creators=creators, messages=messages
+        )
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -366,6 +387,7 @@ def register():
             return apology("passwords must match", 403)
 
         username = request.form.get("username")
+        password = request.form.get("password")
 
         # Query database for username
         rows = c.execute(
@@ -377,10 +399,16 @@ def register():
             return apology("username already exists", 403)
 
         # Hash password
-        hash = generate_password_hash(request.form.get("password"))
+        password_hash = generate_password_hash(password)
 
-        # Insert into users table
-        c.execute("INSERT INTO users (username, hash) VALUES (?, ?)", (username, hash))
+        # Generate password hash using bcrypt
+        password_bcrypt = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+
+        # Save both password hashes in the users table
+        c.execute(
+            "INSERT INTO users (username, hash, password_bcrypt) VALUES (?, ?, ?)",
+            (username, password_hash, password_bcrypt),
+        )
 
         conn.commit()
 

@@ -55,3 +55,30 @@ if not request.form.get("email"):
 # Ensure email is valid
 elif not validate_email(request.form.get("email")):
     return apology("invalid email", 403)
+
+
+# Generate password hash using bcrypt for registation route
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+
+        password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+        # Save the username and password hash in the database
+        c.execute("INSERT INTO users (username, password_hash) VALUES (?, ?)", (username, password_hash))
+        # Commit the transaction to save the changes
+
+#for login route
+        username = request.form.get("login-username")
+        password = request.form.get("login-password")
+
+        # Query database for user
+        c.execute("SELECT * FROM users WHERE username = ?", (username,))
+        user = c.fetchone()
+
+        # Ensure username exists and password is correct
+        if not user or not bcrypt.checkpw(password.encode('utf-8'), user[2]):
+            return apology("invalid username and/or password", 403)        
+
+
+
