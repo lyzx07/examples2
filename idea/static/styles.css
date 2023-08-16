@@ -186,7 +186,8 @@ section {
 }
 
 .form2-cont,
-.stats-cont {
+.stats-cont,
+.rating {
   color: white;
 }
 
@@ -598,7 +599,8 @@ ul {
   box-shadow: 4px 4px 8px #888888;
 }
 
-.song-list li a, .song-list li .views {
+.song-list li a,
+.song-list li .views {
   color: white;
 }
 

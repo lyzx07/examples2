@@ -119,7 +119,7 @@ def login():
             # Check if password_bcrypt exists
             if user[3]:
                 # Verify password using bcrypt
-                if bcrypt.checkpw(password.encode('utf-8'), user[3]):
+                if bcrypt.checkpw(password.encode("utf-8"), user[3]):
                     session["user_id"] = user[0]
                     session["username"] = username
                     return redirect(url_for("index"))
@@ -159,6 +159,12 @@ def index():
     messages = c.fetchall()
 
     print("messages set:", messages)
+
+    c.execute(
+        "SELECT rate_value, channel_id FROM ratings WHERE user_id =?",
+        (session_id,),
+    )
+    ratings = c.fetchall()
 
     if request.method == "POST":
         form_name = request.form.get("form_name")
@@ -350,10 +356,56 @@ def index():
                 session_id=session_id,
                 channelId=channelId,
             )
+        elif form_name == "form4":
+            channelId = request.form.get("channel_id")
+            ratings = request.form.get("rating")
+
+            if not request.form.get("rating"):
+                return apology("must a rating 1-5", 403)
+
+            c.execute(
+                "INSERT INTO ratings (user_id, channel_id, rate_value) VALUES (?,?,?)",
+                (session_id, channelId, ratings),
+            )
+            conn.commit()
+
+            print("ratings set:", ratings)
+
+            c.execute(
+                "SELECT rate_value, channel_id FROM ratings WHERE user_id =?",
+                (session_id,),
+            )
+            ratings = c.fetchall()
+
+            c.execute(
+                "SELECT note, created_at, channel_id FROM notes WHERE user_id =?",
+                (session_id,),
+            )
+            notes = c.fetchall()
+
+            # Retrieve data from the "creators" table
+            c.execute(
+                "SELECT * FROM creators WHERE user_id =? ORDER BY id DESC",
+                (session_id,),
+            )
+            creators = c.fetchall()
+
+            return render_template(
+                "index.html",
+                creators=creators,
+                notes=notes,
+                session_id=session_id,
+                channelId=channelId,
+                ratings=ratings,
+            )
 
     elif request.method == "GET":
         return render_template(
-            "index.html", session_id=session_id, creators=creators, messages=messages
+            "index.html",
+            session_id=session_id,
+            creators=creators,
+            messages=messages,
+            ratings=ratings,
         )
 
 

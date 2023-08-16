@@ -51,3 +51,11 @@ CREATE TABLE IF NOT EXISTS creators (
     user_id INTEGER NOT NULL,
     channel_id TEXT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id))
+
+CREATE TABLE IF NOT EXISTS ratings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        rate_value INTEGER NOT NULL,
+        user_id INTEGER NOT NULL,
+        channel_id TEXT NOT NULL,
+        FOREIGN KEY(user_id) REFERENCES creators(user_id),
+        FOREIGN KEY(channel_id) REFERENCES creators(channel_id))    
