@@ -20,7 +20,7 @@ MODIFY username VARCHAR(255);
 ALTER TABLE users
 MODIFY COLUMN username VARCHAR(255);
 PRAGMA lock_status DROP TABLE songs;
-DROP TABLE creator;
+DROP TABLE ratings;
 ALTER TABLE creators
 ADD COLUMN user_id INTEGER REFERENCES users(id);
 ALTER TABLE creators
@@ -55,6 +55,21 @@ CREATE TABLE IF NOT EXISTS creators (
 CREATE TABLE IF NOT EXISTS ratings (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         rate_value INTEGER NOT NULL,
+        likeability INTEGER,
+        humor INTEGER,
+        pity_subscription INTEGER,
+        informative INTEGER,
+        silly INTEGER,
+        funny INTEGER,
+        serious INTEGER,
+        deadpan INTEGER,
+        lets_be_friends INTEGER,
+        genuine INTEGER,
+        fake INTEGER,
+        relatable INTEGER,
+        emotional INTEGER,
+        inspirational INTEGER,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         user_id INTEGER NOT NULL,
         channel_id TEXT NOT NULL,
         FOREIGN KEY(user_id) REFERENCES creators(user_id),

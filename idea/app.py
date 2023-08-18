@@ -149,6 +149,24 @@ def index():
         YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY
     )
 
+    aspects = [
+        "Likeability",
+        "Humor",
+        "Pity Subscription",
+        "Informative",
+        "Silly",
+        "Funny",
+        "Serious",
+        "Deadpan",
+        "Let's Be Friends",
+        "Genuine",
+        "Real",
+        "Fake",
+        "Relatable",
+        "Emotional",
+        "Inspirational",
+    ]
+
     # Retrieve data from the "creators" table
     c.execute("SELECT * FROM creators WHERE user_id =? ORDER BY id DESC", (session_id,))
     creators = c.fetchall()
@@ -158,13 +176,13 @@ def index():
     )
     messages = c.fetchall()
 
-    print("messages set:", messages)
+    """ print("messages set:", messages) """
 
     c.execute(
-        "SELECT rate_value, channel_id FROM ratings WHERE user_id =?",
+        "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
         (session_id,),
     )
-    ratings = c.fetchall()
+    ratings = c.fetchall()[0]
 
     if request.method == "POST":
         form_name = request.form.get("form_name")
@@ -272,6 +290,7 @@ def index():
                 notes=notes,
                 session_id=session_id,
                 channelId=channelId,
+                aspects=aspects,
             )
         elif form_name == "form2":
             channelId = request.form.get("channel_id")
@@ -306,6 +325,7 @@ def index():
                 notes=notes,
                 session_id=session_id,
                 channelId=channelId,
+                aspects=aspects,
             )
 
         elif form_name == "form3":
@@ -340,7 +360,7 @@ def index():
             )
             notes = c.fetchall()
 
-            print("notes set:", notes)
+            """ print("notes set:", notes) """
 
             # Retrieve data from the "creators" table
             c.execute(
@@ -355,27 +375,77 @@ def index():
                 notes=notes,
                 session_id=session_id,
                 channelId=channelId,
+                aspects=aspects,
             )
         elif form_name == "form4":
             channelId = request.form.get("channel_id")
-            ratings = request.form.get("rating")
+            ratings = int(request.form.get("rating"))
+
+            rates = {}
+            for aspect in aspects:
+                rate = request.form.get(aspect.lower())
+                rates[aspect] = rate
 
             if not request.form.get("rating"):
-                return apology("must a rating 1-5", 403)
+                return apology("must choose rating 1-10", 403)
+
+            c.execute("SELECT COUNT(*) FROM ratings WHERE user_id =? AND channel_id =?", (session_id, channelId))
+            count = c.fetchone()[0]
+
+            if count == 0: 
+                # Insert a new row with default values
+                c.execute(
+                    "INSERT INTO ratings (user_id, channel_id, rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    (session_id, channelId, 0, None, None, None, None, None, None, None, None, None, None, None, None, None, None),
+                )
 
             c.execute(
-                "INSERT INTO ratings (user_id, channel_id, rate_value) VALUES (?,?,?)",
-                (session_id, channelId, ratings),
+                "UPDATE ratings SET rate_value =?, likeability = CASE WHEN likeability IS NULL OR likeability <>? THEN? ELSE likeability END, humor = CASE WHEN humor IS NULL OR humor <>? THEN? ELSE humor END, pity_subscription = CASE WHEN pity_subscription IS NULL OR pity_subscription <>? THEN? ELSE pity_subscription END, informative = CASE WHEN informative IS NULL OR informative <>? THEN? ELSE informative END, silly = CASE WHEN silly IS NULL OR silly <>? THEN? ELSE silly END, funny = CASE WHEN funny IS NULL OR funny <>? THEN? ELSE funny END, serious = CASE WHEN serious IS NULL OR serious <>? THEN? ELSE serious END, deadpan = CASE WHEN deadpan IS NULL OR deadpan <>? THEN? ELSE deadpan END, lets_be_friends = CASE WHEN lets_be_friends IS NULL OR lets_be_friends <>? THEN? ELSE lets_be_friends END, genuine = CASE WHEN genuine IS NULL OR genuine <>? THEN? ELSE genuine END, fake = CASE WHEN fake IS NULL OR fake <>? THEN? ELSE fake END, relatable = CASE WHEN relatable IS NULL OR relatable <>? THEN? ELSE relatable END, emotional = CASE WHEN emotional IS NULL OR emotional <>? THEN? ELSE emotional END, inspirational = CASE WHEN inspirational IS NULL OR inspirational <>? THEN? ELSE inspirational END WHERE user_id =? AND channel_id =?",
+                (
+                    ratings,
+                    rates["Likeability"],
+                    rates["Likeability"] if rates["Likeability"] is not None else None,
+                    rates["Humor"],
+                    rates["Humor"] if rates["Humor"] is not None else None,
+                    rates["Pity Subscription"],
+                    rates["Pity Subscription"] if rates["Pity Subscription"] is not None else None,
+                    rates["Informative"],
+                    rates["Informative"] if rates["Informative"] is not None else None,
+                    rates["Silly"],
+                    rates["Silly"] if rates["Silly"] is not None else None,
+                    rates["Funny"],
+                    rates["Funny"] if rates["Funny"] is not None else None,
+                    rates["Serious"],
+                    rates["Serious"] if rates["Serious"] is not None else None,
+                    rates["Deadpan"],
+                    rates["Deadpan"] if rates["Deadpan"] is not None else None,
+                    rates["Let's Be Friends"],
+                    rates["Let's Be Friends"] if rates["Let's Be Friends"] is not None else None,
+                    rates["Genuine"],
+                    rates["Genuine"] if rates["Genuine"] is not None else None,
+                    rates["Fake"],
+                    rates["Fake"] if rates["Fake"] is not None else None,
+                    rates["Relatable"],
+                    rates["Relatable"] if rates["Relatable"] is not None else None,
+                    rates["Emotional"],
+                    rates["Emotional"] if rates["Emotional"] is not None else None,
+                    rates["Inspirational"],
+                    rates["Inspirational"] if rates["Inspirational"] is not None else None,
+                    session_id,
+                    channelId,
+                ),
             )
             conn.commit()
-
-            print("ratings set:", ratings)
+            
 
             c.execute(
-                "SELECT rate_value, channel_id FROM ratings WHERE user_id =?",
+                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
                 (session_id,),
             )
-            ratings = c.fetchall()
+            ratings = c.fetchall()[0]
+            
+
+            print("ratings after:", ratings[15])
 
             c.execute(
                 "SELECT note, created_at, channel_id FROM notes WHERE user_id =?",
@@ -397,6 +467,7 @@ def index():
                 session_id=session_id,
                 channelId=channelId,
                 ratings=ratings,
+                aspects=aspects,
             )
 
     elif request.method == "GET":
@@ -406,6 +477,7 @@ def index():
             creators=creators,
             messages=messages,
             ratings=ratings,
+            aspects=aspects,
         )
 
 
