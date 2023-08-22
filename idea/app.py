@@ -190,6 +190,10 @@ def index():
     )
     columns = [column[0] for column in c.description]
 
+    for i in range(len(columns)):
+        columns[i] = columns[i].title()
+        columns[i] = columns[i].replace("_", " ")
+
     if request.method == "POST":
         form_name = request.form.get("form_name")
 
@@ -279,7 +283,7 @@ def index():
                 (session_id,),
             )
             notes = c.fetchall()
-            
+
             c.execute(
                 "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
                 (session_id,),
@@ -291,6 +295,10 @@ def index():
                 (session_id,),
             )
             columns = [column[0] for column in c.description]
+
+            for i in range(len(columns)):
+                columns[i] = columns[i].title()
+                columns[i] = columns[i].replace("_", " ")
 
             # Pass all the necessary data to the Jinja template
             return render_template(
@@ -325,6 +333,12 @@ def index():
                 (channelId, session_id),
             )
             conn.commit()
+            
+            c.execute(
+                "DELETE FROM ratings WHERE channel_id =? AND user_id=?",
+                (channelId, session_id),
+            )
+            conn.commit()
 
             # Retrieve data from the "creators" table
             c.execute(
@@ -338,7 +352,7 @@ def index():
                 (session_id,),
             )
             notes = c.fetchall()
-            
+
             c.execute(
                 "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
                 (session_id,),
@@ -350,6 +364,10 @@ def index():
                 (session_id,),
             )
             columns = [column[0] for column in c.description]
+
+            for i in range(len(columns)):
+                columns[i] = columns[i].title()
+                columns[i] = columns[i].replace("_", " ")
 
             return render_template(
                 "index.html",
@@ -402,7 +420,7 @@ def index():
                 (session_id,),
             )
             creators = c.fetchall()
-            
+
             c.execute(
                 "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
                 (session_id,),
@@ -414,6 +432,10 @@ def index():
                 (session_id,),
             )
             columns = [column[0] for column in c.description]
+
+            for i in range(len(columns)):
+                columns[i] = columns[i].title()
+                columns[i] = columns[i].replace("_", " ")
 
             return render_template(
                 "index.html",
@@ -523,6 +545,10 @@ def index():
                 (session_id,),
             )
             columns = [column[0] for column in c.description]
+
+            for i in range(len(columns)):
+                columns[i] = columns[i].title()
+                columns[i] = columns[i].replace("_", " ")
 
             # Print the column names
             print(columns)
