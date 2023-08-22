@@ -182,7 +182,13 @@ def index():
         "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
         (session_id,),
     )
-    ratings = c.fetchall()[0]
+    ratings = c.fetchall()
+
+    c.execute(
+        "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
+        (session_id,),
+    )
+    columns = [column[0] for column in c.description]
 
     if request.method == "POST":
         form_name = request.form.get("form_name")
@@ -273,6 +279,18 @@ def index():
                 (session_id,),
             )
             notes = c.fetchall()
+            
+            c.execute(
+                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
+                (session_id,),
+            )
+            ratings = c.fetchall()
+
+            c.execute(
+                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
+                (session_id,),
+            )
+            columns = [column[0] for column in c.description]
 
             # Pass all the necessary data to the Jinja template
             return render_template(
@@ -291,6 +309,8 @@ def index():
                 session_id=session_id,
                 channelId=channelId,
                 aspects=aspects,
+                ratings=ratings,
+                columns=columns,
             )
         elif form_name == "form2":
             channelId = request.form.get("channel_id")
@@ -318,6 +338,18 @@ def index():
                 (session_id,),
             )
             notes = c.fetchall()
+            
+            c.execute(
+                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
+                (session_id,),
+            )
+            ratings = c.fetchall()
+
+            c.execute(
+                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
+                (session_id,),
+            )
+            columns = [column[0] for column in c.description]
 
             return render_template(
                 "index.html",
@@ -326,6 +358,8 @@ def index():
                 session_id=session_id,
                 channelId=channelId,
                 aspects=aspects,
+                ratings=ratings,
+                columns=columns,
             )
 
         elif form_name == "form3":
@@ -368,6 +402,18 @@ def index():
                 (session_id,),
             )
             creators = c.fetchall()
+            
+            c.execute(
+                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
+                (session_id,),
+            )
+            ratings = c.fetchall()
+
+            c.execute(
+                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
+                (session_id,),
+            )
+            columns = [column[0] for column in c.description]
 
             return render_template(
                 "index.html",
@@ -376,6 +422,8 @@ def index():
                 session_id=session_id,
                 channelId=channelId,
                 aspects=aspects,
+                ratings=ratings,
+                columns=columns,
             )
         elif form_name == "form4":
             channelId = request.form.get("channel_id")
@@ -389,14 +437,35 @@ def index():
             if not request.form.get("rating"):
                 return apology("must choose rating 1-10", 403)
 
-            c.execute("SELECT COUNT(*) FROM ratings WHERE user_id =? AND channel_id =?", (session_id, channelId))
+            c.execute(
+                "SELECT COUNT(*) FROM ratings WHERE user_id =? AND channel_id =?",
+                (session_id, channelId),
+            )
             count = c.fetchone()[0]
 
-            if count == 0: 
+            if count == 0:
                 # Insert a new row with default values
                 c.execute(
                     "INSERT INTO ratings (user_id, channel_id, rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                    (session_id, channelId, 0, None, None, None, None, None, None, None, None, None, None, None, None, None, None),
+                    (
+                        session_id,
+                        channelId,
+                        0,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                    ),
                 )
 
             c.execute(
@@ -408,7 +477,9 @@ def index():
                     rates["Humor"],
                     rates["Humor"] if rates["Humor"] is not None else None,
                     rates["Pity Subscription"],
-                    rates["Pity Subscription"] if rates["Pity Subscription"] is not None else None,
+                    rates["Pity Subscription"]
+                    if rates["Pity Subscription"] is not None
+                    else None,
                     rates["Informative"],
                     rates["Informative"] if rates["Informative"] is not None else None,
                     rates["Silly"],
@@ -420,7 +491,9 @@ def index():
                     rates["Deadpan"],
                     rates["Deadpan"] if rates["Deadpan"] is not None else None,
                     rates["Let's Be Friends"],
-                    rates["Let's Be Friends"] if rates["Let's Be Friends"] is not None else None,
+                    rates["Let's Be Friends"]
+                    if rates["Let's Be Friends"] is not None
+                    else None,
                     rates["Genuine"],
                     rates["Genuine"] if rates["Genuine"] is not None else None,
                     rates["Fake"],
@@ -430,22 +503,31 @@ def index():
                     rates["Emotional"],
                     rates["Emotional"] if rates["Emotional"] is not None else None,
                     rates["Inspirational"],
-                    rates["Inspirational"] if rates["Inspirational"] is not None else None,
+                    rates["Inspirational"]
+                    if rates["Inspirational"] is not None
+                    else None,
                     session_id,
                     channelId,
                 ),
             )
             conn.commit()
-            
 
             c.execute(
                 "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
                 (session_id,),
             )
-            ratings = c.fetchall()[0]
-            
+            ratings = c.fetchall()
 
-            print("ratings after:", ratings[15])
+            c.execute(
+                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
+                (session_id,),
+            )
+            columns = [column[0] for column in c.description]
+
+            # Print the column names
+            print(columns)
+
+            print("ratings after:", ratings[0][0])
 
             c.execute(
                 "SELECT note, created_at, channel_id FROM notes WHERE user_id =?",
@@ -468,6 +550,7 @@ def index():
                 channelId=channelId,
                 ratings=ratings,
                 aspects=aspects,
+                columns=columns,
             )
 
     elif request.method == "GET":
@@ -478,6 +561,7 @@ def index():
             messages=messages,
             ratings=ratings,
             aspects=aspects,
+            columns=columns,
         )
 
 
