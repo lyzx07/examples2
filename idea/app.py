@@ -170,13 +170,11 @@ def index():
     # Retrieve data from the "creators" table
     c.execute("SELECT * FROM creators WHERE user_id =? ORDER BY id DESC", (session_id,))
     creators = c.fetchall()
-
+    
     c.execute(
         "SELECT note, created_at, channel_id FROM notes WHERE user_id =?", (session_id,)
     )
-    messages = c.fetchall()
-
-    """ print("messages set:", messages) """
+    notes = c.fetchall()   
 
     c.execute(
         "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
@@ -383,6 +381,7 @@ def index():
         elif form_name == "form3":
             channelId = request.form.get("channel_id")
             note = request.form.get("message")
+            highlighted_note = request.form.get("saved_notes")
 
             if not request.form.get("message"):
                 return apology("must provide note", 403)
@@ -446,7 +445,9 @@ def index():
                 aspects=aspects,
                 ratings=ratings,
                 columns=columns,
+                highlighted_note=highlighted_note,
             )
+            
         elif form_name == "form4":
             channelId = request.form.get("channel_id")
             ratings = int(request.form.get("rating"))
@@ -584,10 +585,10 @@ def index():
             "index.html",
             session_id=session_id,
             creators=creators,
-            messages=messages,
             ratings=ratings,
             aspects=aspects,
             columns=columns,
+            notes=notes,
         )
 
 

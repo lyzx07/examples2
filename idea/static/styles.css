@@ -72,7 +72,7 @@ body {
   margin: 5px;
 }
 
-.modal {
+.modal-login {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1000; /* Sit on top */
@@ -223,7 +223,7 @@ section {
   opacity: 0.8;
 }
 
-#message {
+#message, #existing_note, .highlight-note {
   color: black;
 }
 
