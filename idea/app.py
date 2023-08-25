@@ -166,6 +166,33 @@ def index():
         "Emotional",
         "Inspirational",
     ]
+    
+    c.execute("SELECT DISTINCT channel_id FROM creators WHERE user_id =?", (session_id,))
+    creator_ids = c.fetchall()
+    
+    
+    # Call YouTube API to get channel statistics
+    for channel_id in creator_ids:
+        request_query = youtube.channels().list(
+            part="statistics,snippet,contentDetails", id=channel_id[0]
+        )
+        response = request_query.execute()
+
+
+        # Extract necessary data from response
+        video_count = response["items"][0]["statistics"]["videoCount"]
+        subscriber_count = response["items"][0]["statistics"]["subscriberCount"]
+        channel_description = response["items"][0]["snippet"]["description"]
+        channel_name = response["items"][0]["snippet"]["title"]
+        channel_thumbnail = response["items"][0]["snippet"]["thumbnails"][
+            "default"
+        ]["url"]
+    
+        c.execute(
+            "UPDATE creators SET videoCount =?, subscriberCount =?, description =?, username =?, thumbnail =? WHERE channel_id =?",
+            (video_count, subscriber_count, channel_description, channel_name, channel_thumbnail, channel_id[0]),
+        )
+        conn.commit() 
 
     # Retrieve data from the "creators" table
     c.execute("SELECT * FROM creators WHERE user_id =? ORDER BY id DESC", (session_id,))
@@ -267,7 +294,7 @@ def index():
                         session_id,
                     ),
                 )
-                conn.commit()
+                conn.commit()   
 
             # Retrieve data from the "creators" table
             c.execute(

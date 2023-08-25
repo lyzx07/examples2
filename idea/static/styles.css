@@ -223,7 +223,9 @@ section {
   opacity: 0.8;
 }
 
-#message, #existing_note, .highlight-note {
+#message,
+#existing_note,
+.highlight-note {
   color: black;
 }
 
@@ -423,6 +425,27 @@ button {
   color: gray;
 }
 
+.toggle_wrapper {
+  display: flex;
+  flex: 100%;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  padding: 1rem;
+}
+
+#wrap_toggle {
+  width: 100%;
+  height: 35px;
+  line-height: 35px;
+  background: transparent;
+  color: white;
+  font-weight: bold;
+  font-variant: small-caps;
+  text-decoration: none;
+}
+
 .creator-cards {
   display: flex;
   justify-content: center;
@@ -446,6 +469,7 @@ button {
 .card-image {
   width: 150px;
   height: auto;
+  align-self: center;
   border-radius: 50%;
   overflow: hidden;
   margin-bottom: 10px;
