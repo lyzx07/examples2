@@ -97,28 +97,45 @@
       {% for creator in creators %}
       <div class="card card-cont text-center">
         <div class="toggle_wrapper">
-          <a href="#wrap" class="wrap_toggle" id="wrap_toggle">Expand Details</a>
+          <a href="#wrap" class="wrap_toggle" id="wrap_toggle"
+            >Expand Details</a
+          >
           <br />
           <img
-              src="{{ creator[3] }}"
-              alt="Channel thumbnail"
-              class="card-img-top card-image"
-            />
-          <h4 id="hidden-h4">{{ creator[1] }}</h4>
+            src="{{ creator[3] }}"
+            alt="Channel thumbnail"
+            class="card-img-top card-image"
+          />
+          <h4 id="hidden-h4">
+            <a
+              class="you-link"
+              target="_blank"
+              href="https://www.youtube.com/channel/{{ creator[7] }}"
+              >{{ creator[1] }}</a
+            >
+          </h4>
         </div>
         <div class="wrap" id="wrap" style="display: none">
           <div class="card-header card-item">
             <div class="card-body">
-              <h3 class="card-title">
+              <h2 class="card-title">
                 <a
                   class="you-link"
                   target="_blank"
                   href="https://www.youtube.com/channel/{{ creator[7] }}"
                   >{{ creator[1] }}</a
                 >
-              </h3>
-              <p class="card-text">Subscribers: {{ creator[4] }}</p>
-              <p class="card-text">Videos: {{ creator[5] }}</p>
+              </h2>
+              <br /><br />
+              <h4 class="card-text">Subscriber Count:</h4>
+              <p class="card-text">{{ creator[4] }}</p>
+              <h4 class="card-text">Video Count:</h4>
+              <p class="card-text">{{ creator[5] }}</p>
+              <h4 class="card-text">First Created Video Date:</h4>
+              <p class="card-text">{{ formatted_date }}</p>
+              <h4 class="card-text">Last Created Video Date:</h4>
+              <p class="card-text">{{ formatted_last_video_date }}</p>
+              <h4 class="card-text">Channel Description:</h4>
               <p class="card-text">{{ creator[2] }}</p>
               <div class="rating-cont">
                 {% for rating in ratings %} {% if rating[15] == creator[7] %}

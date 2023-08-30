@@ -419,10 +419,7 @@ button {
 
 .you-link {
   color: white;
-}
-
-.you-link:hover {
-  color: gray;
+  
 }
 
 .toggle_wrapper {
@@ -472,7 +469,6 @@ button {
   align-self: center;
   border-radius: 50%;
   overflow: hidden;
-  margin-bottom: 10px;
 }
 
 .card-item {
@@ -487,13 +483,13 @@ button {
   padding: 10px;
 }
 
-.card-title {
+.card-title, #hidden-h4 {
   margin: 0; /* Remove the default margin from the card title */
-  font-size: 24px; /* Use a larger font size for the card title */
+  font-size: 30px; /* Use a larger font size for the card title */
 }
 
-.card-body .card-title {
-  margin: 10px;
+.card-body {
+  margin-top: -25px;
 }
 
 /* The side navigation menu */
