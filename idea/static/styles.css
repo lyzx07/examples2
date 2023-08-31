@@ -233,6 +233,85 @@ section {
   color: black;
 }
 
+.form-group-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+}
+
+/* need to figure out how to get the general rating label to go above the select box */
+
+.form-group-label,
+.form-group-select,
+.other-form-group-title,
+.form-group label {
+  display: flex;
+  flex: 100%;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.dropdown {
+  margin-block: 15px;
+  background-color: #fff;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  box-shadow: rgba(213, 217, 217, 0.5) 0 2px 5px 0;
+  box-sizing: border-box;
+  color: #0f1111;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 13px;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  width: 100px;
+}
+
+.dropdown:hover {
+  background-color: #f7fafa;
+}
+
+.dropdown:focus {
+  border-color: #008296;
+  box-shadow: rgba(213, 217, 217, 0.5) 0 2px 5px 0;
+  outline: 0;
+}
+
+.form-group-solo {
+  height: 150px;
+}
+
+.label-solo, .other-ratings {
+  border-left: 2px solid white;
+  border-right: 2px solid white;
+  padding: 10px;
+}
+
+.other-ratings {
+  font-size: larger;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+}
+
 h2 {
   font-size: 2em;
   color: #fff;
@@ -419,7 +498,6 @@ button {
 
 .you-link {
   color: white;
-  
 }
 
 .toggle_wrapper {
@@ -483,7 +561,8 @@ button {
   padding: 10px;
 }
 
-.card-title, #hidden-h4 {
+.card-title,
+#hidden-h4 {
   margin: 0; /* Remove the default margin from the card title */
   font-size: 30px; /* Use a larger font size for the card title */
 }

@@ -55,7 +55,7 @@
             action="/"
             name="form1"
           >
-            <h3>Enter name of YouTube Channel</h3>
+            <h3>Enter YouTube Channel Name</h3>
             <h5>
               <i>
                 Example: pentatonix or @PTXofficial<br />with or without the "@"
@@ -252,34 +252,56 @@
             <form class="form4" method="POST" action="/" name="form4">
               <input type="hidden" name="form_name" value="form4" />
               <input type="hidden" name="channel_id" value="{{ creator[7] }}" />
-              <label for="rating">General Rating:</label>
-              <select
-                class="dropdown text-center"
-                id="rating"
-                name="rating"
-                required
-              >
-                <option value="" disabled selected>Select</option>
-                {% for i in range(1, 11) %}
-                <option value="{{ i }}">{{ i }}</option>
+              <div class="form-group-solo">
+                <div class="form-group-label">
+                  <label class="label-solo" for="rating">General Rating </label>
+                </div>
+                <div class="form-group-select">
+                  <div class="select-wrapper-solo">
+                    <select
+                      class="dropdown text-center"
+                      id="rating"
+                      name="rating"
+                      required
+                    >
+                      <option value="" disabled selected>Select</option>
+                      {% for i in range(1, 11) %}
+                      <option value="{{ i }}">{{ i }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="other-form-group-title">
+                <b><h4 class="other-ratings text-center">Other Ratings</h4></b>
+              </div>
+              <div class="form-group-container">
+                {% for aspect in aspects %}
+                <div class="form-group">
+                  <div class="form-group-multi-label">
+                    <label class="label-multi" for="{{ aspect.lower() }}"
+                      >{{ aspect }}</label
+                    >
+                  </div>
+                  <div class="select-wrapper">
+                    <select
+                      class="dropdown text-center"
+                      id="{{ aspect.lower() }}"
+                      name="{{ aspect.lower() }}"
+                    >
+                      <option value="" disabled selected>Select</option>
+                      {% for i in range(1, 11) %}
+                      <option value="{{ i }}">{{ i }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
                 {% endfor %}
-              </select>
+              </div>
 
-              {% for aspect in aspects %}
-              <label for="{{ aspect.lower() }}">{{ aspect }}:</label>
-              <select
-                class="dropdown text-center"
-                id="{{ aspect.lower() }}"
-                name="{{ aspect.lower() }}"
-              >
-                <option value="" disabled selected>Select</option>
-                {% for i in range(1, 11) %}
-                <option value="{{ i }}">{{ i }}</option>
-                {% endfor %}
-              </select>
-              {% endfor %}
-
-              <button type="submit" name="add_rating">Add/Alter</button>
+              <button class="form4-btn" type="submit" name="add_rating">
+                Add/Alter
+              </button>
             </form>
             <form class="form3" method="POST" action="/" name="form3">
               <input type="hidden" name="form_name" value="form3" />
