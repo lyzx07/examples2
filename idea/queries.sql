@@ -69,6 +69,7 @@ CREATE TABLE IF NOT EXISTS ratings (
         relatable INTEGER,
         emotional INTEGER,
         inspirational INTEGER,
+        controversial INTEGER,
         created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         user_id INTEGER NOT NULL,
         channel_id TEXT NOT NULL,

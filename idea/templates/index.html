@@ -138,8 +138,8 @@
               <h4 class="card-text">Channel Description:</h4>
               <p class="card-text">{{ creator[2] }}</p>
               <div class="rating-cont">
-                {% for rating in ratings %} {% if rating[15] == creator[7] %}
-                <p class="rating_header">General Rating</p>
+                {% for rating in ratings %} {% if rating[16] == creator[7] %}
+                <p class="rating_header">General Rating <sup>({{ rating[0] }})</sup></p>
                 <div class="general">
                   {% for i in range(rating[0]) %}
                   <ion-icon name="star-sharp"></ion-icon>
@@ -151,88 +151,95 @@
                 <p class="rating-header">Other Ratings</p>
                 <div class="rating">
                   {% if rating[1] is not none %}
-                  <p class="rating-header">{{ columns[1] }}</p>
+                  <p class="rating-header">{{ columns[1] }} <sup>({{ rating[1] }})</sup></p>
                   {% for i in range(rating[1]) %}
                   <ion-icon name="star-sharp"></ion-icon>
                   {% endfor %} {% for i in range(10 - rating[1]) %}
                   <ion-icon name="star-outline"></ion-icon>
                   {% endfor %} {% endif %} {% if rating[2] is not none %}
-                  <p class="rating-header">{{ columns[2] }}</p>
+                  <p class="rating-header">{{ columns[2] }} <sup>({{ rating[2] }})</sup></p>
                   {% for i in range(rating[2]) %}
                   <ion-icon name="star-sharp"></ion-icon>
                   {% endfor %} {% for i in range(10 - rating[2]) %}
                   <ion-icon name="star-outline"></ion-icon>
                   {% endfor %} {% endif %} {% if rating[3] is not none %}
-                  <p class="rating-header">{{ columns[3] }}</p>
+                  <p class="rating-header">{{ columns[3] }} <sup>({{ rating[3] }})</sup></p>
                   {% for i in range(rating[3]) %}
                   <ion-icon name="star-sharp"></ion-icon>
                   {% endfor %} {% for i in range(10 - rating[3]) %}
                   <ion-icon name="star-outline"></ion-icon>
                   {% endfor %} {% endif %} {% if rating[4] is not none %}
-                  <p class="rating-header">{{ columns[4] }}</p>
+                  <p class="rating-header">{{ columns[4] }} <sup>({{ rating[4] }})</sup></p>
                   {% for i in range(rating[4]) %}
                   <ion-icon name="star-sharp"></ion-icon>
                   {% endfor %} {% for i in range(10 - rating[4]) %}
                   <ion-icon name="star-outline"></ion-icon>
                   {% endfor %} {% endif %} {% if rating[5] is not none %}
-                  <p class="rating-header">{{ columns[5] }}</p>
+                  <p class="rating-header">{{ columns[5] }} <sup>({{ rating[5] }})</sup></p>
                   {% for i in range(rating[5]) %}
                   <ion-icon name="star-sharp"></ion-icon>
                   {% endfor %} {% for i in range(10 - rating[5]) %}
                   <ion-icon name="star-outline"></ion-icon>
                   {% endfor %} {% endif %} {% if rating[6] is not none %}
-                  <p class="rating-header">{{ columns[6] }}</p>
+                  <p class="rating-header">{{ columns[6] }} <sup>({{ rating[6] }})</sup></p>
                   {% for i in range(rating[6]) %}
                   <ion-icon name="star-sharp"></ion-icon>
                   {% endfor %} {% for i in range(10 - rating[6]) %}
                   <ion-icon name="star-outline"></ion-icon>
                   {% endfor %} {% endif %} {% if rating[7] is not none %}
-                  <p class="rating-header">{{ columns[7] }}</p>
+                  <p class="rating-header">{{ columns[7] }} <sup>({{ rating[7] }})</sup></p>
                   {% for i in range(rating[7]) %}
                   <ion-icon name="star-sharp"></ion-icon>
                   {% endfor %} {% for i in range(10 - rating[7]) %}
                   <ion-icon name="star-outline"></ion-icon>
                   {% endfor %} {% endif %} {% if rating[8] is not none %}
-                  <p class="rating-header">{{ columns[8] }}</p>
+                  <p class="rating-header">{{ columns[8] }} <sup>({{ rating[8] }})</sup></p>
                   {% for i in range(rating[8]) %}
                   <ion-icon name="star-sharp"></ion-icon>
                   {% endfor %} {% for i in range(10 - rating[8]) %}
                   <ion-icon name="star-outline"></ion-icon>
                   {% endfor %} {% endif %} {% if rating[9] is not none %}
-                  <p class="rating-header">{{ columns[9] }}</p>
+                  <p class="rating-header">{{ columns[9] }} <sup>({{ rating[9] }})</sup></p>
                   {% for i in range(rating[9]) %}
                   <ion-icon name="star-sharp"></ion-icon>
                   {% endfor %} {% for i in range(10 - rating[9]) %}
                   <ion-icon name="star-outline"></ion-icon>
                   {% endfor %} {% endif %} {% if rating[10] is not none %}
-                  <p class="rating-header">{{ columns[10] }}</p>
+                  <p class="rating-header">{{ columns[10] }} <sup>({{ rating[9] }})</sup></p>
                   {% for i in range(rating[10]) %}
                   <ion-icon name="star-sharp"></ion-icon>
                   {% endfor %} {% for i in range(10 - rating[10]) %}
                   <ion-icon name="star-outline"></ion-icon>
                   {% endfor %} {% endif %} {% if rating[11] is not none %}
-                  <p class="rating-header">{{ columns[11] }}</p>
+                  <p class="rating-header">{{ columns[11] }} <sup>({{ rating[11] }})</sup></p>
                   {% for i in range(rating[11]) %}
                   <ion-icon name="star-sharp"></ion-icon>
                   {% endfor %} {% for i in range(10 - rating[11]) %}
                   <ion-icon name="star-outline"></ion-icon>
                   {% endfor %} {% endif %} {% if rating[12] is not none %}
-                  <p class="rating-header">{{ columns[12] }}</p>
+                  <p class="rating-header">{{ columns[12] }} <sup>({{ rating[12] }})</sup></p>
                   {% for i in range(rating[12]) %}
                   <ion-icon name="star-sharp"></ion-icon>
                   {% endfor %} {% for i in range(10 - rating[12]) %}
                   <ion-icon name="star-outline"></ion-icon>
                   {% endfor %} {% endif %} {% if rating[13] is not none %}
-                  <p class="rating-header">{{ columns[13] }}</p>
+                  <p class="rating-header">{{ columns[13] }} <sup>({{ rating[13] }})</sup></p>
                   {% for i in range(rating[13]) %}
                   <ion-icon name="star-sharp"></ion-icon>
                   {% endfor %} {% for i in range(10 - rating[13]) %}
                   <ion-icon name="star-outline"></ion-icon>
                   {% endfor %} {% endif %} {% if rating[14] is not none %}
-                  <p class="rating-header">{{ columns[14] }}</p>
+                  <p class="rating-header">{{ columns[14] }} <sup>({{ rating[14] }})</sup></p>
                   {% for i in range(rating[14]) %}
                   <ion-icon name="star-sharp"></ion-icon>
                   {% endfor %} {% for i in range(10 - rating[14]) %}
+                  <ion-icon name="star-outline"></ion-icon>
+                  {% endfor %} {% endif %}
+                  {% if rating[15] is not none %}
+                  <p class="rating-header">{{ columns[15] }} <sup>({{ rating[15] }})</sup></p>
+                  {% for i in range(rating[15]) %}
+                  <ion-icon name="star-sharp"></ion-icon>
+                  {% endfor %} {% for i in range(10 - rating[15]) %}
                   <ion-icon name="star-outline"></ion-icon>
                   {% endfor %} {% endif %}
                 </div>

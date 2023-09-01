@@ -160,11 +160,11 @@ def index():
         "Deadpan",
         "Let's Be Friends",
         "Genuine",
-        "Real",
         "Fake",
         "Relatable",
         "Emotional",
         "Inspirational",
+        "Controversial",
     ]
     
     c.execute("SELECT DISTINCT channel_id FROM creators WHERE user_id =?", (session_id,))
@@ -187,6 +187,30 @@ def index():
         channel_thumbnail = response["items"][0]["snippet"]["thumbnails"][
             "default"
         ]["url"]
+        published_at = response["items"][0]["snippet"]["publishedAt"]
+        created_date = "-"
+        formatted_date = "-"
+        try:
+            created_date = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%S%z")
+            formatted_date = created_date.strftime("%m/%d/%Y")
+        except ValueError:
+            pass
+        playlist_id = response["items"][0]["contentDetails"]["relatedPlaylists"][
+            "uploads"
+        ]
+        videos_list_request = youtube.playlistItems().list(
+            playlistId=playlist_id, part="snippet", maxResults=1
+        )
+        videos_list_response = videos_list_request.execute()
+        last_video_date = videos_list_response["items"][0]["snippet"]["publishedAt"]
+        formatted_last_video_date = "-"
+        try:
+            last_video_date_obj = datetime.strptime(
+                last_video_date, "%Y-%m-%dT%H:%M:%S%z"
+            )
+            formatted_last_video_date = last_video_date_obj.strftime("%m/%d/%Y")
+        except ValueError:
+            pass
     
         c.execute(
             "UPDATE creators SET videoCount =?, subscriberCount =?, description =?, username =?, thumbnail =? WHERE channel_id =?",
@@ -204,13 +228,13 @@ def index():
     notes = c.fetchall()   
 
     c.execute(
-        "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
+        "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, controversial, channel_id FROM ratings WHERE user_id =?",
         (session_id,),
     )
     ratings = c.fetchall()
 
     c.execute(
-        "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
+        "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, controversial, channel_id FROM ratings WHERE user_id =?",
         (session_id,),
     )
     columns = [column[0] for column in c.description]
@@ -310,13 +334,13 @@ def index():
             notes = c.fetchall()
 
             c.execute(
-                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
+                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, controversial, channel_id FROM ratings WHERE user_id =?",
                 (session_id,),
             )
             ratings = c.fetchall()
 
             c.execute(
-                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
+                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, controversial, channel_id FROM ratings WHERE user_id =?",
                 (session_id,),
             )
             columns = [column[0] for column in c.description]
@@ -330,8 +354,6 @@ def index():
                 "index.html",
                 video_count=video_count,
                 subscriber_count=subscriber_count,
-                created_date=created_date,
-                last_video_date=last_video_date_obj,
                 formatted_date=formatted_date,
                 channel_description=channel_description,
                 channel_thumbnail=channel_thumbnail,
@@ -379,13 +401,13 @@ def index():
             notes = c.fetchall()
 
             c.execute(
-                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
+                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, controversial, channel_id FROM ratings WHERE user_id =?",
                 (session_id,),
             )
             ratings = c.fetchall()
 
             c.execute(
-                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
+                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, controversial, channel_id FROM ratings WHERE user_id =?",
                 (session_id,),
             )
             columns = [column[0] for column in c.description]
@@ -448,13 +470,13 @@ def index():
             creators = c.fetchall()
 
             c.execute(
-                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
+                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, controversial, channel_id FROM ratings WHERE user_id =?",
                 (session_id,),
             )
             ratings = c.fetchall()
 
             c.execute(
-                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
+                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, controversial, channel_id FROM ratings WHERE user_id =?",
                 (session_id,),
             )
             columns = [column[0] for column in c.description]
@@ -496,7 +518,7 @@ def index():
             if count == 0:
                 # Insert a new row with default values
                 c.execute(
-                    "INSERT INTO ratings (user_id, channel_id, rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    "INSERT INTO ratings (user_id, channel_id, rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, controversial) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     (
                         session_id,
                         channelId,
@@ -515,11 +537,12 @@ def index():
                         None,
                         None,
                         None,
+                        None,
                     ),
                 )
 
             c.execute(
-                "UPDATE ratings SET rate_value =?, likeability = CASE WHEN likeability IS NULL OR likeability <>? THEN? ELSE likeability END, humor = CASE WHEN humor IS NULL OR humor <>? THEN? ELSE humor END, pity_subscription = CASE WHEN pity_subscription IS NULL OR pity_subscription <>? THEN? ELSE pity_subscription END, informative = CASE WHEN informative IS NULL OR informative <>? THEN? ELSE informative END, silly = CASE WHEN silly IS NULL OR silly <>? THEN? ELSE silly END, funny = CASE WHEN funny IS NULL OR funny <>? THEN? ELSE funny END, serious = CASE WHEN serious IS NULL OR serious <>? THEN? ELSE serious END, deadpan = CASE WHEN deadpan IS NULL OR deadpan <>? THEN? ELSE deadpan END, lets_be_friends = CASE WHEN lets_be_friends IS NULL OR lets_be_friends <>? THEN? ELSE lets_be_friends END, genuine = CASE WHEN genuine IS NULL OR genuine <>? THEN? ELSE genuine END, fake = CASE WHEN fake IS NULL OR fake <>? THEN? ELSE fake END, relatable = CASE WHEN relatable IS NULL OR relatable <>? THEN? ELSE relatable END, emotional = CASE WHEN emotional IS NULL OR emotional <>? THEN? ELSE emotional END, inspirational = CASE WHEN inspirational IS NULL OR inspirational <>? THEN? ELSE inspirational END WHERE user_id =? AND channel_id =?",
+                "UPDATE ratings SET rate_value =?, likeability = CASE WHEN likeability IS NULL OR likeability <>? THEN? ELSE likeability END, humor = CASE WHEN humor IS NULL OR humor <>? THEN? ELSE humor END, pity_subscription = CASE WHEN pity_subscription IS NULL OR pity_subscription <>? THEN? ELSE pity_subscription END, informative = CASE WHEN informative IS NULL OR informative <>? THEN? ELSE informative END, silly = CASE WHEN silly IS NULL OR silly <>? THEN? ELSE silly END, funny = CASE WHEN funny IS NULL OR funny <>? THEN? ELSE funny END, serious = CASE WHEN serious IS NULL OR serious <>? THEN? ELSE serious END, deadpan = CASE WHEN deadpan IS NULL OR deadpan <>? THEN? ELSE deadpan END, lets_be_friends = CASE WHEN lets_be_friends IS NULL OR lets_be_friends <>? THEN? ELSE lets_be_friends END, genuine = CASE WHEN genuine IS NULL OR genuine <>? THEN? ELSE genuine END, fake = CASE WHEN fake IS NULL OR fake <>? THEN? ELSE fake END, relatable = CASE WHEN relatable IS NULL OR relatable <>? THEN? ELSE relatable END, emotional = CASE WHEN emotional IS NULL OR emotional <>? THEN? ELSE emotional END, inspirational = CASE WHEN inspirational IS NULL OR inspirational <>? THEN? ELSE inspirational END, controversial = CASE WHEN controversial IS NULL OR controversial <>? THEN? ELSE controversial END WHERE user_id =? AND channel_id =?",
                 (
                     ratings,
                     rates["Likeability"],
@@ -556,6 +579,8 @@ def index():
                     rates["Inspirational"]
                     if rates["Inspirational"] is not None
                     else None,
+                    rates["Controversial"],
+                    rates["Controversial"] if rates["Controversial"] is not None else None,
                     session_id,
                     channelId,
                 ),
@@ -563,13 +588,13 @@ def index():
             conn.commit()
 
             c.execute(
-                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
+                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, controversial, channel_id FROM ratings WHERE user_id =?",
                 (session_id,),
             )
             ratings = c.fetchall()
 
             c.execute(
-                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, channel_id FROM ratings WHERE user_id =?",
+                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, controversial, channel_id FROM ratings WHERE user_id =?",
                 (session_id,),
             )
             columns = [column[0] for column in c.description]
@@ -616,6 +641,8 @@ def index():
             aspects=aspects,
             columns=columns,
             notes=notes,
+            formatted_date=formatted_date,
+            formatted_last_video_date=formatted_last_video_date,
         )
 
 
