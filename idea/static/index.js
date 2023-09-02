@@ -32,4 +32,56 @@ jQuery(document).ready(function ($) {
   });
 });
 
+/* document.addEventListener("DOMContentLoaded", function() {
+  var moreText = document.getElementById("more");
+  var btnText = document.getElementById("myBtn");
+
+  btnText.addEventListener("click", function() {
+    if (moreText.style.display === "none") {
+      moreText.style.display = "block";
+      btnText.innerHTML = "Minimize";
+    } else {
+      moreText.style.display = "none";
+      btnText.innerHTML = "Add or Modify Ratings for this Creator";
+    }
+  });
+}); */
+
+function myFunction() {
+  var moreText = document.getElementById("more");
+  var btnText = document.getElementById("myBtn");
+
+  if (moreText.style.display === "none") {
+    moreText.style.display = "block";
+    btnText.innerHTML = "Minimize";
+  } else {
+    moreText.style.display = "none";
+    btnText.innerHTML = "Add or Modify Ratings for this Creator";
+  }
+}
+
+btnText.addEventListener("click", function() {
+  myFunction();
+});
+
+
+function myFunction2() {
+  var moreText = document.getElementById("more2");
+  var btnText = document.getElementById("myBtn2");
+
+  if (moreText.style.display === "none") {
+    moreText.style.display = "block";
+    btnText.innerHTML = "Minimize";
+  } else {
+    moreText.style.display = "none";
+    btnText.innerHTML = "Add Notes or Pick Highlighted Note for this Creator";
+  }
+}
+
+btnText.addEventListener("click", function() {
+  myFunction2();
+});
+
+
+
 

@@ -38,8 +38,8 @@ CREATE TABLE IF NOT EXISTS notes (
     FOREIGN KEY (user_id) REFERENCES creators(user_id)
 );
 
-ALTER TABLE users
-ADD COLUMN password_bcrypt TEXT;
+ALTER TABLE notes
+ADD COLUMN highlighted_note TEXT;
 
 CREATE TABLE IF NOT EXISTS creators (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -441,7 +441,8 @@ def index():
                 (session_id, channelId, note),
             )
             existing_note = c.fetchone()
-
+            #don't know if i should keep this. what if notes is long and they enter same note but 
+            #dont see it after submitting cause same note is old.
             if existing_note:
                 # If the exact note has already been entered, do nothing
                 pass
