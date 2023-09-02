@@ -64,23 +64,57 @@ btnText.addEventListener("click", function() {
   myFunction();
 });
 
-
-function myFunction2() {
-  var moreText = document.getElementById("more2");
-  var btnText = document.getElementById("myBtn2");
+function myFunction() {
+  var moreText = document.getElementById("more");
+  var btnText = document.getElementById("myBtn");
+  var icon1 = document.createElement("ion-icon");
+  var icon2 = document.createElement("ion-icon");
+  icon1.name = "star-sharp";
+  icon2.name = "star-sharp";
+  icon1.classList.add("icon1");
+  icon2.classList.add("icon2");
 
   if (moreText.style.display === "none") {
     moreText.style.display = "block";
     btnText.innerHTML = "Minimize";
+    btnText.insertBefore(icon1, btnText.firstChild);
+    btnText.appendChild(icon2);
   } else {
     moreText.style.display = "none";
     btnText.innerHTML = "Add Notes or Pick Highlighted Note for this Creator";
+    btnText.insertBefore(icon1, btnText.firstChild);
+    btnText.appendChild(icon2);
   }
 }
 
-btnText.addEventListener("click", function() {
-  myFunction2();
-});
+function myFunction2() {
+  var moreText = document.getElementById("more2");
+  var btnText = document.getElementById("myBtn2");
+  var icon1 = document.createElement("ion-icon");
+  var icon2 = document.createElement("ion-icon");
+  icon1.name = "document-text";
+  icon2.name = "document-text";
+  icon1.classList.add("icon1");
+  icon2.classList.add("icon2");
+
+  if (moreText.style.display === "none") {
+    moreText.style.display = "block";
+    btnText.innerHTML = "Minimize";
+    btnText.insertBefore(icon1, btnText.firstChild);
+    btnText.appendChild(icon2);
+  } else {
+    moreText.style.display = "none";
+    btnText.innerHTML = "Add Notes or Pick Highlighted Note for this Creator";
+    btnText.insertBefore(icon1, btnText.firstChild);
+    btnText.appendChild(icon2);
+  }
+}
+
+
+
+
+
+
 
 
 
