@@ -18,6 +18,13 @@
     />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+      if (typeof Storage !== "undefined") {
+        // Code for localStorage/sessionStorage.
+      } else {
+        // Sorry! No Web Storage support..
+      }
+    </script>
 
     <link href="/static/styles.css" rel="stylesheet" />
 
@@ -46,16 +53,24 @@
         Keep Track of, Rate and Comment on YouTube Creators
       </h4>
     </div>
-    <div class="form2-cont">
+    <div id="form2-cont" class="form2-cont">
       <div class="index-form-box">
         <div class="index-form-value">
           <form
+            id="form-id-search"
             class="text-center form-index"
             method="POST"
             action="/"
             name="form1"
           >
             <h3>Enter YouTube Channel Name</h3>
+            <!-- dont know if this hidden input is needed anymore -->
+            <input
+              type="hidden"
+              id="channelId"
+              name="channel_id"
+              value="{{ channelId }}"
+            />
             <h5>
               <i>
                 Example: pentatonix or @PTXofficial<br />with or without the "@"
@@ -74,7 +89,7 @@
         </div>
       </div>
     </div>
-    <div id="stats-cont" class="stats-cont">
+    <!-- <div id="stats-cont" class="stats-cont">
       <div class="stats-info text-center">
         <h1>YouTube Statistics</h1>
         <img class="pic" src="{{ channel_thumbnail }}" alt="Profile Picture" />
@@ -91,11 +106,11 @@
         <h3 class="index-stats">Last Created Video Date:</h3>
         <p class="index-p">{{ formatted_last_video_date }}</p>
       </div>
-    </div>
+    </div> -->
     <h2>Saved YouTube Creators</h2>
     <div class="row creator-cards" id="creator-cards">
       {% for creator in creators %}
-      <div class="card card-cont text-center">
+      <div id="{{ creator[7] }}" class="card card-cont text-center">
         <div class="toggle_wrapper">
           <a href="#wrap" class="wrap_toggle" id="wrap_toggle"
             >Expand Details</a
@@ -370,9 +385,9 @@
                 rows="3"
                 cols="20"
               ></textarea>
-              <button type="submit" name="add_note">Add Note</button>
+              <button class="add-note-btn" type="submit" name="add_note">Add Note</button>
               <label for="saved_notes">Select Note to Highlight:</label>
-              <select id="saved_notes" name="saved_notes">
+              <select class="highlight-select" id="saved_notes" name="saved_notes">
                 <option value="">Select a note</option>
                 {% for note in notes %}{% if note[2] == creator[7] %}
                 <option class="highlight-note" value="{{ note[0] }}">
@@ -380,7 +395,7 @@
                 </option>
                 {% endif %}{% endfor %}
               </select>
-              <button type="submit" name="add_note">Add Note</button>
+              <button class="highlight-btn" type="submit" name="add_note">Select Note</button>
             </form>
             <button onclick="myFunction2()" class="read-more-btn" id="myBtn2">
               <ion-icon name="document-text"></ion-icon>Add Notes or Pick
@@ -404,6 +419,8 @@
       </div>
       {% endfor %}
     </div>
+    <button onclick="makeAjaxRequest()">Make AJAX Request</button>
+    <div class="response-container" id="response-container"></div>
     <div class="footer-cont">
       <footer class="footer">
         <div class="footer-links text-center">

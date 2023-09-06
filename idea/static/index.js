@@ -32,38 +32,6 @@ jQuery(document).ready(function ($) {
   });
 });
 
-/* document.addEventListener("DOMContentLoaded", function() {
-  var moreText = document.getElementById("more");
-  var btnText = document.getElementById("myBtn");
-
-  btnText.addEventListener("click", function() {
-    if (moreText.style.display === "none") {
-      moreText.style.display = "block";
-      btnText.innerHTML = "Minimize";
-    } else {
-      moreText.style.display = "none";
-      btnText.innerHTML = "Add or Modify Ratings for this Creator";
-    }
-  });
-}); */
-
-function myFunction() {
-  var moreText = document.getElementById("more");
-  var btnText = document.getElementById("myBtn");
-
-  if (moreText.style.display === "none") {
-    moreText.style.display = "block";
-    btnText.innerHTML = "Minimize";
-  } else {
-    moreText.style.display = "none";
-    btnText.innerHTML = "Add or Modify Ratings for this Creator";
-  }
-}
-
-btnText.addEventListener("click", function() {
-  myFunction();
-});
-
 function myFunction() {
   var moreText = document.getElementById("more");
   var btnText = document.getElementById("myBtn");
@@ -81,7 +49,7 @@ function myFunction() {
     btnText.appendChild(icon2);
   } else {
     moreText.style.display = "none";
-    btnText.innerHTML = "Add Notes or Pick Highlighted Note for this Creator";
+    btnText.innerHTML = "Add or Modify Ratings for this Creator";
     btnText.insertBefore(icon1, btnText.firstChild);
     btnText.appendChild(icon2);
   }
@@ -110,12 +78,19 @@ function myFunction2() {
   }
 }
 
-
-
-
-
-
-
-
-
-
+// Make an AJAX GET request
+function makeAjaxRequest() {
+  $.ajax({
+    url: "/your-endpoint",
+    type: "GET",
+    dataType: "json",
+    success: function (response) {
+      // Request was successful
+      $("#response-container").text(response.message);
+    },
+    error: function (xhr, status, error) {
+      // Request failed
+      console.error("Request failed. Status code: " + xhr.status);
+    },
+  });
+}

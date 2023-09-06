@@ -257,6 +257,8 @@ def index():
 
             # Get channel id from search response
             channelId = search_response["items"][0]["id"]["channelId"]
+            
+            print(channelId)
 
             # Call YouTube API to get channel statistics
             request_query = youtube.channels().list(
@@ -348,6 +350,9 @@ def index():
             for i in range(len(columns)):
                 columns[i] = columns[i].title()
                 columns[i] = columns[i].replace("_", " ")
+                
+            scroll_to = request.args.get('scrollTo')  
+            print(scroll_to)  
 
             # Pass all the necessary data to the Jinja template
             return render_template(
@@ -426,7 +431,7 @@ def index():
                 ratings=ratings,
                 columns=columns,
             )
-
+        # note form 
         elif form_name == "form3":
             channelId = request.form.get("channel_id")
             note = request.form.get("message")
@@ -952,6 +957,12 @@ def logout():
 
     # Redirect user to login form
     return redirect("/login")
+
+@app.route('/your-endpoint')
+def your_endpoint():
+    # Process your request here and prepare the response data
+    data = {'message': 'Hello from Flask!'}
+    return jsonify(data)
 
 
 conn.close

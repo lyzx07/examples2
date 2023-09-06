@@ -259,10 +259,17 @@ section {
   margin-bottom: 15px;
 }
 
+.response-container {
+  color: white;
+}
+
 .dropdown,
 .form4-btn,
 .read-more-btn,
 .delete-btn,
+.highlight-select,
+.highlight-btn,
+.add-note-btn,
 .btn-show-more {
   margin-block: 15px;
   background-color: #fff;
@@ -391,7 +398,8 @@ input:valid ~ label {
 }
 
 .register-btn,
-.login-btn, .search-btn {
+.login-btn,
+.search-btn {
   width: 100%;
   height: 40px;
   border-radius: 40px;
