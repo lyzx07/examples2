@@ -135,49 +135,35 @@ def login():
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
-
-
-@app.route("/", methods=["GET", "POST"])
-@login_required
-def index():
-    session_id = session.get("user_id")
-
-    # Retrieve the username from the query parameter
-    username = request.args.get("username")
-
+    
+@app.route('/add_creator', methods=['POST'])
+def add_creator():
     youtube = build(
         YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY
     )
+    
+    form_name = request.form.get("form_name")
+    session_id = session.get("user_id")
+    
+    if form_name == "form1":
+        username = request.form["username"]
+        if not request.form.get("username"):
+            return apology("must provide YouTube Creator", 403)
 
-    aspects = [
-        "Likeability",
-        "Humor",
-        "Pity Subscription",
-        "Informative",
-        "Silly",
-        "Funny",
-        "Serious",
-        "Deadpan",
-        "Let's Be Friends",
-        "Genuine",
-        "Fake",
-        "Relatable",
-        "Emotional",
-        "Inspirational",
-        "Controversial",
-    ]
-    
-    c.execute("SELECT DISTINCT channel_id FROM creators WHERE user_id =?", (session_id,))
-    creator_ids = c.fetchall()
-    
-    
-    # Call YouTube API to get channel statistics
-    for channel_id in creator_ids:
+        search_response = (
+            youtube.search().list(q=username, type="channel", part="id").execute()
+        )
+
+        # Get channel id from search response
+        channelId = search_response["items"][0]["id"]["channelId"]
+
+        print(channelId)
+
+        # Call YouTube API to get channel statistics
         request_query = youtube.channels().list(
-            part="statistics,snippet,contentDetails", id=channel_id[0]
+            part="statistics,snippet,contentDetails", id=channelId
         )
         response = request_query.execute()
-
 
         # Extract necessary data from response
         video_count = response["items"][0]["statistics"]["videoCount"]
@@ -211,21 +197,133 @@ def index():
             formatted_last_video_date = last_video_date_obj.strftime("%m/%d/%Y")
         except ValueError:
             pass
-    
+        
+        c.execute(
+            "SELECT * FROM creators WHERE channel_id=? AND user_id=?",
+            (channelId, session_id),
+        )
+        check = c.fetchone()
+        if check is not None:
+            # If the creator already exists, return the creator ID in the response
+            return jsonify({'exists': True, 'channelId': check[7]})
+        else:
+            # If the creator doesn't exist, add it to the 'creators' variable and return the updated 'creators' variable in the response
+            c.execute(
+                "INSERT INTO creators (videoCount, subscriberCount, description, thumbnail, username, channel_id, user_id) VALUES (?,?,?,?,?,?,?)",
+                (
+                    video_count,
+                    subscriber_count,
+                    channel_description,
+                    channel_thumbnail,
+                    channel_name,
+                    channelId,
+                    session_id,
+                ),
+            )
+            conn.commit()
+            # Fetch the updated 'creators' variable
+            c.execute("SELECT * FROM creators WHERE user_id=?", (session_id,))
+            creators = c.fetchall()
+            return jsonify({'exists': False, 'channelId': channelId, 'creators': creators})
+        ## need to go to bed. just finished copy pasting the needed data to the new route. using bito. 
+
+
+@app.route("/", methods=["GET", "POST"])
+@login_required
+def index():
+    session_id = session.get("user_id")
+
+    # Retrieve the username from the query parameter
+    username = request.args.get("username")
+
+    youtube = build(
+        YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY
+    )
+
+    aspects = [
+        "Likeability",
+        "Humor",
+        "Pity Subscription",
+        "Informative",
+        "Silly",
+        "Funny",
+        "Serious",
+        "Deadpan",
+        "Let's Be Friends",
+        "Genuine",
+        "Fake",
+        "Relatable",
+        "Emotional",
+        "Inspirational",
+        "Controversial",
+    ]
+
+    c.execute(
+        "SELECT DISTINCT channel_id FROM creators WHERE user_id =?", (session_id,)
+    )
+    creator_ids = c.fetchall()
+
+    # Call YouTube API to get channel statistics
+    for channel_id in creator_ids:
+        request_query = youtube.channels().list(
+            part="statistics,snippet,contentDetails", id=channel_id[0]
+        )
+        response = request_query.execute()
+
+        # Extract necessary data from response
+        video_count = response["items"][0]["statistics"]["videoCount"]
+        subscriber_count = response["items"][0]["statistics"]["subscriberCount"]
+        channel_description = response["items"][0]["snippet"]["description"]
+        channel_name = response["items"][0]["snippet"]["title"]
+        channel_thumbnail = response["items"][0]["snippet"]["thumbnails"]["default"][
+            "url"
+        ]
+        published_at = response["items"][0]["snippet"]["publishedAt"]
+        created_date = "-"
+        formatted_date = "-"
+        try:
+            created_date = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%S%z")
+            formatted_date = created_date.strftime("%m/%d/%Y")
+        except ValueError:
+            pass
+        playlist_id = response["items"][0]["contentDetails"]["relatedPlaylists"][
+            "uploads"
+        ]
+        videos_list_request = youtube.playlistItems().list(
+            playlistId=playlist_id, part="snippet", maxResults=1
+        )
+        videos_list_response = videos_list_request.execute()
+        last_video_date = videos_list_response["items"][0]["snippet"]["publishedAt"]
+        formatted_last_video_date = "-"
+        try:
+            last_video_date_obj = datetime.strptime(
+                last_video_date, "%Y-%m-%dT%H:%M:%S%z"
+            )
+            formatted_last_video_date = last_video_date_obj.strftime("%m/%d/%Y")
+        except ValueError:
+            pass
+
         c.execute(
             "UPDATE creators SET videoCount =?, subscriberCount =?, description =?, username =?, thumbnail =? WHERE channel_id =?",
-            (video_count, subscriber_count, channel_description, channel_name, channel_thumbnail, channel_id[0]),
+            (
+                video_count,
+                subscriber_count,
+                channel_description,
+                channel_name,
+                channel_thumbnail,
+                channel_id[0],
+            ),
         )
-        conn.commit() 
+        conn.commit()
 
     # Retrieve data from the "creators" table
     c.execute("SELECT * FROM creators WHERE user_id =? ORDER BY id DESC", (session_id,))
     creators = c.fetchall()
-    
+
     c.execute(
         "SELECT note, created_at, channel_id FROM notes WHERE user_id =?", (session_id,)
     )
-    notes = c.fetchall()   
+    notes = c.fetchall()
 
     c.execute(
         "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, controversial, channel_id FROM ratings WHERE user_id =?",
@@ -242,7 +340,8 @@ def index():
     for i in range(len(columns)):
         columns[i] = columns[i].title()
         columns[i] = columns[i].replace("_", " ")
-
+        
+    ## POST form submissions
     if request.method == "POST":
         form_name = request.form.get("form_name")
 
@@ -257,7 +356,7 @@ def index():
 
             # Get channel id from search response
             channelId = search_response["items"][0]["id"]["channelId"]
-            
+
             print(channelId)
 
             # Call YouTube API to get channel statistics
@@ -320,7 +419,7 @@ def index():
                         session_id,
                     ),
                 )
-                conn.commit()   
+                conn.commit()
 
             # Retrieve data from the "creators" table
             c.execute(
@@ -350,9 +449,7 @@ def index():
             for i in range(len(columns)):
                 columns[i] = columns[i].title()
                 columns[i] = columns[i].replace("_", " ")
-                
-            scroll_to = request.args.get('scrollTo')  
-            print(scroll_to)  
+
 
             # Pass all the necessary data to the Jinja template
             return render_template(
@@ -385,7 +482,7 @@ def index():
                 (channelId, session_id),
             )
             conn.commit()
-            
+
             c.execute(
                 "DELETE FROM ratings WHERE channel_id =? AND user_id=?",
                 (channelId, session_id),
@@ -431,7 +528,7 @@ def index():
                 ratings=ratings,
                 columns=columns,
             )
-        # note form 
+        # note form
         elif form_name == "form3":
             channelId = request.form.get("channel_id")
             note = request.form.get("message")
@@ -446,8 +543,8 @@ def index():
                 (session_id, channelId, note),
             )
             existing_note = c.fetchone()
-            #don't know if i should keep this. what if notes is long and they enter same note but 
-            #dont see it after submitting cause same note is old.
+            # don't know if i should keep this. what if notes is long and they enter same note but
+            # dont see it after submitting cause same note is old.
             if existing_note:
                 # If the exact note has already been entered, do nothing
                 pass
@@ -502,7 +599,7 @@ def index():
                 columns=columns,
                 highlighted_note=highlighted_note,
             )
-            
+
         elif form_name == "form4":
             channelId = request.form.get("channel_id")
             ratings = int(request.form.get("rating"))
@@ -586,7 +683,9 @@ def index():
                     if rates["Inspirational"] is not None
                     else None,
                     rates["Controversial"],
-                    rates["Controversial"] if rates["Controversial"] is not None else None,
+                    rates["Controversial"]
+                    if rates["Controversial"] is not None
+                    else None,
                     session_id,
                     channelId,
                 ),
@@ -958,11 +1057,14 @@ def logout():
     # Redirect user to login form
     return redirect("/login")
 
-@app.route('/your-endpoint')
+
+@app.route('/your_endpoint', methods=['GET'])
 def your_endpoint():
     # Process your request here and prepare the response data
-    data = {'message': 'Hello from Flask!'}
-    return jsonify(data)
+    c.execute("SELECT * FROM creators")
+    creators = c.fetchall()
+    
+    return jsonify(creators)
 
 
 conn.close

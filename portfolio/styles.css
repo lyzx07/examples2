@@ -44,7 +44,7 @@ section:nth-child(even) {
 }
 
 p {
-  line-height: 1.5; 
+  line-height: 1.5;
   font-size: 1.4rem;
 }
 
@@ -142,6 +142,41 @@ p {
   }
 }
 
+.footer-section {
+  background-image: url("https://images.pexels.com/photos/1158394/pexels-photo-1158394.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 50px;
+  color: white;
+  text-align: center;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+input,
+textarea {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #555;
+}
+
 @media only screen and (max-width: 1265px) {
   .logo {
     position: relative;
@@ -177,6 +212,11 @@ p {
   .card {
     width: 115px;
   }
+
+  .footer-section .iframe-cont {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 @media only screen and (max-width: 300px) {
@@ -190,5 +230,9 @@ p {
 
   .bottom {
     height: 350px;
+  }
+
+  iframe {
+    width: 250px;
   }
 }

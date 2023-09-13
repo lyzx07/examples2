@@ -263,6 +263,30 @@ section {
   color: white;
 }
 
+.form3-textarea-cont, .form3-highlight-cont {
+  display: flex;
+  width: 50%;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto auto;
+  padding: 15px;
+}
+
+.form3-textarea-cont {
+  border-bottom: 2px solid white;
+}
+
+.form3-textarea-cont textarea, .form3-highlight-cont select {
+  width: 70%;
+  margin: 15px auto 15px auto;
+  
+}
+
+.form3-textarea-cont button, .form3-highlight-cont button {
+  margin: auto auto;
+  margin-top: 15px;
+}
+
 .dropdown,
 .form4-btn,
 .read-more-btn,

@@ -34,7 +34,7 @@ jQuery(document).ready(function ($) {
 
 function myFunction() {
   var moreText = document.getElementById("more");
-  var btnText = document.getElementById("myBtn");
+  var btnText = document.getElementById("btn1");
   var icon1 = document.createElement("ion-icon");
   var icon2 = document.createElement("ion-icon");
   icon1.name = "star-sharp";
@@ -55,9 +55,11 @@ function myFunction() {
   }
 }
 
+/* thinking i am needing some sort of loop. maybe pass in creators variable and loop through */
 function myFunction2() {
   var moreText = document.getElementById("more2");
-  var btnText = document.getElementById("myBtn2");
+  var btnText = document.getElementById("btn2");
+  console.log(btnText);
   var icon1 = document.createElement("ion-icon");
   var icon2 = document.createElement("ion-icon");
   icon1.name = "document-text";
@@ -76,17 +78,31 @@ function myFunction2() {
     btnText.insertBefore(icon1, btnText.firstChild);
     btnText.appendChild(icon2);
   }
-}
+} 
+
 
 // Make an AJAX GET request
 function makeAjaxRequest() {
   $.ajax({
-    url: "/your-endpoint",
+    url: "/your_endpoint",
     type: "GET",
     dataType: "json",
-    success: function (response) {
-      // Request was successful
-      $("#response-container").text(response.message);
+    success: function (data) {
+      console.log(data);
+      // Create a new HTML element for each creator
+      var creatorsHtml = "";
+      for (var i = 0; i < data.length; i++) {
+        console.log(data[i][1]);
+        creatorsHtml +=
+          "<div class='creator'><h2>" +
+          data[i][1] +
+          "</h2><p>" +
+          data[i][7] +
+          "</p></div>";
+      }
+
+      // Append the HTML to the response container
+      $("#response-container").html(creatorsHtml);
     },
     error: function (xhr, status, error) {
       // Request failed

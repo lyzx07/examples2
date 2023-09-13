@@ -110,7 +110,7 @@
     <h2>Saved YouTube Creators</h2>
     <div class="row creator-cards" id="creator-cards">
       {% for creator in creators %}
-      <div id="{{ creator[7] }}" class="card card-cont text-center">
+      <div class="card card-cont text-center">
         <div class="toggle_wrapper">
           <a href="#wrap" class="wrap_toggle" id="wrap_toggle"
             >Expand Details</a
@@ -302,102 +302,134 @@
                 {% endif %}
               </div>
             </div>
-            <form
-              id="more"
-              class="form4"
-              style="display: none"
-              method="POST"
-              action="/"
-              name="form4"
-            >
-              <input type="hidden" name="form_name" value="form4" />
-              <input type="hidden" name="channel_id" value="{{ creator[7] }}" />
-              <div class="form-group-solo">
-                <div class="form-group-label">
-                  <label class="label-solo" for="rating">General Rating </label>
-                </div>
-                <div class="form-group-select">
-                  <div class="select-wrapper-solo">
-                    <select
-                      class="dropdown text-center"
-                      id="rating"
-                      name="rating"
-                      required
-                    >
-                      <option value="" disabled selected>Select</option>
-                      {% for i in range(1, 11) %}
-                      <option value="{{ i }}">{{ i }}</option>
-                      {% endfor %}
-                    </select>
+            <div id="form4-wrap-cont" class="form4-wrap-cont">
+              <form
+                id="more"
+                class="form4"
+                style="display: none"
+                method="POST"
+                action="/"
+                name="form4"
+              >
+                <input type="hidden" name="form_name" value="form4" />
+                <input
+                  type="hidden"
+                  name="channel_id"
+                  value="{{ creator[7] }}"
+                />
+                <div class="form-group-solo">
+                  <div class="form-group-label">
+                    <label class="label-solo" for="rating"
+                      >General Rating
+                    </label>
+                  </div>
+                  <div class="form-group-select">
+                    <div class="select-wrapper-solo">
+                      <select
+                        class="dropdown text-center"
+                        id="rating"
+                        name="rating"
+                        required
+                      >
+                        <option value="" disabled selected>Select</option>
+                        {% for i in range(1, 11) %}
+                        <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="other-form-group-title">
-                <b><h4 class="other-ratings text-center">Other Ratings</h4></b>
-              </div>
-              <div class="form-group-container">
-                {% for aspect in aspects %}
-                <div class="form-group">
-                  <div class="form-group-multi-label">
-                    <label class="label-multi" for="{{ aspect.lower() }}"
-                      >{{ aspect }}</label
-                    >
-                  </div>
-                  <div class="select-wrapper">
-                    <select
-                      class="dropdown text-center"
-                      id="{{ aspect.lower() }}"
-                      name="{{ aspect.lower() }}"
-                    >
-                      <option value="" disabled selected>Select</option>
-                      {% for i in range(1, 11) %}
-                      <option value="{{ i }}">{{ i }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
+                <div class="other-form-group-title">
+                  <b
+                    ><h4 class="other-ratings text-center">Other Ratings</h4></b
+                  >
                 </div>
-                {% endfor %}
-              </div>
+                <div class="form-group-container">
+                  {% for aspect in aspects %}
+                  <div class="form-group">
+                    <div class="form-group-multi-label">
+                      <label class="label-multi" for="{{ aspect.lower() }}"
+                        >{{ aspect }}</label
+                      >
+                    </div>
+                    <div class="select-wrapper">
+                      <select
+                        class="dropdown text-center"
+                        id="{{ aspect.lower() }}"
+                        name="{{ aspect.lower() }}"
+                      >
+                        <option value="" disabled selected>Select</option>
+                        {% for i in range(1, 11) %}
+                        <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
 
-              <button class="form4-btn" type="submit" name="add_rating">
-                Add/Alter
-              </button>
-            </form>
-            <button onclick="myFunction()" class="read-more-btn" id="myBtn">
+                <button class="form4-btn" type="submit" name="add_rating">
+                  Add/Alter
+                </button>
+              </form>
+            </div>
+            <button onclick="myFunction()" class="read-more-btn form4-button-wrap" id="btn1">
               <ion-icon name="star-sharp"></ion-icon>Add or Modify Ratings for
               this Creator<ion-icon name="star-sharp"></ion-icon>
             </button>
-            <form
-              id="more2"
-              style="display: none"
-              class="form3"
-              method="POST"
-              action="/"
-              name="form3"
+            <div class="form3-wrap-cont">
+              <form
+                id="more2"
+                style="display: none"
+                class="form3"
+                method="POST"
+                action="/"
+                name="form3"
+              >
+                <div class="form3-textarea-cont">
+                  <input type="hidden" name="form_name" value="form3" />
+                  <input
+                    type="hidden"
+                    name="channel_id"
+                    value="{{ creator[7] }}"
+                  />
+                  <label for="message">Message:</label>
+                  <textarea
+                    class="text-center"
+                    id="message"
+                    name="message"
+                    rows="3"
+                    cols="20"
+                  ></textarea>
+                  <button class="add-note-btn" type="submit" name="add_note">
+                    Add Note
+                  </button>
+                </div>
+                <div class="form3-highlight-cont">
+                  <label for="saved_notes">Select Note to Highlight:</label>
+                  <select
+                    class="highlight-select"
+                    id="saved_notes"
+                    name="saved_notes"
+                  >
+                    <option value="">Select a note</option>
+                    {% for note in notes %}{% if note[2] == creator[7] %}
+                    <option class="highlight-note" value="{{ note[0] }}">
+                      {{ note[0] }}
+                    </option>
+                    {% endif %}{% endfor %}
+                  </select>
+                  <button class="highlight-btn" type="submit" name="add_note">
+                    Select Note
+                  </button>
+                </div>
+              </form>
+            </div>
+            <button
+              onclick="myFunction2()"
+              class="read-more-btn"
+              id="btn2"
             >
-              <input type="hidden" name="form_name" value="form3" />
-              <input type="hidden" name="channel_id" value="{{ creator[7] }}" />
-              <label for="message">Message:</label>
-              <textarea
-                class="text-center"
-                id="message"
-                name="message"
-                rows="3"
-                cols="20"
-              ></textarea>
-              <button class="add-note-btn" type="submit" name="add_note">Add Note</button>
-              <label for="saved_notes">Select Note to Highlight:</label>
-              <select class="highlight-select" id="saved_notes" name="saved_notes">
-                <option value="">Select a note</option>
-                {% for note in notes %}{% if note[2] == creator[7] %}
-                <option class="highlight-note" value="{{ note[0] }}">
-                  {{ note[0] }}
-                </option>
-                {% endif %}{% endfor %}
-              </select>
-              <button class="highlight-btn" type="submit" name="add_note">Select Note</button>
-            </form>
-            <button onclick="myFunction2()" class="read-more-btn" id="myBtn2">
               <ion-icon name="document-text"></ion-icon>Add Notes or Pick
               Highlighted Note for this Creator<ion-icon
                 name="document-text"
