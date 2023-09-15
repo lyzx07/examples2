@@ -316,6 +316,16 @@ section {
   vertical-align: middle;
 }
 
+.read-more-btn:hover {
+  text-decoration: none;
+  color: black;
+}
+
+.read-more-btn {
+  text-decoration: none;
+  color: black;
+}
+
 .dropdown:hover {
   background-color: #f7fafa;
 }
@@ -550,6 +560,10 @@ input:valid ~ label {
   color: white;
   font-weight: bold;
   padding: 1rem;
+}
+
+.element {
+  color: white;
 }
 
 #wrap_toggle {

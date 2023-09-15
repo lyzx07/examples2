@@ -60,7 +60,7 @@
             id="form-id-search"
             class="text-center form-index"
             method="POST"
-            action="/"
+            action="/add_creator"
             name="form1"
           >
             <h3>Enter YouTube Channel Name</h3>
@@ -89,28 +89,10 @@
         </div>
       </div>
     </div>
-    <!-- <div id="stats-cont" class="stats-cont">
-      <div class="stats-info text-center">
-        <h1>YouTube Statistics</h1>
-        <img class="pic" src="{{ channel_thumbnail }}" alt="Profile Picture" />
-        <h3 class="index-stats">Channel Name:</h3>
-        <p class="index-p">{{ channel_name }}</p>
-        <h3 class="index-stats">Video Count:</h3>
-        <p class="index-p">{{ video_count }}</p>
-        <h3 class="index-stats">Subscriber Count:</h3>
-        <p class="index-p">{{ subscriber_count }}</p>
-        <h3 class="index-stats">Channel Description:</h3>
-        <p class="index-p">{{ channel_description }}</p>
-        <h3 class="index-stats">First Created Video Date:</h3>
-        <p class="index-p">{{ formatted_date }}</p>
-        <h3 class="index-stats">Last Created Video Date:</h3>
-        <p class="index-p">{{ formatted_last_video_date }}</p>
-      </div>
-    </div> -->
     <h2>Saved YouTube Creators</h2>
     <div class="row creator-cards" id="creator-cards">
       {% for creator in creators %}
-      <div class="card card-cont text-center">
+      <div id="{{ creator[7] }}" class="card card-cont text-center">
         <div class="toggle_wrapper">
           <a href="#wrap" class="wrap_toggle" id="wrap_toggle"
             >Expand Details</a
@@ -302,6 +284,14 @@
                 {% endif %}
               </div>
             </div>
+            <a
+              href="#form4-wrap-cont"
+              type="button"
+              class="wrap_toggle2 read-more-btn"
+              id="wrap_toggle2"
+              ><ion-icon name="star-sharp"></ion-icon>Add or Modify Ratings for
+              this Creator<ion-icon name="star-sharp"></ion-icon
+            ></a>
             <div id="form4-wrap-cont" class="form4-wrap-cont">
               <form
                 id="more"
@@ -373,10 +363,24 @@
                 </button>
               </form>
             </div>
-            <button onclick="myFunction()" class="read-more-btn form4-button-wrap" id="btn1">
+            <!-- <button
+              onclick="myFunction()"
+              class="read-more-btn form4-button-wrap"
+              id="btn1"
+            >
               <ion-icon name="star-sharp"></ion-icon>Add or Modify Ratings for
               this Creator<ion-icon name="star-sharp"></ion-icon>
-            </button>
+            </button> -->
+            <a
+              href="#form3-wrap-cont"
+              type="button"
+              class="wrap_toggle3 read-more-btn"
+              id="wrap_toggle3"
+              ><ion-icon name="document-text"></ion-icon>Add Notes or Pick
+              Highlighted Note for this Creator<ion-icon
+                name="document-text"
+              ></ion-icon
+            ></a>
             <div class="form3-wrap-cont">
               <form
                 id="more2"
@@ -425,16 +429,12 @@
                 </div>
               </form>
             </div>
-            <button
-              onclick="myFunction2()"
-              class="read-more-btn"
-              id="btn2"
-            >
+            <!-- <button onclick="myFunction2()" class="read-more-btn" id="btn2">
               <ion-icon name="document-text"></ion-icon>Add Notes or Pick
               Highlighted Note for this Creator<ion-icon
                 name="document-text"
               ></ion-icon>
-            </button>
+            </button> -->
             <form class="form2" method="POST" action="/" name="form2">
               <input type="hidden" name="form_name" value="form2" />
               <input type="hidden" name="channel_id" value="{{ creator[7] }}" />

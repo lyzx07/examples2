@@ -18,9 +18,17 @@ jQuery(document).ready(function ($) {
       if (creator.index() === 0) {
         details.slideToggle("slow");
       } else {
+        // Minimize the first card cont if it is open
+        var firstCardCont = $(".card-cont").eq(0);
+        var firstDetails = firstCardCont.find(".wrap");
+        if (firstDetails.is(":visible")) {
+          firstDetails.slideUp("slow");
+          firstCardCont.find(".wrap_toggle").text("Expand Details");
+          firstCardCont.find("#hidden-h4").show();
+        }
+
         details.toggle("slow");
       }
-
       if (toggleBtn.text() == "Expand Details") {
         toggleBtn.html("Hide Details");
         hiddenH4.hide(); // hide the hidden-h4 element
@@ -32,81 +40,74 @@ jQuery(document).ready(function ($) {
   });
 });
 
-function myFunction() {
-  var moreText = document.getElementById("more");
-  var btnText = document.getElementById("btn1");
-  var icon1 = document.createElement("ion-icon");
-  var icon2 = document.createElement("ion-icon");
-  icon1.name = "star-sharp";
-  icon2.name = "star-sharp";
-  icon1.classList.add("icon1");
-  icon2.classList.add("icon2");
-
-  if (moreText.style.display === "none") {
-    moreText.style.display = "block";
-    btnText.innerHTML = "Minimize";
-    btnText.insertBefore(icon1, btnText.firstChild);
-    btnText.appendChild(icon2);
-  } else {
-    moreText.style.display = "none";
-    btnText.innerHTML = "Add or Modify Ratings for this Creator";
-    btnText.insertBefore(icon1, btnText.firstChild);
-    btnText.appendChild(icon2);
-  }
-}
-
-/* thinking i am needing some sort of loop. maybe pass in creators variable and loop through */
-function myFunction2() {
-  var moreText = document.getElementById("more2");
-  var btnText = document.getElementById("btn2");
-  console.log(btnText);
-  var icon1 = document.createElement("ion-icon");
-  var icon2 = document.createElement("ion-icon");
-  icon1.name = "document-text";
-  icon2.name = "document-text";
-  icon1.classList.add("icon1");
-  icon2.classList.add("icon2");
-
-  if (moreText.style.display === "none") {
-    moreText.style.display = "block";
-    btnText.innerHTML = "Minimize";
-    btnText.insertBefore(icon1, btnText.firstChild);
-    btnText.appendChild(icon2);
-  } else {
-    moreText.style.display = "none";
-    btnText.innerHTML = "Add Notes or Pick Highlighted Note for this Creator";
-    btnText.insertBefore(icon1, btnText.firstChild);
-    btnText.appendChild(icon2);
-  }
-} 
-
-
-// Make an AJAX GET request
-function makeAjaxRequest() {
-  $.ajax({
-    url: "/your_endpoint",
-    type: "GET",
-    dataType: "json",
-    success: function (data) {
-      console.log(data);
-      // Create a new HTML element for each creator
-      var creatorsHtml = "";
-      for (var i = 0; i < data.length; i++) {
-        console.log(data[i][1]);
-        creatorsHtml +=
-          "<div class='creator'><h2>" +
-          data[i][1] +
-          "</h2><p>" +
-          data[i][7] +
-          "</p></div>";
+jQuery(document).ready(function ($) {
+  $(".card-cont").each(function () {
+    var creator = $(this);
+    var toggleBtn = creator.find(".wrap_toggle2");
+    toggleBtn.click(function (event) {
+      event.stopPropagation();
+      var details = creator.find(".form4");
+      if (creator.index() === 0) {
+        details.slideToggle("slow");
+      } else {
+        details.toggle("slow");
       }
 
-      // Append the HTML to the response container
-      $("#response-container").html(creatorsHtml);
-    },
-    error: function (xhr, status, error) {
-      // Request failed
-      console.error("Request failed. Status code: " + xhr.status);
-    },
+      if (toggleBtn.text() == "Minimize") {
+        toggleBtn.html("Add or Modify Ratings for this Creator");
+        toggleBtn.prepend(
+          '<ion-icon name="star-sharp" class="icon1"></ion-icon>'
+        );
+        toggleBtn.append(
+          '<ion-icon name="star-sharp" class="icon2"></ion-icon>'
+        );
+      } else {
+        toggleBtn.text("Minimize");
+        toggleBtn.prepend(
+          '<ion-icon name="star-sharp" class="icon1"></ion-icon>'
+        );
+        toggleBtn.append(
+          '<ion-icon name="star-sharp" class="icon2"></ion-icon>'
+        );
+      }
+    });
   });
-}
+  // Prevent scrolling to first card cont when closing/minimizing forms
+  $(".form4").click(function (event) {
+    event.stopPropagation(); // Prevent event bubbling
+  });
+});
+
+jQuery(document).ready(function ($) {
+  $(".card-cont").each(function () {
+    var creator = $(this);
+    var toggleBtn = creator.find(".wrap_toggle3");
+    toggleBtn.click(function () {
+      var details = creator.find(".form3");
+      if (creator.index() === 0) {
+        details.slideToggle("slow");
+      } else {
+        details.toggle("slow");
+      }
+
+      if (toggleBtn.text() == "Minimize") {
+        toggleBtn.html("Add Notes or Pick Highlighted Note for this Creator");
+        toggleBtn.prepend(
+          '<ion-icon name="document-text" class="icon1"></ion-icon>'
+        );
+        toggleBtn.append(
+          '<ion-icon name="document-text" class="icon2"></ion-icon>'
+        );
+      } else {
+        toggleBtn.text("Minimize");
+        toggleBtn.prepend(
+          '<ion-icon name="document-text" class="icon1"></ion-icon>'
+        );
+        toggleBtn.append(
+          '<ion-icon name="document-text" class="icon2"></ion-icon>'
+        );
+      }
+    });
+  });
+});
+

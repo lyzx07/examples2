@@ -135,16 +135,17 @@ def login():
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
-    
-@app.route('/add_creator', methods=['POST'])
+
+
+@app.route("/add_creator", methods=["GET", "POST"])
 def add_creator():
     youtube = build(
         YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY
     )
-    
+
     form_name = request.form.get("form_name")
     session_id = session.get("user_id")
-    
+
     if form_name == "form1":
         username = request.form["username"]
         if not request.form.get("username"):
@@ -157,7 +158,6 @@ def add_creator():
         # Get channel id from search response
         channelId = search_response["items"][0]["id"]["channelId"]
 
-        print(channelId)
 
         # Call YouTube API to get channel statistics
         request_query = youtube.channels().list(
@@ -170,9 +170,9 @@ def add_creator():
         subscriber_count = response["items"][0]["statistics"]["subscriberCount"]
         channel_description = response["items"][0]["snippet"]["description"]
         channel_name = response["items"][0]["snippet"]["title"]
-        channel_thumbnail = response["items"][0]["snippet"]["thumbnails"][
-            "default"
-        ]["url"]
+        channel_thumbnail = response["items"][0]["snippet"]["thumbnails"]["default"][
+            "url"
+        ]
         published_at = response["items"][0]["snippet"]["publishedAt"]
         created_date = "-"
         formatted_date = "-"
@@ -197,7 +197,7 @@ def add_creator():
             formatted_last_video_date = last_video_date_obj.strftime("%m/%d/%Y")
         except ValueError:
             pass
-        
+
         c.execute(
             "SELECT * FROM creators WHERE channel_id=? AND user_id=?",
             (channelId, session_id),
@@ -205,7 +205,7 @@ def add_creator():
         check = c.fetchone()
         if check is not None:
             # If the creator already exists, return the creator ID in the response
-            return jsonify({'exists': True, 'channelId': check[7]})
+            pass
         else:
             # If the creator doesn't exist, add it to the 'creators' variable and return the updated 'creators' variable in the response
             c.execute(
@@ -221,11 +221,45 @@ def add_creator():
                 ),
             )
             conn.commit()
-            # Fetch the updated 'creators' variable
-            c.execute("SELECT * FROM creators WHERE user_id=?", (session_id,))
-            creators = c.fetchall()
-            return jsonify({'exists': False, 'channelId': channelId, 'creators': creators})
-        ## need to go to bed. just finished copy pasting the needed data to the new route. using bito. 
+        # Fetch the updated 'creators' variable
+        c.execute(
+            "SELECT * FROM creators WHERE user_id=? ORDER BY id DESC", (session_id,)
+        )
+        creators = c.fetchall()
+        
+        aspects = [
+        "Likeability",
+        "Humor",
+        "Pity Subscription",
+        "Informative",
+        "Silly",
+        "Funny",
+        "Serious",
+        "Deadpan",
+        "Let's Be Friends",
+        "Genuine",
+        "Fake",
+        "Relatable",
+        "Emotional",
+        "Inspirational",
+        "Controversial",
+    ]
+
+        return render_template(
+            "index.html",
+            exists=False,
+            channelId=channelId,
+            creators=creators,
+            video_count=video_count,
+            subscriber_count=subscriber_count,
+            formatted_date=formatted_date,
+            channel_description=channel_description,
+            channel_thumbnail=channel_thumbnail,
+            channel_name=channel_name,
+            formatted_last_video_date=formatted_last_video_date,
+            aspects=aspects,
+            session_id=session_id,
+        )
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -340,7 +374,7 @@ def index():
     for i in range(len(columns)):
         columns[i] = columns[i].title()
         columns[i] = columns[i].replace("_", " ")
-        
+
     ## POST form submissions
     if request.method == "POST":
         form_name = request.form.get("form_name")
@@ -449,7 +483,6 @@ def index():
             for i in range(len(columns)):
                 columns[i] = columns[i].title()
                 columns[i] = columns[i].replace("_", " ")
-
 
             # Pass all the necessary data to the Jinja template
             return render_template(
@@ -1058,12 +1091,12 @@ def logout():
     return redirect("/login")
 
 
-@app.route('/your_endpoint', methods=['GET'])
+@app.route("/your_endpoint", methods=["GET"])
 def your_endpoint():
     # Process your request here and prepare the response data
     c.execute("SELECT * FROM creators")
     creators = c.fetchall()
-    
+
     return jsonify(creators)
 
 
