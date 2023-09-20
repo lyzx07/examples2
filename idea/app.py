@@ -1090,16 +1090,6 @@ def logout():
     # Redirect user to login form
     return redirect("/login")
 
-
-@app.route("/your_endpoint", methods=["GET"])
-def your_endpoint():
-    # Process your request here and prepare the response data
-    c.execute("SELECT * FROM creators")
-    creators = c.fetchall()
-
-    return jsonify(creators)
-
-
 conn.close
 
 if __name__ == "__main__":

@@ -65,12 +65,12 @@
           >
             <h3>Enter YouTube Channel Name</h3>
             <!-- dont know if this hidden input is needed anymore -->
-            <input
+            <!-- <input
               type="hidden"
               id="channelId"
               name="channel_id"
               value="{{ channelId }}"
-            />
+            /> -->
             <h5>
               <i>
                 Example: pentatonix or @PTXofficial<br />with or without the "@"
@@ -363,24 +363,6 @@
                 </button>
               </form>
             </div>
-            <!-- <button
-              onclick="myFunction()"
-              class="read-more-btn form4-button-wrap"
-              id="btn1"
-            >
-              <ion-icon name="star-sharp"></ion-icon>Add or Modify Ratings for
-              this Creator<ion-icon name="star-sharp"></ion-icon>
-            </button> -->
-            <a
-              href="#form3-wrap-cont"
-              type="button"
-              class="wrap_toggle3 read-more-btn"
-              id="wrap_toggle3"
-              ><ion-icon name="document-text"></ion-icon>Add Notes or Pick
-              Highlighted Note for this Creator<ion-icon
-                name="document-text"
-              ></ion-icon
-            ></a>
             <div class="form3-wrap-cont">
               <form
                 id="more2"
@@ -429,12 +411,16 @@
                 </div>
               </form>
             </div>
-            <!-- <button onclick="myFunction2()" class="read-more-btn" id="btn2">
-              <ion-icon name="document-text"></ion-icon>Add Notes or Pick
+            <a
+              href="#form3-wrap-cont"
+              type="button"
+              class="wrap_toggle3 read-more-btn"
+              id="wrap_toggle3"
+              ><ion-icon name="document-text"></ion-icon>Add Notes or Pick
               Highlighted Note for this Creator<ion-icon
                 name="document-text"
-              ></ion-icon>
-            </button> -->
+              ></ion-icon
+            ></a>
             <form class="form2" method="POST" action="/" name="form2">
               <input type="hidden" name="form_name" value="form2" />
               <input type="hidden" name="channel_id" value="{{ creator[7] }}" />
@@ -451,8 +437,6 @@
       </div>
       {% endfor %}
     </div>
-    <button onclick="makeAjaxRequest()">Make AJAX Request</button>
-    <div class="response-container" id="response-container"></div>
     <div class="footer-cont">
       <footer class="footer">
         <div class="footer-links text-center">

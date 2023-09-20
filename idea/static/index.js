@@ -22,7 +22,7 @@ jQuery(document).ready(function ($) {
         var firstCardCont = $(".card-cont").eq(0);
         var firstDetails = firstCardCont.find(".wrap");
         if (firstDetails.is(":visible")) {
-          firstDetails.slideUp("slow");
+          firstDetails.slideUp("fast");
           firstCardCont.find(".wrap_toggle").text("Expand Details");
           firstCardCont.find("#hidden-h4").show();
         }
