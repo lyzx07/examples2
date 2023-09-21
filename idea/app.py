@@ -137,7 +137,7 @@ def login():
         return render_template("login.html")
 
 
-@app.route("/add_creator", methods=["GET", "POST"])
+@app.route("/add_creator", methods=["POST"])
 def add_creator():
     youtube = build(
         YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY
@@ -157,7 +157,6 @@ def add_creator():
 
         # Get channel id from search response
         channelId = search_response["items"][0]["id"]["channelId"]
-
 
         # Call YouTube API to get channel statistics
         request_query = youtube.channels().list(
@@ -221,29 +220,57 @@ def add_creator():
                 ),
             )
             conn.commit()
+            
+        c.execute(
+                "SELECT highlighted_note, created_at, channel_id FROM highlight_note WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",
+                (session_id,),
+            )
+        highlighted_note = c.fetchone()
+        
+        c.execute(
+            "SELECT note, created_at, channel_id FROM notes WHERE user_id =?", (session_id,)
+        )
+        notes = c.fetchall()    
+            
         # Fetch the updated 'creators' variable
         c.execute(
             "SELECT * FROM creators WHERE user_id=? ORDER BY id DESC", (session_id,)
         )
         creators = c.fetchall()
-        
+
         aspects = [
-        "Likeability",
-        "Humor",
-        "Pity Subscription",
-        "Informative",
-        "Silly",
-        "Funny",
-        "Serious",
-        "Deadpan",
-        "Let's Be Friends",
-        "Genuine",
-        "Fake",
-        "Relatable",
-        "Emotional",
-        "Inspirational",
-        "Controversial",
-    ]
+            "Likeability",
+            "Humor",
+            "Pity Subscription",
+            "Informative",
+            "Silly",
+            "Funny",
+            "Serious",
+            "Deadpan",
+            "Let's Be Friends",
+            "Genuine",
+            "Fake",
+            "Relatable",
+            "Emotional",
+            "Inspirational",
+            "Controversial",
+        ]
+        
+        c.execute(
+            "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, controversial, channel_id FROM ratings WHERE user_id =?",
+            (session_id,),
+        )
+        ratings = c.fetchall()
+
+        c.execute(
+            "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, controversial, channel_id FROM ratings WHERE user_id =?",
+            (session_id,),
+        )
+        columns = [column[0] for column in c.description]
+
+        for i in range(len(columns)):
+            columns[i] = columns[i].title()
+            columns[i] = columns[i].replace("_", " ")
 
         return render_template(
             "index.html",
@@ -258,6 +285,10 @@ def add_creator():
             channel_name=channel_name,
             formatted_last_video_date=formatted_last_video_date,
             aspects=aspects,
+            highlighted_note=highlighted_note,
+            notes=notes,
+            columns=columns,
+            ratings=ratings,
             session_id=session_id,
         )
 
@@ -360,6 +391,12 @@ def index():
     notes = c.fetchall()
 
     c.execute(
+        "SELECT highlighted_note, created_at, channel_id FROM highlight_note WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",
+        (session_id,),
+    )
+    highlighted_note = c.fetchone()
+
+    c.execute(
         "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, controversial, channel_id FROM ratings WHERE user_id =?",
         (session_id,),
     )
@@ -379,130 +416,8 @@ def index():
     if request.method == "POST":
         form_name = request.form.get("form_name")
 
-        if form_name == "form1":
-            username = request.form["username"]
-            if not request.form.get("username"):
-                return apology("must provide YouTube Creator", 403)
-
-            search_response = (
-                youtube.search().list(q=username, type="channel", part="id").execute()
-            )
-
-            # Get channel id from search response
-            channelId = search_response["items"][0]["id"]["channelId"]
-
-            print(channelId)
-
-            # Call YouTube API to get channel statistics
-            request_query = youtube.channels().list(
-                part="statistics,snippet,contentDetails", id=channelId
-            )
-            response = request_query.execute()
-
-            # Extract necessary data from response
-            video_count = response["items"][0]["statistics"]["videoCount"]
-            subscriber_count = response["items"][0]["statistics"]["subscriberCount"]
-            channel_description = response["items"][0]["snippet"]["description"]
-            channel_name = response["items"][0]["snippet"]["title"]
-            channel_thumbnail = response["items"][0]["snippet"]["thumbnails"][
-                "default"
-            ]["url"]
-            published_at = response["items"][0]["snippet"]["publishedAt"]
-            created_date = "-"
-            formatted_date = "-"
-            try:
-                created_date = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%S%z")
-                formatted_date = created_date.strftime("%m/%d/%Y")
-            except ValueError:
-                pass
-            playlist_id = response["items"][0]["contentDetails"]["relatedPlaylists"][
-                "uploads"
-            ]
-            videos_list_request = youtube.playlistItems().list(
-                playlistId=playlist_id, part="snippet", maxResults=1
-            )
-            videos_list_response = videos_list_request.execute()
-            last_video_date = videos_list_response["items"][0]["snippet"]["publishedAt"]
-            formatted_last_video_date = "-"
-            try:
-                last_video_date_obj = datetime.strptime(
-                    last_video_date, "%Y-%m-%dT%H:%M:%S%z"
-                )
-                formatted_last_video_date = last_video_date_obj.strftime("%m/%d/%Y")
-            except ValueError:
-                pass
-
-            # Check if the channel_id already exists in the "creators" table
-            c.execute(
-                "SELECT * FROM creators WHERE channel_id=? AND user_id=?",
-                (channelId, session_id),
-            )
-            check = c.fetchone()
-
-            # If the channel_id does not exist, add data to the "creators" table
-            if check is None:
-                c.execute(
-                    "INSERT INTO creators (videoCount, subscriberCount, description, thumbnail, username, channel_id, user_id) VALUES (?,?,?,?,?,?,?)",
-                    (
-                        video_count,
-                        subscriber_count,
-                        channel_description,
-                        channel_thumbnail,
-                        channel_name,
-                        channelId,
-                        session_id,
-                    ),
-                )
-                conn.commit()
-
-            # Retrieve data from the "creators" table
-            c.execute(
-                "SELECT * FROM creators WHERE user_id =? ORDER BY id DESC",
-                (session_id,),
-            )
-            creators = c.fetchall()
-
-            c.execute(
-                "SELECT note, created_at, channel_id FROM notes WHERE user_id =?",
-                (session_id,),
-            )
-            notes = c.fetchall()
-
-            c.execute(
-                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, controversial, channel_id FROM ratings WHERE user_id =?",
-                (session_id,),
-            )
-            ratings = c.fetchall()
-
-            c.execute(
-                "SELECT rate_value, likeability, humor, pity_subscription, informative, silly, funny, serious, deadpan, lets_be_friends, genuine, fake, relatable, emotional, inspirational, controversial, channel_id FROM ratings WHERE user_id =?",
-                (session_id,),
-            )
-            columns = [column[0] for column in c.description]
-
-            for i in range(len(columns)):
-                columns[i] = columns[i].title()
-                columns[i] = columns[i].replace("_", " ")
-
-            # Pass all the necessary data to the Jinja template
-            return render_template(
-                "index.html",
-                video_count=video_count,
-                subscriber_count=subscriber_count,
-                formatted_date=formatted_date,
-                channel_description=channel_description,
-                channel_thumbnail=channel_thumbnail,
-                channel_name=channel_name,
-                formatted_last_video_date=formatted_last_video_date,
-                creators=creators,
-                notes=notes,
-                session_id=session_id,
-                channelId=channelId,
-                aspects=aspects,
-                ratings=ratings,
-                columns=columns,
-            )
-        elif form_name == "form2":
+        
+        if form_name == "form2":
             channelId = request.form.get("channel_id")
             c.execute(
                 "DELETE FROM creators WHERE channel_id =? AND user_id=?",
@@ -512,6 +427,12 @@ def index():
 
             c.execute(
                 "DELETE FROM notes WHERE channel_id =? AND user_id=?",
+                (channelId, session_id),
+            )
+            conn.commit()
+            
+            c.execute(
+                "DELETE FROM highlight_note WHERE channel_id =? AND user_id=?",
                 (channelId, session_id),
             )
             conn.commit()
@@ -530,6 +451,12 @@ def index():
             creators = c.fetchall()
 
             c.execute(
+                "SELECT highlighted_note, created_at, channel_id FROM highlight_note WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",
+                (session_id,),
+            )
+            highlighted_note = c.fetchone()
+
+            c.execute(
                 "SELECT note, created_at, channel_id FROM notes WHERE user_id =?",
                 (session_id,),
             )
@@ -559,6 +486,7 @@ def index():
                 channelId=channelId,
                 aspects=aspects,
                 ratings=ratings,
+                highlighted_note=highlighted_note,
                 columns=columns,
             )
         # note form
@@ -567,36 +495,54 @@ def index():
             note = request.form.get("message")
             highlighted_note = request.form.get("saved_notes")
 
-            if not request.form.get("message"):
-                return apology("must provide note", 403)
-
-            # Check if the exact note has already been entered in the database
+            # Check if the exact note already exists in the database
             c.execute(
-                "SELECT * FROM notes WHERE user_id=? AND channel_id=? AND note=?",
+                "SELECT COUNT(*) FROM notes WHERE user_id = ? AND channel_id = ? AND note = ?",
                 (session_id, channelId, note),
             )
-            existing_note = c.fetchone()
-            # don't know if i should keep this. what if notes is long and they enter same note but
-            # dont see it after submitting cause same note is old.
-            if existing_note:
-                # If the exact note has already been entered, do nothing
-                pass
-            else:
-                # If the exact note has not been entered, insert a new note
-                c.execute(
-                    "INSERT INTO notes (user_id, channel_id, note) VALUES (?,?,?)",
-                    (session_id, channelId, note),
-                )
+            existing_note_count = c.fetchone()[0]
+            if not highlighted_note and not note:
+                return apology("must provide note or highlighted note", 403)
 
-            conn.commit()
+            
+            if existing_note_count == 0:
+                if highlighted_note and note:
+                    c.execute(
+                        "INSERT INTO notes (user_id, channel_id, note) VALUES (?,?,?)",
+                        (session_id, channelId, note),
+                    )
+                    conn.commit()
+                    c.execute(
+                        "INSERT INTO highlight_note (user_id, channel_id, highlighted_note) VALUES (?,?,?)",
+                        (session_id, channelId, highlighted_note),
+                    )
+                    conn.commit()
+                elif note and not highlighted_note:
+                    c.execute(
+                        "INSERT INTO notes (user_id, channel_id, note) VALUES (?,?,?)",
+                        (session_id, channelId, note),
+                    )
+                    conn.commit()
+                elif highlighted_note and not note:
+                    c.execute(
+                        "INSERT INTO highlight_note (user_id, channel_id, highlighted_note) VALUES (?,?,?)",
+                        (session_id, channelId, highlighted_note),
+                    )
+                    conn.commit()
+            else:
+                pass
+
+            c.execute(
+                "SELECT highlighted_note, created_at, channel_id FROM highlight_note WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",
+                (session_id,),
+            )
+            highlighted_note = c.fetchone()
 
             c.execute(
                 "SELECT note, created_at, channel_id FROM notes WHERE user_id =?",
                 (session_id,),
             )
             notes = c.fetchall()
-
-            """ print("notes set:", notes) """
 
             # Retrieve data from the "creators" table
             c.execute(
@@ -747,6 +693,12 @@ def index():
             print("ratings after:", ratings[0][0])
 
             c.execute(
+                "SELECT highlighted_note, created_at, channel_id FROM highlight_note WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",
+                (session_id,),
+            )
+            highlighted_note = c.fetchone()
+
+            c.execute(
                 "SELECT note, created_at, channel_id FROM notes WHERE user_id =?",
                 (session_id,),
             )
@@ -767,6 +719,7 @@ def index():
                 channelId=channelId,
                 ratings=ratings,
                 aspects=aspects,
+                highlighted_note=highlighted_note,
                 columns=columns,
             )
 
@@ -779,6 +732,7 @@ def index():
             aspects=aspects,
             columns=columns,
             notes=notes,
+            highlighted_note=highlighted_note,
             formatted_date=formatted_date,
             formatted_last_video_date=formatted_last_video_date,
         )
@@ -1089,6 +1043,7 @@ def logout():
 
     # Redirect user to login form
     return redirect("/login")
+
 
 conn.close
 

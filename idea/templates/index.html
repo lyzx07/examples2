@@ -111,6 +111,11 @@
               >{{ creator[1] }}</a
             >
           </h4>
+          {% if highlighted_note[2] == creator[7] and highlighted_note[0] %}
+          <!-- Add the highlighted note above the image -->
+          <h4 id="hidden-pinned" class="pinned-note">Pinned Note:</h4>
+          <p id="hidden-p">"{{ highlighted_note[0] }}"</p>
+          {% endif %}
         </div>
         <div class="wrap" id="wrap" style="display: none">
           <div class="card-header card-item">
@@ -123,7 +128,13 @@
                   >{{ creator[1] }}</a
                 >
               </h2>
-              <br /><br />
+              <br />
+              {% if highlighted_note[2] == creator[7] and highlighted_note[0] %}
+              <!-- Add the highlighted note above the image -->
+              <h4 class="pinned-note">Pinned Note:</h4>
+              <p>"{{ highlighted_note[0] }}"</p>
+              {% endif %}
+              <br />
               <h4 class="card-text">Subscriber Count:</h4>
               <p class="card-text">{{ creator[4] }}</p>
               <h4 class="card-text">Video Count:</h4>
@@ -275,6 +286,7 @@
               </div>
               <div class="notes-cont">
                 <p class="notes-header">Notes</p>
+                <sub class="notes-header">format: Day, Month, Year</sub>
                 {% if notes %}
                 <ul>
                   {% for note in notes %} {% if note[2] == creator[7] %}
