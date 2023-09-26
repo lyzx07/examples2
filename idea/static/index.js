@@ -117,3 +117,69 @@ jQuery(document).ready(function ($) {
   });
 });
 
+$(document).ready(function() {
+  $(".delete-btn").click(function(e) {
+    e.preventDefault();
+    var form = $(this).closest("form");
+    var channelId = form.find('input[name="channel_id"]').val();
+
+    if (confirm("Are you sure you want to delete this YouTube creator? Doing so will also delete all of your notes on this channel!")) {
+      $.ajax({
+        url: "/delete_creator",
+        method: "POST",
+        data: {
+          form_name: "form2",
+          channel_id: channelId
+        },
+        success: function(response) {
+          // Handle the response here
+          var parsedResponse = JSON.parse(response);
+          if (parsedResponse.status === "success") {
+            // Update the page content dynamically
+            form.closest(".card-cont").remove();
+          } else {
+            // Handle deletion error if needed
+          }
+        },
+        error: function(xhr, status, error) {
+          // Handle any errors that occur during the AJAX request
+        }
+      });
+    }
+  });
+});
+/* 
+$(document).ready(function() {
+  $("#form-id-search").submit(function(e) {
+    e.preventDefault();
+    var form = $(this);
+    var channelId = form.find('input[name="channel_id"]').val();
+
+    $.ajax({
+      url: "/add_creator",
+      method: "POST",
+      data: {
+        form_name: "form1",
+        channel_id: channelId
+      },
+      success: function(response) {
+        // Handle the response here
+        var parsedResponse = JSON.parse(response);
+        if (parsedResponse.status === "success") {
+          // Creator added successfully
+          // Update the page content dynamically if needed
+        } else if (parsedResponse.status === "exists") {
+          // Creator already exists
+          // Handle the case when the creator already exists
+        } else if (parsedResponse.status === "error") {
+          // Error in adding creator
+          // Handle the error case if needed
+        }
+      },
+      error: function(xhr, status, error) {
+        // Handle any errors that occur during the AJAX request
+      }
+    });
+  });
+}); */
+

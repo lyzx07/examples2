@@ -310,7 +310,7 @@
                 class="form4"
                 style="display: none"
                 method="POST"
-                action="/"
+                action="/add_ratings"
                 name="form4"
               >
                 <input type="hidden" name="form_name" value="form4" />
@@ -381,7 +381,7 @@
                 style="display: none"
                 class="form3"
                 method="POST"
-                action="/"
+                action="/add_note"
                 name="form3"
               >
                 <div class="form3-textarea-cont">
@@ -433,10 +433,16 @@
                 name="document-text"
               ></ion-icon
             ></a>
-            <form class="form2" method="POST" action="/" name="form2">
+            <form
+              class="form2"
+              method="POST"
+              action="/delete_creator"
+              name="form2"
+            >
               <input type="hidden" name="form_name" value="form2" />
               <input type="hidden" name="channel_id" value="{{ creator[7] }}" />
               <button
+                id="delete-btn"
                 class="delete-btn"
                 onclick="return confirm('Are you sure you want to delete this YouTube creator? Doing so will also delete all of your notes on this channel!');"
                 type="submit"
