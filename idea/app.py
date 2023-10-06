@@ -115,6 +115,7 @@ def add_creator():
 
     if form_name == "form1":
         username = request.form["username"]
+
         if not request.form.get("username"):
             return apology("must provide YouTube Creator", 403)
 
@@ -259,8 +260,9 @@ def add_creator():
             ratings=ratings,
             session_id=session_id,
         )
+        
         # need to change username variable back from channel id .
-        """ return json.dumps({
+        """return jsonify({
             "status": "success",
             "exists": False,
             "channelId": channelId,
@@ -278,9 +280,7 @@ def add_creator():
             "columns": columns,
             "ratings": ratings,
             "session_id": session_id
-        }) """
-
-
+        })"""
 
 @app.route("/delete_creator", methods=["POST"])
 def delete_creator():
@@ -497,7 +497,7 @@ def add_note():
             ratings=ratings,
             columns=columns,
             highlighted_note=highlighted_note,
-        )
+        ) 
 
 
 @app.route("/add_ratings", methods=["POST"])

@@ -78,6 +78,7 @@
               >
             </h5>
             <input
+              id="username-input"
               class="input-field text-center"
               type="text"
               name="username"
@@ -90,6 +91,15 @@
       </div>
     </div>
     <h2>Saved YouTube Creators</h2>
+    <div class="creator-link-cont">
+      <ul>
+        {% for creator in creators %}
+        <li>
+          <a href="#{{ creator[7] }}" class="creator-link">{{ creator[1] }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
     <div class="row creator-cards" id="creator-cards">
       {% for creator in creators %}
       <div id="{{ creator[7] }}" class="card card-cont text-center">
@@ -113,8 +123,10 @@
           </h4>
           {% if highlighted_note[2] == creator[7] and highlighted_note[0] %}
           <!-- Add the highlighted note above the image -->
-          <h4 id="hidden-pinned" class="pinned-note">Pinned Note:</h4>
-          <p id="hidden-p">"{{ highlighted_note[0] }}"</p>
+          <div id="highlighted-note-cont-closed">
+            <h4 id="hidden-pinned" class="pinned-note">Pinned Note:</h4>
+            <p id="hidden-p">"{{ highlighted_note[0] }}"</p>
+          </div>
           {% endif %}
         </div>
         <div class="wrap" id="wrap" style="display: none">
@@ -131,8 +143,10 @@
               <br />
               {% if highlighted_note[2] == creator[7] and highlighted_note[0] %}
               <!-- Add the highlighted note above the image -->
-              <h4 class="pinned-note">Pinned Note:</h4>
-              <p>"{{ highlighted_note[0] }}"</p>
+              <div id="highlighted-note-cont-open">
+                <h4 class="pinned-note">Pinned Note:</h4>
+                <p>"{{ highlighted_note[0] }}"</p>
+              </div>
               {% endif %}
               <br />
               <h4 class="card-text">Subscriber Count:</h4>
@@ -284,11 +298,11 @@
                 </div>
                 {% endif %} {% endfor %}
               </div>
-              <div class="notes-cont">
+              <div class="notes-cont" id="notes-cont">
                 <p class="notes-header">Notes</p>
                 <sub class="notes-header">format: Day, Month, Year</sub>
                 {% if notes %}
-                <ul>
+                <ul id="notes-ul">
                   {% for note in notes %} {% if note[2] == creator[7] %}
                   <li>{{ note[0] }} - {{ note[1] }}</li>
                   {% endif %} {% endfor %}

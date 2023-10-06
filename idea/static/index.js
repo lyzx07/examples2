@@ -117,21 +117,21 @@ jQuery(document).ready(function ($) {
   });
 });
 
-$(document).ready(function() {
-  $(".delete-btn").click(function(e) {
+$(document).ready(function () {
+  $(".delete-btn").click(function (e) {
     e.preventDefault();
     var form = $(this).closest("form");
     var channelId = form.find('input[name="channel_id"]').val();
 
-    if (confirm("Are you sure you want to delete this YouTube creator? Doing so will also delete all of your notes on this channel!")) {
+    if (confirm("Final chance. All saved notes and ratings will be deleted!")) {
       $.ajax({
         url: "/delete_creator",
         method: "POST",
         data: {
           form_name: "form2",
-          channel_id: channelId
+          channel_id: channelId,
         },
-        success: function(response) {
+        success: function (response) {
           // Handle the response here
           var parsedResponse = JSON.parse(response);
           if (parsedResponse.status === "success") {
@@ -141,45 +141,88 @@ $(document).ready(function() {
             // Handle deletion error if needed
           }
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
           // Handle any errors that occur during the AJAX request
-        }
+        },
       });
     }
   });
 });
-/* 
-$(document).ready(function() {
-  $("#form-id-search").submit(function(e) {
+
+/* havent tested this yet. need to add highlighted note and change route to json dump instead */
+
+/* $(document).ready(function () {
+  $(".add-note-btn").click(function (e) {
     e.preventDefault();
-    var form = $(this);
+    var form = $(this).closest("form");
     var channelId = form.find('input[name="channel_id"]').val();
+    var note = form.find('textarea[name="message"]').val();
+    console.log(note);
 
     $.ajax({
-      url: "/add_creator",
+      url: "/add_note",
       method: "POST",
       data: {
-        form_name: "form1",
-        channel_id: channelId
+        form_name: "form3",
+        channel_id: channelId,
+        note: note,
       },
-      success: function(response) {
+      success: function (response) {
         // Handle the response here
         var parsedResponse = JSON.parse(response);
         if (parsedResponse.status === "success") {
-          // Creator added successfully
-          // Update the page content dynamically if needed
-        } else if (parsedResponse.status === "exists") {
-          // Creator already exists
-          // Handle the case when the creator already exists
-        } else if (parsedResponse.status === "error") {
-          // Error in adding creator
-          // Handle the error case if needed
+          // Update the page content dynamically
+          var notesContainer = $("#notes-cont");
+          var newNote = document.createElement("li");
+          newNote.textContent = note;
+          notesContainer.find("#notes-ul").append(newNote);
+        } else {
+          // Handle addition error if needed
         }
       },
-      error: function(xhr, status, error) {
+      error: function (xhr, status, error) {
         // Handle any errors that occur during the AJAX request
-      }
+      },
     });
   });
 }); */
 
+// Add an event listener to the input field where the user enters the username
+/* $("#form-id-search").on("submit", function(event) {
+  event.preventDefault(); // Prevent the default form submission
+
+  var username = $("#username-input").val();
+
+  // Send the entered username to the Flask route
+  $.ajax({
+    url: "/add_creator",
+    method: "POST",
+    data: { username: username },
+    success: function(response) {
+      // Scroll to the card with the matching channel ID
+      var channelId = response.channelId;
+      $(".card-cont").each(function() {
+        var cardId = $(this).attr("id");
+        if (cardId === channelId) {
+          // Scroll to the card with the matching channel ID
+          $(this)[0].scrollIntoView();
+          return false; // Exit the loop once a match is found
+        }
+      });
+    },
+    error: function(error) {
+      console.log(error);
+    },
+  });
+}); */
+
+//maybe create another button for input field to check to see if creator already exists
+
+// JavaScript/jQuery code
+$(document).ready(function() {
+  $(".creator-link").click(function(event) {
+    event.preventDefault();
+    var targetId = $(this).attr("href");
+    $(targetId)[0].scrollIntoView();
+  });
+});

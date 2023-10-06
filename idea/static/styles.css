@@ -533,6 +533,47 @@ input:valid ~ label {
   width: 100%;
 }
 
+.creator-link-cont ul {
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+  margin: 10px auto;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 30px rgb(6, 23, 106);
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+}
+
+.creator-link {
+  color: white;
+  text-decoration: none;
+}
+
+.creator-link:visited {
+  color: white;
+  text-decoration: none;
+}
+
+.creator-link:link {
+  color: white;
+  text-decoration: none;
+}
+
+.creator-link:focus {
+  color: white;
+  text-decoration: none;
+}
+
+.creator-link:active {
+  color: white;
+  text-decoration: none;
+}
+
+.creator-link:hover {
+  color: gray;
+}
+
 /* .container {
   position: absolute;
   top: 50%;
