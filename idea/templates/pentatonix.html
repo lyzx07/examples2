@@ -314,15 +314,16 @@
             <a
               href="https://www.youtube.com/watch?v={{ video.videoId }}"
               target="_blank"
+              data-video-id="{{ video.videoId }}"
             >
               {{ video.title }}
             </a>
-            <p class="views">{{ video.viewCount }}</p>
+            <!-- <p class="views">{{ video.viewCount }}</p> -->
             <label class="checkbox">
               <input
                 type="checkbox"
                 class="toggle-song"
-                data-song-id="{{ video.videoId }}"
+                data-video-id="{{ video.videoId }}"
               />
               <span class="checkmark"></span>
             </label>
@@ -339,6 +340,7 @@
             <a
               href="https://www.youtube.com/watch?v={{ origin.videoId }}"
               target="_blank"
+              data-video-id="{{ origin.videoId }}"
             >
               {{ origin.title }}
             </a>
@@ -346,7 +348,7 @@
               <input
                 type="checkbox"
                 class="toggle-song"
-                data-song-id="{{ origin.videoId }}"
+                data-video-id="{{ origin.videoId }}"
               />
               <span class="checkmark"></span>
             </label>
@@ -363,6 +365,7 @@
             <a
               href="https://www.youtube.com/watch?v={{ live.videoId }}"
               target="_blank"
+              data-video-id="{{ live.videoId }}"
             >
               {{ live.title }}
             </a>
@@ -370,7 +373,7 @@
               <input
                 type="checkbox"
                 class="toggle-song"
-                data-song-id="{{ live.videoId }}"
+                data-video-id="{{ live.videoId }}"
               />
               <span class="checkmark"></span>
             </label>
@@ -387,6 +390,7 @@
             <a
               href="https://www.youtube.com/watch?v={{ x.videoId }}"
               target="_blank"
+              data-video-id="{{ x.videoId }}"
             >
               {{ x.title }}
             </a>
@@ -394,7 +398,7 @@
               <input
                 type="checkbox"
                 class="toggle-song"
-                data-song-id="{{ x.videoId }}"
+                data-video-id="{{ x.videoId }}"
               />
               <span class="checkmark"></span>
             </label>
@@ -411,6 +415,7 @@
             <a
               href="https://www.youtube.com/watch?v={{ s.videoId }}"
               target="_blank"
+              data-video-id="{{ s.videoId }}"
             >
               {{ s.title }}
             </a>
@@ -418,7 +423,7 @@
               <input
                 type="checkbox"
                 class="toggle-song"
-                data-song-id="{{ s.videoId }}"
+                data-video-id="{{ s.videoId }}"
               />
               <span class="checkmark"></span>
             </label>

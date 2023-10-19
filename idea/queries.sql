@@ -20,7 +20,7 @@ MODIFY username VARCHAR(255);
 ALTER TABLE users
 MODIFY COLUMN username VARCHAR(255);
 PRAGMA lock_status DROP TABLE songs;
-DROP TABLE notes;
+DROP TABLE watched;
 ALTER TABLE creators
 ADD COLUMN user_id INTEGER REFERENCES users(id);
 ALTER TABLE creators
@@ -37,17 +37,17 @@ CREATE TABLE IF NOT EXISTS notes (
     FOREIGN KEY (channel_id) REFERENCES creators(channel_id),
     FOREIGN KEY (user_id) REFERENCES creators(user_id)
 );
-
 CREATE TABLE IF NOT EXISTS notes (
     id INTEGER PRIMARY KEY,
     user_id INTEGER NOT NULL,
     channel_id TEXT NOT NULL,
     note TEXT,
-    created_at TEXT NOT NULL DEFAULT (strftime('%d/%m/%Y %H:%M:%S', 'now', 'localtime')),
+    created_at TEXT NOT NULL DEFAULT (
+        strftime('%d/%m/%Y %H:%M:%S', 'now', 'localtime')
+    ),
     FOREIGN KEY (channel_id) REFERENCES creators(channel_id),
     FOREIGN KEY (user_id) REFERENCES creators(user_id)
 );
-
 CREATE TABLE IF NOT EXISTS watched (
     id INTEGER PRIMARY KEY,
     user_id INTEGER NOT NULL,
@@ -56,19 +56,15 @@ CREATE TABLE IF NOT EXISTS watched (
     checkbox_state INTEGER,
     created_at TEXT NOT NULL DEFAULT (strftime('%d/%m/%Y', 'now', 'localtime')),
     FOREIGN KEY (video_id) REFERENCES tunes(video_id),
-    FOREIGN KEY (user_id) REFERENCES tunes(user_id)
+    FOREIGN KEY (user_id) REFERENCES users (id)
 );
-
 CREATE TABLE IF NOT EXISTS tunes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
-    user_id INTEGER NOT NULL,
     video_id TEXT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (id))
-
+)
 ALTER TABLE notes
 ADD COLUMN highlighted_note TEXT;
-
 CREATE TABLE IF NOT EXISTS creators (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT,
@@ -78,28 +74,28 @@ CREATE TABLE IF NOT EXISTS creators (
     videoCount INTEGER,
     user_id INTEGER NOT NULL,
     channel_id TEXT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (id))
-
-CREATE TABLE IF NOT EXISTS ratings (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        rate_value INTEGER NOT NULL,
-        likeability INTEGER,
-        humor INTEGER,
-        pity_subscription INTEGER,
-        informative INTEGER,
-        silly INTEGER,
-        funny INTEGER,
-        serious INTEGER,
-        deadpan INTEGER,
-        lets_be_friends INTEGER,
-        genuine INTEGER,
-        fake INTEGER,
-        relatable INTEGER,
-        emotional INTEGER,
-        inspirational INTEGER,
-        controversial INTEGER,
-        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        user_id INTEGER NOT NULL,
-        channel_id TEXT NOT NULL,
-        FOREIGN KEY(user_id) REFERENCES creators(user_id),
-        FOREIGN KEY(channel_id) REFERENCES creators(channel_id))    
+    FOREIGN KEY (user_id) REFERENCES users (id)
+) CREATE TABLE IF NOT EXISTS ratings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    rate_value INTEGER NOT NULL,
+    likeability INTEGER,
+    humor INTEGER,
+    pity_subscription INTEGER,
+    informative INTEGER,
+    silly INTEGER,
+    funny INTEGER,
+    serious INTEGER,
+    deadpan INTEGER,
+    lets_be_friends INTEGER,
+    genuine INTEGER,
+    fake INTEGER,
+    relatable INTEGER,
+    emotional INTEGER,
+    inspirational INTEGER,
+    controversial INTEGER,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    user_id INTEGER NOT NULL,
+    channel_id TEXT NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES creators(user_id),
+    FOREIGN KEY(channel_id) REFERENCES creators(channel_id)
+)

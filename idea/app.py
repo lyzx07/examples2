@@ -260,7 +260,7 @@ def add_creator():
             ratings=ratings,
             session_id=session_id,
         )
-        
+
         # need to change username variable back from channel id .
         """return jsonify({
             "status": "success",
@@ -281,6 +281,7 @@ def add_creator():
             "ratings": ratings,
             "session_id": session_id
         })"""
+
 
 @app.route("/delete_creator", methods=["POST"])
 def delete_creator():
@@ -497,7 +498,7 @@ def add_note():
             ratings=ratings,
             columns=columns,
             highlighted_note=highlighted_note,
-        ) 
+        )
 
 
 @app.route("/add_ratings", methods=["POST"])
@@ -866,6 +867,27 @@ def register():
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("register.html")
+
+
+@app.route("/save-song", methods=["POST"])
+def save_song():
+    data = request.get_json()
+    song_title = data["title"]
+    videoId = data["videoId"]
+    
+    print(song_title)
+    print(videoId)
+    # Save the song with the title and video ID to the database
+    return jsonify({"message": "Song saved successfully!"})
+
+
+@app.route("/remove-song", methods=["POST"])
+def remove_song():
+    data = request.get_json()
+    song_title = data["title"]
+    videoId = data["videoId"]
+    # Remove the song with the title and video ID from the database
+    return jsonify({"message": "Song removed successfully!"})
 
 
 @app.route("/pentatonix", methods=["GET", "POST"])
