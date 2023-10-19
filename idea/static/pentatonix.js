@@ -31,27 +31,66 @@ $(document).ready(function () {
   });
 });
 
-/* // Get all checkboxes
-const checkboxes = document.querySelectorAll('.toggle-song');
- */
-/* // Add event listener to each checkbox
-checkboxes.forEach(checkbox => {
-  checkbox.addEventListener('change', () => {
-    // Get song ID from data attribute
-    const songId = checkbox.dataset.songId;
 
-    // Make AJAX request to save song
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/pentatonix');
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onload = () => {
-      if (xhr.status === 200) {
-        console.log(xhr.responseText);
-      } else {
-        console.error(xhr.statusText);
-      }
-    };
-    xhr.send(JSON.stringify({ songId }));
+// these code blocks need to be merged into one
+
+/* // Add event listener to checkboxes
+const checkboxes = document.querySelectorAll('.toggle-song');
+checkboxes.forEach(checkbox => {
+  checkbox.addEventListener('change', function() {
+    const videoId = this.dataset.videoId;
+    const isChecked = this.checked;
+
+    if (isChecked) {
+      // Checkbox is checked, save the song to the database
+      const songTitle = this.parentElement.previousElementSibling.textContent;
+      const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+
+      // Send AJAX request to Flask app to save the song
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/save-song', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+          const response = JSON.parse(xhr.responseText);
+          console.log(response.message);
+        }
+      };
+      xhr.send(JSON.stringify({ title: songTitle, date: currentDate }));
+    } else {
+      // Checkbox is unchecked, remove the song from the database
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/remove-song', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+          const response = JSON.parse(xhr.responseText);
+          console.log(response.message);
+        }
+      };
+      xhr.send(JSON.stringify({ videoId }));
+    }
   });
 });
- */
+
+// Add event listener to checkboxes
+const checkboxes = document.querySelectorAll('.toggle-song');
+checkboxes.forEach(checkbox => {
+  checkbox.addEventListener('change', function() {
+    const videoId = this.dataset.videoId;
+    const isChecked = this.checked;
+
+    // Select all checkboxes with the same song ID
+    const associatedCheckboxes = document.querySelectorAll(`.toggle-song[data-song-id="${videoId}"]`);
+
+    associatedCheckboxes.forEach(associatedCheckbox => {
+      // Update the checked state of all associated checkboxes
+      associatedCheckbox.checked = isChecked;
+      
+      // Perform additional actions if needed for each associated checkbox
+      // ...
+    });
+
+    // Rest of your code...
+  });
+}); */

@@ -9,27 +9,27 @@ figure out forgot password and forgot username in regards to email and resetting
 
 blurb about the site and what its for
 
-footer with links to my github account linkedin and any others
+footer with links to my github account linkedin and any others CHECK
 
 my logo displayed in the footer CHECK
 
 HOME
-place where user can input url or callsign of youtube account, which would go into a database
+place where user can input url or callsign of youtube account, which would go into a database CHECK
 
-list of all creators saved in their homepage, list of videos that the user has watched from url or title and 
+list of all creators saved in their homepage CHECK, list of videos that the user has watched from url or title and 
 possibly a photo or their logo
 
-each creator should maybe have their own box with pic and information
+each creator should maybe have their own box with pic and information CHECK
 
-different 1-5 star ratings(likability, pity, sassy, nice, loud, quiet, etc)
+different 1-5 star ratings(likability, pity, sassy, nice, loud, quiet, etc)CHECK
 
-place for notes on the creator and order them
+place for notes on the creator and order them CHECK
 
 date the creator was added with ability to estimate when they subscribed 
 
-how long ago was the creators last video released maybe an average of how often they upload
+how long ago was the creators last video released CHECK maybe an average of how often they upload
 
-search bar to find creator easily go to that part of the page
+search bar to find creator easily go to that part of the page (MODIFIED WITH A LINK AND LIST OF CREATORS)
 
 maybe search bar to suggest other creators that are reacting to an artist you like(with view counts and likes)
 

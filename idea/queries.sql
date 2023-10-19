@@ -48,6 +48,24 @@ CREATE TABLE IF NOT EXISTS notes (
     FOREIGN KEY (user_id) REFERENCES creators(user_id)
 );
 
+CREATE TABLE IF NOT EXISTS watched (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    video_id TEXT NOT NULL,
+    title TEXT NOT NULL,
+    checkbox_state INTEGER,
+    created_at TEXT NOT NULL DEFAULT (strftime('%d/%m/%Y', 'now', 'localtime')),
+    FOREIGN KEY (video_id) REFERENCES tunes(video_id),
+    FOREIGN KEY (user_id) REFERENCES tunes(user_id)
+);
+
+CREATE TABLE IF NOT EXISTS tunes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    user_id INTEGER NOT NULL,
+    video_id TEXT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id))
+
 ALTER TABLE notes
 ADD COLUMN highlighted_note TEXT;
 

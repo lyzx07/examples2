@@ -137,6 +137,12 @@ $(document).ready(function () {
           if (parsedResponse.status === "success") {
             // Update the page content dynamically
             form.closest(".card-cont").remove();
+
+            // Remove the deleted creator link from the container
+            $(".creator-link-cont")
+              .find(`a[href="#${channelId}"]`)
+              .closest("li")
+              .remove();
           } else {
             // Handle deletion error if needed
           }
@@ -219,8 +225,8 @@ $(document).ready(function () {
 //maybe create another button for input field to check to see if creator already exists
 
 // JavaScript/jQuery code
-$(document).ready(function() {
-  $(".creator-link").click(function(event) {
+$(document).ready(function () {
+  $(".creator-link").click(function (event) {
     event.preventDefault();
     var targetId = $(this).attr("href");
     $(targetId)[0].scrollIntoView();
