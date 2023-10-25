@@ -871,11 +871,32 @@ def register():
 
 @app.route("/save-song", methods=["POST"])
 def save_song():
+    session_id = session.get("user_id")
     data = request.get_json()
-    song_title = data["title"]
+    title = data["title"]
     videoId = data["videoId"]
-    
-    print(song_title)
+
+    c.execute(
+        "SELECT * FROM watched WHERE video_id=? AND user_id=?",
+        (videoId, session_id),
+    )
+    check = c.fetchone()
+    if check is not None:
+        # If the video id already exists do nothing
+        pass
+    else:
+        # If the video id doesn't exist, add it to the 'watched' variable and return the updated 'watched' variable in the response
+        c.execute(
+            "INSERT INTO watched (title, video_id, user_id) VALUES (?,?,?)",
+            (
+                title,
+                videoId,
+                session_id,
+            ),
+        )
+        conn.commit()
+
+    print(title)
     print(videoId)
     # Save the song with the title and video ID to the database
     return jsonify({"message": "Song saved successfully!"})
@@ -883,12 +904,39 @@ def save_song():
 
 @app.route("/remove-song", methods=["POST"])
 def remove_song():
+    session_id = session.get("user_id")
     data = request.get_json()
-    song_title = data["title"]
+    """ title = data["title"] """
     videoId = data["videoId"]
+
+    c.execute(
+        "DELETE FROM watched WHERE video_id =? AND user_id=?",
+        (videoId, session_id),
+    )
+    conn.commit()
+
     # Remove the song with the title and video ID from the database
     return jsonify({"message": "Song removed successfully!"})
 
+
+@app.route("/watched", methods=["GET", "POST"])
+def watched():
+    session_id = session.get("user_id")
+
+    c.execute(
+        "SELECT video_id FROM watched WHERE user_id=?",
+        (session_id,),
+    )
+    watched = c.fetchall()
+    
+    print(watched)
+    
+    response = {
+            "status": "success",
+            "watched": watched,
+        }
+    return jsonify(response)
+    
 
 @app.route("/pentatonix", methods=["GET", "POST"])
 @login_required
@@ -1117,6 +1165,7 @@ def pentatonix():
         session_id=session_id,
         formatted_last_video_date=formatted_last_video_date,
         formatted_date=formatted_date,
+        watched=watched,
     )
 
 

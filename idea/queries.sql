@@ -53,7 +53,6 @@ CREATE TABLE IF NOT EXISTS watched (
     user_id INTEGER NOT NULL,
     video_id TEXT NOT NULL,
     title TEXT NOT NULL,
-    checkbox_state INTEGER,
     created_at TEXT NOT NULL DEFAULT (strftime('%d/%m/%Y', 'now', 'localtime')),
     FOREIGN KEY (video_id) REFERENCES tunes(video_id),
     FOREIGN KEY (user_id) REFERENCES users (id)

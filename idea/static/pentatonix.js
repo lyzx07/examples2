@@ -31,16 +31,31 @@ $(document).ready(function () {
   });
 });
 
-/* const songLinks = document.querySelectorAll('.song-link');
-songLinks.forEach(songLink => {
-  const videoId = songLink.dataset.videoId;
-  const title = songLink.textContent;
+//this code block below is giving me errors about how the json is formatted
 
-  console.log(title);
-  console.log(videoId);
-  
-  // Use the videoId and title variables as needed
-}); */
+document.addEventListener("DOMContentLoaded", function () {
+  fetch("/watched")
+    .then((response) => response.json())
+    .then((data) => {
+      const watched = data.watched;
+      console.log(watched);
+      // Function to check checkboxes based on videoId
+      function checkCheckboxes(videoId, isChecked) {
+        // Select all checkboxes with the same video ID
+        const associatedCheckboxes = document.querySelectorAll(
+          `.toggle-song[data-video-id="${videoId}"]`
+        );
+        associatedCheckboxes.forEach((associatedCheckbox) => {
+          // Update the checked state of all associated checkboxes
+          associatedCheckbox.checked = isChecked;
+        });
+      }
+      // Call the function for each videoId in the watched variable
+      watched.forEach((videoId) => {
+        checkCheckboxes(videoId, true);
+      });
+    });
+});
 
 // Add event listener to checkboxes
 const checkboxes = document.querySelectorAll(".toggle-song");
