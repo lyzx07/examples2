@@ -31,7 +31,9 @@ $(document).ready(function () {
   });
 });
 
-//this code block below is giving me errors about how the json is formatted
+//I added the newly updated watched variable to the add and delete routes 
+//but i still need to somehow update the watched variable for the watched tablelist.
+//mybe with another ajax request or to modify current request
 
 document.addEventListener("DOMContentLoaded", function () {
   fetch("/watched")
@@ -111,3 +113,31 @@ checkboxes.forEach((checkbox) => {
     }
   });
 });
+
+var openDialogButton = document.getElementById('open-dialog-btn');
+
+var dialogCont = document.getElementById('dialog-watched');
+
+var closeDialog = document.getElementById('close-dialog-btn');
+
+// "Open dialog box" button opens the <dialog> modally
+openDialogButton.addEventListener('click', function () {
+  if (typeof dialogCont.showModal === "function") {
+    dialogCont.showModal();
+  } else {
+    console.log("The <dialog> API is not supported by this browser");
+  }
+});
+
+closeDialog.addEventListener('click', function() {
+  dialogCont.close();
+})
+
+dialogCont.addEventListener("click", event => {
+  const rect = dialogCont.getBoundingClientRect();
+  if (event.clientY < rect.top || event.clientY > rect.bottom ||
+      event.clientX < rect.left || event.clientX > rect.right) {
+      dialogCont.close();
+  }
+});
+

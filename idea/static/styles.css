@@ -296,7 +296,8 @@ section {
 .highlight-select,
 .highlight-btn,
 .add-note-btn,
-.btn-show-more {
+.btn-show-more,
+.close-dialog-btn {
   margin-block: 15px;
   background-color: #fff;
   border: 1px solid #d5d9d9;
@@ -718,6 +719,119 @@ input:valid ~ label {
   margin-left: 50px;
 }
 
+.nav-bar-dialog {
+  display: flex;
+  justify-content: flex-end;
+  background-color: transparent;
+}
+
+.nav-sec, .open-dialog-btn {
+  margin-right: 15px;
+}
+
+.nav-bar-dialog button {
+  background-color: transparent;
+  color: white;
+  border: none;
+}
+
+.dialog-watched {
+  margin: 15px auto;
+  width: 50%;
+  height: auto;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 30px rgb(6, 23, 106);
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  color: white;
+}
+
+.watched-table-cont {
+  display: flex;
+  margin-top: 20px;
+  flex-direction: column;
+}
+
+.dialog-watched table,
+.dialog-watched .close-dialog-btn {
+  margin: 0 auto;
+}
+
+.watched-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.watched-table th,
+.watched-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.watched-table td a {
+  color: white;
+  text-decoration: none;
+}
+
+.watched-table td a:hover {
+  color: white;
+  opacity: 0.5;
+}
+
+.watched-table th {
+  background-color: rgba(225, 228, 247, 0.5);
+}
+
+.close-dialog-btn-cont {
+  margin-top: 20px;
+  align-self: center;
+}
+
+.dropdown-cont {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn-sections {
+  background-color: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 30px rgb(6, 23, 106);
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  min-width: 160px;
+  z-index: 1;
+  clip-path: inset(0px round 20px); 
+}
+
+.dropdown-content a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+}
+
+.dropdown-content a:hover {
+  background-color: rgba(225, 228, 247, 0.5);
+}
+
+.dropdown-cont:hover .dropdown-content {
+  display: block;
+  margin-right: 50px;
+}
+
 b {
   font-size: larger;
   padding: 5px;
@@ -956,6 +1070,10 @@ ul {
 
   .modal-content {
     width: 100%;
+  }
+
+  .dialog-watched {
+    width: 80%;
   }
 
   .song-list li {

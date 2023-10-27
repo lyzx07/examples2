@@ -39,6 +39,71 @@
     <!-- Use any element to open the sidenav -->
     <span class="span-menu glyphicon" onclick="openNav()">&#xe236;</span>
 
+    <!-- <nav>
+      <div class="nav-sec">
+        <div class="dropdown-cont">
+          <button class="dropbtn-sections">What You'll Find</button>
+          <div class="dropdown-content">
+            <a href="#who-section">The Who and the How of PTX</a>
+            <a href="#phrases-section">PTX Common Questions</a>
+            <a href="#questions-section">PTX Common Phrases</a>
+            <a href="#lists-section">PTX Song Lists</a>
+            <a href="#copyright-section">Possible Copyright Issues</a>
+          </div>
+        </div>
+      </div>
+        <button class="modal-btn-sections">PTX Videos I've Watched</button>
+      </div>
+    </nav> -->
+
+    <dialog id="dialog-watched" class="dialog-watched">
+      <div class="watched-table-cont">
+        <table class="watched-table">
+          <thead>
+            <tr>
+              <th>Song Name<br /><sup>Title</sup></th>
+              <th>Date Saved<br /><sup>Day/Month/Year</sup></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for song in watched %}
+            <tr>
+              <td>
+                <a
+                  href="https://www.youtube.com/watch?v={{ song[2] }}"
+                  target="_blank"
+                  data-video-id="{{ song[2] }}"
+                >
+                  {{ song[3] }}
+                </a>
+              </td>
+              <td>{{ song[4] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="close-dialog-btn-cont">
+          <button class="close-dialog-btn" id="close-dialog-btn">Close</button>
+        </div>
+      </div>
+    </dialog>
+
+    <nav class="nav-bar-dialog">
+      <div class="nav-sec">
+        <div class="dropdown-cont">
+          <button class="dropbtn-sections">What You'll Find</button>
+          <div class="dropdown-content">
+            <a href="#who-section">The Who and the How of PTX</a>
+            <a href="#phrases-section">PTX Common Questions</a>
+            <a href="#questions-section">PTX Common Phrases</a>
+            <a href="#lists-section">PTX Song Lists</a>
+            <a href="#copyright-section">Possible Copyright Issues</a>
+          </div>
+        </div>
+      </div>
+      <button class="open-dialog-btn" id="open-dialog-btn">Watched List</button>
+    </nav>
+
     <div class="parent">
       <div class="cont">
         <h1 class="text-center h1">React-i-rate</h1>
@@ -65,7 +130,9 @@
       </h3>
     </div>
     <br /><br /><br /><br />
-    <h3 class="title text-center">The Who and the How of PTX</h3>
+    <h3 id="who-section" class="title text-center">
+      The Who and the How of PTX
+    </h3>
     <div class="p-list-cont">
       <div class="notes p-list text-center">
         <p>
@@ -213,7 +280,7 @@
         </p>
       </div>
     </div>
-    <h3 class="title text-center">PTX Common Phrases</h3>
+    <h3 id="phrases-section" class="title text-center">PTX Common Phrases</h3>
     <div class="phrases text-center">
       <dl>
         <dt>"Pentaholic"</dt>
@@ -225,8 +292,8 @@
         </dd>
         <dt>"KO'd"</dt>
         <dd>
-          When you have been knocked out by the pure talent of Kevin and all
-          his many skills
+          When you have been knocked out by the pure talent of Kevin and all his
+          many skills
         </dd>
         <dt>"Cello Boxing"</dt>
         <dd>
@@ -247,7 +314,9 @@
         </dd>
       </dl>
     </div>
-    <h3 class="title text-center">PTX Common Questions</h3>
+    <h3 id="questions-section" class="title text-center">
+      PTX Common Questions
+    </h3>
     <div class="phrases text-center">
       <dl>
         <dt>Does Kevin(the beatboxer) sing?</dt>
@@ -293,7 +362,7 @@
         </dd>
         <dt>How do I pronounce Kirsten's name</dt>
         <dd>
-          Like Thirsty but dont take my word for it.<br>
+          Like Thirsty but dont take my word for it.<br />
           <audio class="audio" controls>
             <source
               src="static/starships-kirsty-audio-clip.mp3"
@@ -304,7 +373,7 @@
         </dd>
       </dl>
     </div>
-    <h3 class="title text-center">PTX Song Lists</h3>
+    <h3 id="lists-section" class="title text-center">PTX Song Lists</h3>
     <div class="list-cont">
       <div class="item text-center">
         <h2>Pentatonix Must Watch</h2>
@@ -434,7 +503,9 @@
       </div>
     </div>
     <br /><br /><br /><br />
-    <h3 class="title text-center">Possible Copyright Issues</h3>
+    <h3 id="copyright-section" class="title text-center">
+      Possible Copyright Issues
+    </h3>
     <div class="notes text-center">
       Lorem ipsum, dolor sit amet consectetur adipisicing elit. Officiis,
       cumque? Fuga perferendis exercitationem dignissimos in, debitis repellat

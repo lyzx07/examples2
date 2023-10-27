@@ -898,8 +898,14 @@ def save_song():
 
     print(title)
     print(videoId)
+
+    c.execute(
+        "SELECT * FROM watched WHERE video_id=? AND user_id=?",
+        (videoId, session_id),
+    )
+    watched = c.fetchall()
     # Save the song with the title and video ID to the database
-    return jsonify({"message": "Song saved successfully!"})
+    return jsonify({"message": "Song saved successfully!", "watched": watched})
 
 
 @app.route("/remove-song", methods=["POST"])
@@ -914,9 +920,15 @@ def remove_song():
         (videoId, session_id),
     )
     conn.commit()
+    
+    c.execute(
+        "SELECT * FROM watched WHERE video_id=? AND user_id=?",
+        (videoId, session_id),
+    )
+    watched = c.fetchall()
 
     # Remove the song with the title and video ID from the database
-    return jsonify({"message": "Song removed successfully!"})
+    return jsonify({"message": "Song removed successfully!", "watched": watched})
 
 
 @app.route("/watched", methods=["GET", "POST"])
@@ -928,15 +940,15 @@ def watched():
         (session_id,),
     )
     watched = c.fetchall()
-    
+
     print(watched)
-    
+
     response = {
-            "status": "success",
-            "watched": watched,
-        }
+        "status": "success",
+        "watched": watched,
+    }
     return jsonify(response)
-    
+
 
 @app.route("/pentatonix", methods=["GET", "POST"])
 @login_required
@@ -953,6 +965,12 @@ def pentatonix():
     christmas = "PLWxNS1ipfyc_vJJt4CujWhG88dzFzBdIf"
     sing_off = "PLWxNS1ipfyc9My5y_XSANuS2ynybceM8A"
     live = "PLWxNS1ipfyc-JOjPUYomaKigWus1GCXUB"
+
+    c.execute(
+        "SELECT * FROM watched WHERE user_id=?",
+        (session_id,),
+    )
+    watched = c.fetchall()
 
     request_q = youtube.channels().list(
         part="statistics,snippet,contentDetails", id=channel_id
