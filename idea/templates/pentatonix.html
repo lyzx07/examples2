@@ -65,7 +65,7 @@
               <th>Date Saved<br /><sup>Day/Month/Year</sup></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="table-body">
             {% for song in watched %}
             <tr>
               <td>
@@ -85,6 +85,10 @@
         <div class="close-dialog-btn-cont">
           <button class="close-dialog-btn" id="close-dialog-btn">Close</button>
         </div>
+      </div>
+      <div class="refresh-icon-cont">
+        <ion-icon class="refresh-icon" name="refresh-circle-outline" id="refresh-icon"></ion-icon>
+        <p class="ion-p">Refresh Table Contents</p>
       </div>
     </dialog>
 

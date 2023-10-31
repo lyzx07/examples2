@@ -939,6 +939,12 @@ def watched():
         "SELECT video_id FROM watched WHERE user_id=?",
         (session_id,),
     )
+    watched_songs = c.fetchall()
+    
+    c.execute(
+        "SELECT * FROM watched WHERE user_id=?",
+        (session_id,),
+    )
     watched = c.fetchall()
 
     print(watched)
@@ -946,6 +952,7 @@ def watched():
     response = {
         "status": "success",
         "watched": watched,
+        "watched_songs": watched_songs,
     }
     return jsonify(response)
 

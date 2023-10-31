@@ -725,7 +725,8 @@ input:valid ~ label {
   background-color: transparent;
 }
 
-.nav-sec, .open-dialog-btn {
+.nav-sec,
+.open-dialog-btn {
   margin-right: 15px;
 }
 
@@ -749,7 +750,6 @@ input:valid ~ label {
 
 .watched-table-cont {
   display: flex;
-  margin-top: 20px;
   flex-direction: column;
 }
 
@@ -812,7 +812,7 @@ input:valid ~ label {
   backdrop-filter: blur(15px);
   min-width: 160px;
   z-index: 1;
-  clip-path: inset(0px round 20px); 
+  clip-path: inset(0px round 20px);
 }
 
 .dropdown-content a {
@@ -830,6 +830,29 @@ input:valid ~ label {
 .dropdown-cont:hover .dropdown-content {
   display: block;
   margin-right: 50px;
+}
+
+.refresh-icon-cont {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 15px;
+}
+
+.ion-p {
+  font-size: 14px;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+}
+
+.refresh-icon {
+  font-size: 24px;
+  cursor: pointer;
+  margin-right: 5px; /* Add margin between icon and text */
 }
 
 b {

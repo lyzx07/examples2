@@ -31,15 +31,11 @@ $(document).ready(function () {
   });
 });
 
-//I added the newly updated watched variable to the add and delete routes 
-//but i still need to somehow update the watched variable for the watched tablelist.
-//mybe with another ajax request or to modify current request
-
 document.addEventListener("DOMContentLoaded", function () {
   fetch("/watched")
     .then((response) => response.json())
     .then((data) => {
-      const watched = data.watched;
+      const watched = data.watched_songs;
       console.log(watched);
       // Function to check checkboxes based on videoId
       function checkCheckboxes(videoId, isChecked) {
@@ -114,14 +110,14 @@ checkboxes.forEach((checkbox) => {
   });
 });
 
-var openDialogButton = document.getElementById('open-dialog-btn');
+var openDialogButton = document.getElementById("open-dialog-btn");
 
-var dialogCont = document.getElementById('dialog-watched');
+var dialogCont = document.getElementById("dialog-watched");
 
-var closeDialog = document.getElementById('close-dialog-btn');
+var closeDialog = document.getElementById("close-dialog-btn");
 
 // "Open dialog box" button opens the <dialog> modally
-openDialogButton.addEventListener('click', function () {
+openDialogButton.addEventListener("click", function () {
   if (typeof dialogCont.showModal === "function") {
     dialogCont.showModal();
   } else {
@@ -129,15 +125,59 @@ openDialogButton.addEventListener('click', function () {
   }
 });
 
-closeDialog.addEventListener('click', function() {
+closeDialog.addEventListener("click", function () {
   dialogCont.close();
-})
+});
 
-dialogCont.addEventListener("click", event => {
+dialogCont.addEventListener("click", (event) => {
   const rect = dialogCont.getBoundingClientRect();
-  if (event.clientY < rect.top || event.clientY > rect.bottom ||
-      event.clientX < rect.left || event.clientX > rect.right) {
-      dialogCont.close();
+  if (
+    event.clientY < rect.top ||
+    event.clientY > rect.bottom ||
+    event.clientX < rect.left ||
+    event.clientX > rect.right
+  ) {
+    dialogCont.close();
   }
 });
 
+document.getElementById("refresh-icon").addEventListener("click", function() {
+  // Make an AJAX request to the server to fetch the updated table content
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "/watched", true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      // Parse the JSON response
+      var response = JSON.parse(xhr.responseText);
+      
+      // Get the table body element
+      var tableBody = document.getElementById("table-body");
+      
+      // Clear the existing table content
+      tableBody.innerHTML = "";
+      
+      // Loop through the watched songs and add rows to the table
+      response.watched.forEach(function(song) {
+        console.log(song);
+        var row = document.createElement("tr");
+        var songNameCell = document.createElement("td");
+        var dateSavedCell = document.createElement("td");
+        var songLink = document.createElement("a");
+        
+        songLink.href = "https://www.youtube.com/watch?v=" + song[2];
+        songLink.target = "_blank";
+        songLink.dataset.videoId = song[2];
+        songLink.textContent = song[3];
+        
+        songNameCell.appendChild(songLink);
+        dateSavedCell.textContent = song[4];
+        
+        row.appendChild(songNameCell);
+        row.appendChild(dateSavedCell);
+        
+        tableBody.appendChild(row);
+      });
+    }
+  };
+  xhr.send();
+});
