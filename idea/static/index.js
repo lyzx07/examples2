@@ -62,18 +62,18 @@ jQuery(document).ready(function ($) {
       if (toggleBtn.text() == "Minimize") {
         toggleBtn.html("Add or Modify Ratings for this Creator");
         toggleBtn.prepend(
-          '<ion-icon name="star-sharp" class="icon1"></ion-icon>'
+          '<ion-icon name="star-sharp" class="custom-icon icon1"></ion-icon>'
         );
         toggleBtn.append(
-          '<ion-icon name="star-sharp" class="icon2"></ion-icon>'
+          '<ion-icon name="star-sharp" class="custom-icon icon2"></ion-icon>'
         );
       } else {
         toggleBtn.text("Minimize");
         toggleBtn.prepend(
-          '<ion-icon name="star-sharp" class="icon1"></ion-icon>'
+          '<ion-icon name="star-sharp" class="custom-icon icon1"></ion-icon>'
         );
         toggleBtn.append(
-          '<ion-icon name="star-sharp" class="icon2"></ion-icon>'
+          '<ion-icon name="star-sharp" class="custom-icon icon2"></ion-icon>'
         );
       }
     });
