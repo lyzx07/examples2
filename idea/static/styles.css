@@ -329,6 +329,26 @@ section {
   color: black;
 }
 
+.read-more-btn:visited {
+  color: black;
+  text-decoration: none;
+}
+
+.read-more-btn:link {
+  color: black;
+  text-decoration: none;
+}
+
+.read-more-btn:focus {
+  color: black;
+  text-decoration: none;
+}
+
+.read-more-btn:active {
+  color: black;
+  text-decoration: none;
+}
+
 .dropdown:hover {
   background-color: #f7fafa;
 }

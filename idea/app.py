@@ -190,7 +190,7 @@ def add_creator():
             conn.commit()
 
         c.execute(
-            "SELECT highlighted_note, created_at, channel_id FROM highlight_note WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",
+            "SELECT highlighted_note, created_at, channel_id FROM highlight_notes WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",
             (session_id,),
         )
         highlighted_note = c.fetchone()
@@ -326,7 +326,7 @@ def delete_creator():
         creators = c.fetchall()
 
         c.execute(
-            "SELECT highlighted_note, created_at, channel_id FROM highlight_note WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",
+            "SELECT highlighted_note, created_at, channel_id FROM highlight_notes WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",
             (session_id,),
         )
         highlighted_note = c.fetchone()
@@ -405,21 +405,36 @@ def add_note():
             (session_id, channelId, note),
         )
         existing_note_count = c.fetchone()[0]
+        
+        # Check if the highlighted note already exists in the database
+        c.execute(
+            "SELECT COUNT(*) FROM highlight_notes WHERE user_id = ? AND channel_id = ? AND highlighted_note = ?",
+            (session_id, channelId, highlighted_note),
+        )
+        existing_highlighted_note_count = c.fetchone()[0]
+        
         if not highlighted_note and not note:
             return apology("must provide note or highlighted note", 403)
-
+    
         if existing_note_count == 0:
             if highlighted_note and note:
-                c.execute(
-                    "INSERT INTO notes (user_id, channel_id, note) VALUES (?,?,?)",
-                    (session_id, channelId, note),
-                )
-                conn.commit()
-                c.execute(
-                    "INSERT INTO highlight_note (user_id, channel_id, highlighted_note) VALUES (?,?,?)",
-                    (session_id, channelId, highlighted_note),
-                )
-                conn.commit()
+                if existing_highlighted_note_count == 0:
+                    c.execute(
+                        "INSERT INTO notes (user_id, channel_id, note) VALUES (?,?,?)",
+                        (session_id, channelId, note),
+                    )
+                    conn.commit()
+                    c.execute(
+                        "INSERT INTO highlight_notes (user_id, channel_id, highlighted_note) VALUES (?,?,?)",
+                        (session_id, channelId, highlighted_note),
+                    )
+                    conn.commit()
+                else:
+                    c.execute(
+                        "UPDATE highlight_notes SET highlighted_note = ? WHERE user_id = ? AND channel_id = ?",
+                        (highlighted_note, session_id, channelId),
+                    )
+                    conn.commit()
             elif note and not highlighted_note:
                 c.execute(
                     "INSERT INTO notes (user_id, channel_id, note) VALUES (?,?,?)",
@@ -427,19 +442,28 @@ def add_note():
                 )
                 conn.commit()
             elif highlighted_note and not note:
-                c.execute(
-                    "INSERT INTO highlight_note (user_id, channel_id, highlighted_note) VALUES (?,?,?)",
-                    (session_id, channelId, highlighted_note),
-                )
-                conn.commit()
+                if existing_highlighted_note_count == 0:
+                    c.execute(
+                        "INSERT INTO highlight_notes (user_id, channel_id, highlighted_note) VALUES (?,?,?)",
+                        (session_id, channelId, highlighted_note),
+                    )
+                    conn.commit()
+                else:
+                    c.execute(
+                        "UPDATE highlight_notes SET highlighted_note = ? WHERE user_id = ? AND channel_id = ?",
+                        (highlighted_note, session_id, channelId),
+                    )
+                    conn.commit()
         else:
             pass
-
+        
+        # Retrieve the most recent saved highlighted note for the specific channel ID
         c.execute(
-            "SELECT highlighted_note, created_at, channel_id FROM highlight_note WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",
-            (session_id,),
+            "SELECT highlighted_note, created_at, channel_id FROM highlight_notes WHERE user_id = ? AND channel_id = ?",
+            (session_id, channelId),
         )
         highlighted_note = c.fetchone()
+    
 
         c.execute(
             "SELECT note, created_at, channel_id FROM notes WHERE user_id =?",
@@ -487,6 +511,8 @@ def add_note():
             "Inspirational",
             "Controversial",
         ]
+        
+        print(highlighted_note)
 
         return render_template(
             "index.html",
@@ -638,7 +664,7 @@ def add_ratings():
         print("ratings after:", ratings[0][0])
 
         c.execute(
-            "SELECT highlighted_note, created_at, channel_id FROM highlight_note WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",
+            "SELECT highlighted_note, created_at, channel_id FROM highlight_notes WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",
             (session_id,),
         )
         highlighted_note = c.fetchone()
@@ -767,7 +793,7 @@ def index():
     notes = c.fetchall()
 
     c.execute(
-        "SELECT highlighted_note, created_at, channel_id FROM highlight_note WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",
+        "SELECT highlighted_note, created_at, channel_id FROM highlight_notes WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",
         (session_id,),
     )
     highlighted_note = c.fetchone()
