@@ -553,6 +553,10 @@ input:valid ~ label {
   width: 100%;
 }
 
+.creator-link-cont {
+  margin: 25px 0;
+}
+
 .creator-link-cont ul {
   display: flex;
   justify-content: space-around;
@@ -879,13 +883,34 @@ b {
   padding: 5px;
 }
 
-.phrases dl {
+.phrases dl,
+.ptx-notes p {
   font-family: Arial, sans-serif;
   font-size: 16px;
   line-height: 1.5;
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+}
+
+.phrases dl,
+.pinned-note,
+.ptx-notes p {
+  color: white;
+}
+
+.phrases,
+.ptx-notes {
+  padding: 50px;
+}
+
+.phrases dt,
+.ptx-notes p b {
+  font-size: x-large;
+  font-family: "Alice", serif;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.5);
+  margin: 20px 0 10px 0;
 }
 
 .title {
@@ -902,15 +927,6 @@ b {
   border-inline-color: rgb(6, 23, 106);
   padding: 10px;
   opacity: 0.8;
-}
-
-.phrases dl,
-.pinned-note {
-  color: white;
-}
-
-.phrases {
-  padding: 50px;
 }
 
 .custom-icon {
@@ -978,14 +994,6 @@ b {
 
 #notes-table tbody tr:last-child td {
   border-bottom: none;
-}
-
-.phrases dt {
-  font-size: x-large;
-  font-family: "Alice", serif;
-  text-decoration: underline;
-  text-decoration-color: rgb(6, 23, 106);
-  margin: 20px 0 10px 0;
 }
 
 .audio {

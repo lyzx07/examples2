@@ -109,9 +109,9 @@ def add_creator():
     youtube = build(
         YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY
     )
-    
+
     ### still need to add first and last video dates to this
-    
+
     session_id = session.get("user_id")
 
     form_name = request.form.get("form_name")
@@ -143,30 +143,6 @@ def add_creator():
         channel_thumbnail = response["items"][0]["snippet"]["thumbnails"]["default"][
             "url"
         ]
-        published_at = response["items"][0]["snippet"]["publishedAt"]
-        created_date = "-"
-        formatted_date = "-"
-        try:
-            created_date = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%S%z")
-            formatted_date = created_date.strftime("%m/%d/%Y")
-        except ValueError:
-            pass
-        playlist_id = response["items"][0]["contentDetails"]["relatedPlaylists"][
-            "uploads"
-        ]
-        videos_list_request = youtube.playlistItems().list(
-            playlistId=playlist_id, part="snippet", maxResults=1
-        )
-        videos_list_response = videos_list_request.execute()
-        last_video_date = videos_list_response["items"][0]["snippet"]["publishedAt"]
-        formatted_last_video_date = "-"
-        try:
-            last_video_date_obj = datetime.strptime(
-                last_video_date, "%Y-%m-%dT%H:%M:%S%z"
-            )
-            formatted_last_video_date = last_video_date_obj.strftime("%m/%d/%Y")
-        except ValueError:
-            pass
 
         c.execute(
             "SELECT * FROM creators WHERE channel_id=? AND user_id=?",
@@ -174,7 +150,7 @@ def add_creator():
         )
         check = c.fetchone()
         if check is not None:
-            # If the creator already exists, return the creator ID in the response
+            # If the creator already exists, do nothing
             pass
         else:
             # If the creator doesn't exist, add it to the 'creators' variable and return the updated 'creators' variable in the response
@@ -191,6 +167,61 @@ def add_creator():
                 ),
             )
             conn.commit()
+            
+        c.execute(
+            "SELECT DISTINCT channel_id FROM creators WHERE user_id =?", (session_id,)
+        )
+        creator_ids = c.fetchall()
+
+        creator_video_dates = []
+
+        # Call YouTube API to get channel statistics
+        for channel_id in creator_ids:
+            request_query = youtube.channels().list(
+                part="statistics,snippet,contentDetails", id=channel_id[0]
+            )
+            response = request_query.execute()
+
+            # Extract necessary data from response
+            published_at = response["items"][0]["snippet"]["publishedAt"]
+            created_date = "-"
+            formatted_date = "-"
+            try:
+                created_date = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%S%z")
+                formatted_date = created_date.strftime("%m/%d/%Y")
+            except ValueError:
+                pass
+            playlist_id = response["items"][0]["contentDetails"]["relatedPlaylists"][
+                "uploads"
+            ]
+            videos_list_request = youtube.playlistItems().list(
+                playlistId=playlist_id, part="snippet", maxResults=1
+            )
+            videos_list_response = videos_list_request.execute()
+            last_video_date = videos_list_response["items"][0]["snippet"]["publishedAt"]
+            formatted_last_video_date = "-"
+            try:
+                last_video_date_obj = datetime.strptime(
+                    last_video_date, "%Y-%m-%dT%H:%M:%S%z"
+                )
+                formatted_last_video_date = last_video_date_obj.strftime("%m/%d/%Y")
+            except ValueError:
+                pass
+
+            creator_video_dates.append(
+                {
+                    "channel_id": channel_id[0],
+                    "created_date": formatted_date,
+                    "last_video_date": formatted_last_video_date,
+                }
+            )
+
+
+        # Fetch the updated 'creators' variable
+        c.execute(
+            "SELECT * FROM creators WHERE user_id=? ORDER BY id DESC", (session_id,)
+        )
+        creators = c.fetchall()
 
         c.execute(
             "SELECT highlighted_note, created_at, channel_id FROM highlight_notes WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",
@@ -203,12 +234,6 @@ def add_creator():
             (session_id,),
         )
         notes = c.fetchall()
-
-        # Fetch the updated 'creators' variable
-        c.execute(
-            "SELECT * FROM creators WHERE user_id=? ORDER BY id DESC", (session_id,)
-        )
-        creators = c.fetchall()
 
         aspects = [
             "Likeability",
@@ -252,6 +277,7 @@ def add_creator():
             video_count=video_count,
             subscriber_count=subscriber_count,
             formatted_date=formatted_date,
+            creator_video_dates=creator_video_dates,
             channel_description=channel_description,
             channel_thumbnail=channel_thumbnail,
             channel_name=channel_name,
@@ -393,12 +419,12 @@ def add_note():
     youtube = build(
         YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY
     )
-    
+
     c.execute(
         "SELECT DISTINCT channel_id FROM creators WHERE user_id =?", (session_id,)
     )
     creator_ids = c.fetchall()
-    
+
     creator_video_dates = []
 
     # Call YouTube API to get channel statistics
@@ -434,11 +460,13 @@ def add_note():
         except ValueError:
             pass
 
-        creator_video_dates.append({
-            "channel_id": channel_id[0],
-            "created_date": formatted_date,
-            "last_video_date": formatted_last_video_date
-        })
+        creator_video_dates.append(
+            {
+                "channel_id": channel_id[0],
+                "created_date": formatted_date,
+                "last_video_date": formatted_last_video_date,
+            }
+        )
 
     form_name = request.form.get("form_name")
     session_id = session.get("user_id")
@@ -560,8 +588,6 @@ def add_note():
             "Controversial",
         ]
 
-        print(highlighted_note)
-
         return render_template(
             "index.html",
             creators=creators,
@@ -584,12 +610,12 @@ def add_ratings():
 
     form_name = request.form.get("form_name")
     session_id = session.get("user_id")
-    
+
     c.execute(
         "SELECT DISTINCT channel_id FROM creators WHERE user_id =?", (session_id,)
     )
     creator_ids = c.fetchall()
-    
+
     creator_video_dates = []
 
     # Call YouTube API to get channel statistics
@@ -625,11 +651,13 @@ def add_ratings():
         except ValueError:
             pass
 
-        creator_video_dates.append({
-            "channel_id": channel_id[0],
-            "created_date": formatted_date,
-            "last_video_date": formatted_last_video_date
-        })
+        creator_video_dates.append(
+            {
+                "channel_id": channel_id[0],
+                "created_date": formatted_date,
+                "last_video_date": formatted_last_video_date,
+            }
+        )
 
     aspects = [
         "Likeability",
@@ -753,11 +781,6 @@ def add_ratings():
             columns[i] = columns[i].title()
             columns[i] = columns[i].replace("_", " ")
 
-        # Print the column names
-        print(columns)
-
-        print("ratings after:", ratings[0][0])
-
         c.execute(
             "SELECT highlighted_note, created_at, channel_id FROM highlight_notes WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",
             (session_id,),
@@ -825,7 +848,7 @@ def index():
         "SELECT DISTINCT channel_id FROM creators WHERE user_id =?", (session_id,)
     )
     creator_ids = c.fetchall()
-    
+
     creator_video_dates = []
 
     # Call YouTube API to get channel statistics
@@ -868,11 +891,13 @@ def index():
         except ValueError:
             pass
 
-        creator_video_dates.append({
-            "channel_id": channel_id[0],
-            "created_date": formatted_date,
-            "last_video_date": formatted_last_video_date
-        })
+        creator_video_dates.append(
+            {
+                "channel_id": channel_id[0],
+                "created_date": formatted_date,
+                "last_video_date": formatted_last_video_date,
+            }
+        )
 
         c.execute(
             "UPDATE creators SET videoCount =?, subscriberCount =?, description =?, username =?, thumbnail =? WHERE channel_id =?",
@@ -1025,9 +1050,6 @@ def save_song():
         )
         conn.commit()
 
-    print(title)
-    print(videoId)
-
     c.execute(
         "SELECT * FROM watched WHERE video_id=? AND user_id=?",
         (videoId, session_id),
@@ -1075,8 +1097,6 @@ def watched():
         (session_id,),
     )
     watched = c.fetchall()
-
-    print(watched)
 
     response = {
         "status": "success",
