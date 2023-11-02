@@ -154,9 +154,19 @@
               <h4 class="card-text">Video Count:</h4>
               <p class="card-text">{{ creator[5] }}</p>
               <h4 class="card-text">First Created Video Date:</h4>
-              <p class="card-text">{{ formatted_date }}</p>
+              <ul>
+                {% for video_date in creator_video_dates %} {% if
+                video_date.channel_id == creator[7] %}
+                <li>{{ video_date.created_date }}</li>
+                {% endif %} {% endfor %}
+              </ul>
               <h4 class="card-text">Last Created Video Date:</h4>
-              <p class="card-text">{{ formatted_last_video_date }}</p>
+              <ul>
+                {% for video_date in creator_video_dates %} {% if
+                video_date.channel_id == creator[7] %}
+                <li>{{ video_date.last_video_date }}</li>
+                {% endif %} {% endfor %}
+              </ul>
               <h4 class="card-text">Channel Description:</h4>
               <p class="card-text">{{ creator[2] }}</p>
               <div class="rating-cont">
@@ -173,7 +183,9 @@
                     {% endfor %}
                   </div>
                   <br /><br />
-                  <p class="rating-header section-rating-header">Other Ratings</p>
+                  <p class="rating-header section-rating-header">
+                    Other Ratings
+                  </p>
                   <div class="other-ratings">
                     {% if rating[1] is not none %}
                     <p class="rating-header">
