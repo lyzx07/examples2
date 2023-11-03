@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
 
+/* CSS FOR BODY SECTIONS AND BACKGROUNDS FOR ALL PAGES */
+
 *,
 *::before,
 *::after {
@@ -42,6 +44,53 @@ body {
   background-attachment: fixed;
 }
 
+/* CSS FOR FOOTER SECTION FOR ALL PAGES*/
+.custom-shape-divider-bottom-1682661039 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.custom-shape-divider-bottom-1682661039 svg {
+  position: relative;
+  display: block;
+  width: calc(138% + 1.3px);
+  height: 209px;
+}
+
+.custom-shape-divider-bottom-1682661039 .shape-fill {
+  fill: rgb(6, 20, 90);
+}
+
+.footer-cont {
+  position: relative;
+  margin-top: 150px;
+}
+
+.name {
+  position: relative;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.name a {
+  text-decoration: none;
+}
+
+.footer-links a,
+.footer-links img {
+  padding: 10px;
+}
+
+.footer-links img {
+  position: relative;
+}
+
+/* CSS FOR LOGIN PAGE NAVIGATION */
+
 .navigation {
   position: absolute;
   top: 0;
@@ -68,9 +117,15 @@ body {
   font-weight: normal;
 }
 
+.links {
+  border: none;
+}
+
 .navigation .git-link {
   margin: 5px;
 }
+
+/* CSS FOR LOGIN REGISTRATION MODAL */
 
 .modal-login {
   display: none; /* Hidden by default */
@@ -111,6 +166,8 @@ body {
   cursor: pointer;
 }
 
+/* CSS FOR REACT-I-RATE HEADER ON LOGIN PAGE */
+
 .header {
   position: relative;
   display: flex;
@@ -147,242 +204,14 @@ body {
   transform: scaleX(-1);
 }
 
+/* CSS FOR LOGIN AND REGISTRATION FORMS */
+
 section {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   width: 100%;
-}
-
-.form-box,
-.index-form-box {
-  position: relative;
-  width: 400px;
-  height: 450px;
-  background: transparent;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 30px rgb(6, 23, 106);
-  border-radius: 20px;
-  backdrop-filter: blur(15px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.form-index {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-index button {
-  align-self: center;
-  margin-top: 15px;
-}
-
-.form-index input {
-  align-self: center;
-  width: fit-content;
-}
-
-.form2-cont,
-.stats-cont,
-.rating {
-  color: white;
-}
-
-.stats-cont {
-  width: 90%;
-  margin: auto auto;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 30px rgb(6, 23, 106);
-  backdrop-filter: blur(15px);
-  margin-bottom: 20px;
-  margin-top: 20px;
-  border-radius: 10px;
-  padding: 10px;
-}
-
-.stats-cont:hover {
-  box-shadow: 0 0 20px white; /* Increase the shadow size on hover */
-}
-
-.stats-info {
-  padding: 10px;
-}
-
-.form2-cont {
-  display: flex;
-  justify-content: center;
-  margin-top: 5rem;
-}
-
-.input-field {
-  color: black;
-  background-color: white;
-  opacity: 0.8;
-}
-
-#message,
-#existing_note,
-.highlight-note {
-  color: black;
-}
-
-.dropdown {
-  color: black;
-}
-
-.form-group-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 10px;
-}
-
-.form-group {
-  margin-bottom: 10px;
-}
-
-.form-group label {
-  margin-bottom: 5px;
-}
-
-/* need to figure out how to get the general rating label to go above the select box */
-
-.form-group-label,
-.form-group-select,
-.other-form-group-title,
-.form-group label {
-  display: flex;
-  flex: 100%;
-  justify-content: center;
-  margin-bottom: 15px;
-}
-
-.response-container {
-  color: white;
-}
-
-.form3-textarea-cont,
-.form3-highlight-cont {
-  display: flex;
-  width: 50%;
-  justify-content: center;
-  flex-direction: column;
-  margin: auto auto;
-  padding: 15px;
-}
-
-.form3-textarea-cont {
-  border-bottom: 2px solid white;
-}
-
-.form3-textarea-cont textarea,
-.form3-highlight-cont select {
-  width: 70%;
-  margin: 15px auto 15px auto;
-}
-
-.form3-textarea-cont button,
-.form3-highlight-cont button {
-  margin: auto auto;
-  margin-top: 15px;
-}
-
-.dropdown,
-.form4-btn,
-.read-more-btn,
-.delete-btn,
-.highlight-select,
-.highlight-btn,
-.add-note-btn,
-.btn-show-more,
-.close-dialog-btn {
-  margin-block: 15px;
-  background-color: #fff;
-  border: 1px solid #d5d9d9;
-  border-radius: 8px;
-  box-shadow: rgba(213, 217, 217, 0.5) 0 2px 5px 0;
-  box-sizing: border-box;
-  color: black;
-  cursor: pointer;
-  display: inline-block;
-  font-size: 13px;
-  line-height: 29px;
-  padding: 0 10px 0 11px;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  vertical-align: middle;
-}
-
-.read-more-btn:hover {
-  text-decoration: none;
-  color: black;
-}
-
-.read-more-btn {
-  text-decoration: none;
-  color: black;
-}
-
-.read-more-btn:visited {
-  color: black;
-  text-decoration: none;
-}
-
-.read-more-btn:link {
-  color: black;
-  text-decoration: none;
-}
-
-.read-more-btn:focus {
-  color: black;
-  text-decoration: none;
-}
-
-.read-more-btn:active {
-  color: black;
-  text-decoration: none;
-}
-
-.dropdown:hover {
-  background-color: #f7fafa;
-}
-
-.dropdown:focus {
-  border-color: #008296;
-  box-shadow: rgba(213, 217, 217, 0.5) 0 2px 5px 0;
-  outline: 0;
-}
-
-.form-group-solo {
-  height: 150px;
-}
-
-.label-solo {
-  border-left: 2px solid white;
-  border-right: 2px solid white;
-  padding: 10px;
-}
-
-.other-ratings {
-  font-size: larger;
-  margin-bottom: 15px;
-}
-
-.form-group {
-  border-left: 2px solid white;
-  border-bottom: 2px solid white;
-}
-
-h2 {
-  font-size: 2em;
-  color: #fff;
-  text-align: center;
 }
 
 .inputbox {
@@ -485,52 +314,282 @@ input:valid ~ label {
   text-decoration: underline;
 }
 
-/* FOOTER */
-.custom-shape-divider-bottom-1682661039 {
-  position: absolute;
-  bottom: 0;
+/* The side navigation menu */
+.sidenav {
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 9999; /* Stay on top */
+  top: 0;
   left: 0;
-  width: 100%;
-  overflow: hidden;
-  line-height: 0;
+  background-color: #111; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 }
 
-.custom-shape-divider-bottom-1682661039 svg {
-  position: relative;
+.span-menu {
+  position: fixed;
+  color: rgb(6, 23, 106);
+  text-shadow: 1px 1px #fff;
+  font-size: larger;
+  cursor: pointer;
+  margin: 10px;
+  z-index: 9998;
+}
+
+/* The navigation menu links */
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
   display: block;
-  width: calc(138% + 1.3px);
-  height: 209px;
+  transition: 0.3s;
 }
 
-.custom-shape-divider-bottom-1682661039 .shape-fill {
-  fill: rgb(6, 20, 90);
+/* CSS FOR SIDEBAR NAV MENU FOR INDEX, PTX, AND CONTACT PAGES */
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+  color: #f1f1f1;
 }
 
-.footer-cont {
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+
+/* !!!!!!!!CSS FOR INDEX PAGE!!!!!!!! */
+
+/* CSS FOR INDEX FORMS */
+.form-box,
+.index-form-box {
   position: relative;
-  margin-top: 150px;
+  width: 400px;
+  height: 450px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 30px rgb(6, 23, 106);
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.name {
-  position: relative;
-  margin-bottom: 20px;
+.form-index {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-index button {
+  align-self: center;
+  margin-top: 15px;
+}
+
+.form-index input {
+  align-self: center;
+  width: fit-content;
+}
+
+.form2-cont,
+.rating {
   color: white;
 }
 
-.name a {
-  text-decoration: none;
+.form2-cont {
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem;
 }
 
-.footer-links a,
-.footer-links img {
+.input-field {
+  color: black;
+  background-color: white;
+  opacity: 0.8;
+}
+
+#message,
+#existing_note,
+.highlight-note {
+  color: black;
+}
+
+.dropdown {
+  color: black;
+}
+
+.form-group-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+}
+
+.form-group-label,
+.form-group-select,
+.other-form-group-title,
+.form-group label {
+  display: flex;
+  flex: 100%;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.response-container {
+  color: white;
+}
+
+.form3-textarea-cont,
+.form3-highlight-cont {
+  display: flex;
+  width: 50%;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto auto;
+  padding: 15px;
+}
+
+.form3-textarea-cont {
+  border-bottom: 2px solid white;
+}
+
+.form3-textarea-cont textarea,
+.form3-highlight-cont select {
+  width: 70%;
+  margin: 15px auto 15px auto;
+}
+
+.form3-textarea-cont button,
+.form3-highlight-cont button {
+  margin: auto auto;
+  margin-top: 15px;
+}
+
+.form-group-solo {
+  height: 150px;
+}
+
+.label-solo {
+  border-left: 2px solid white;
+  border-right: 2px solid white;
   padding: 10px;
 }
 
-.footer-links img {
-  position: relative;
+.other-ratings {
+  font-size: larger;
+  margin-bottom: 15px;
 }
 
-/* INDEX CSS */
+.form-group {
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+}
+
+/* CSS FOR ALL OR MOST FORM BUTTONS */
+
+.dropdown,
+.form4-btn,
+.read-more-btn,
+.delete-btn,
+.highlight-select,
+.highlight-btn,
+.add-note-btn,
+.btn-show-more,
+.close-dialog-btn {
+  margin-block: 15px;
+  background-color: #fff;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  box-shadow: rgba(213, 217, 217, 0.5) 0 2px 5px 0;
+  box-sizing: border-box;
+  color: black;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 13px;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+}
+
+.read-more-btn:hover {
+  text-decoration: none;
+  color: black;
+}
+
+.read-more-btn {
+  text-decoration: none;
+  color: black;
+}
+
+.read-more-btn:visited {
+  color: black;
+  text-decoration: none;
+}
+
+.read-more-btn:link {
+  color: black;
+  text-decoration: none;
+}
+
+.read-more-btn:focus {
+  color: black;
+  text-decoration: none;
+}
+
+.read-more-btn:active {
+  color: black;
+  text-decoration: none;
+}
+
+.read-more-btn {
+  width: 100%;
+}
+
+.dropdown:hover {
+  background-color: #f7fafa;
+}
+
+.dropdown:focus {
+  border-color: #008296;
+  box-shadow: rgba(164, 207, 207, 0.5) 0 2px 5px 0;
+  outline: 0;
+}
+
+/* CSS FOR ALL OR MOST SECTION HEADERS/TITLES */
+
+.cont-index {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h2 {
+  font-size: 2em;
+  color: #fff;
+  text-align: center;
+}
 
 .h1,
 .h2 {
@@ -547,10 +606,6 @@ input:valid ~ label {
   opacity: 0.7;
   z-index: 100;
   font-weight: bold;
-}
-
-.read-more-btn {
-  width: 100%;
 }
 
 .creator-link-cont {
@@ -598,22 +653,7 @@ input:valid ~ label {
   color: gray;
 }
 
-/* .container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -moz-transform: translateX(-50%) translateY(-50%);
-  -webkit-transform: translateX(-50%) translateY(-50%);
-  transform: translateX(-50%) translateY(-50%);
-} */
-
-.cont-index {
-  display: flex;
-  height: 100vh;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
+/* CSS FOR CREATOR CONTAINERS */
 
 .you-link {
   color: white;
@@ -627,10 +667,6 @@ input:valid ~ label {
   color: white;
   font-weight: bold;
   padding: 1rem;
-}
-
-.element {
-  color: white;
 }
 
 #wrap_toggle {
@@ -694,54 +730,78 @@ input:valid ~ label {
   margin-top: -25px;
 }
 
-/* The side navigation menu */
-.sidenav {
-  height: 100%; /* 100% Full-height */
-  width: 0; /* 0 width - change this with JavaScript */
-  position: fixed; /* Stay in place */
-  z-index: 9999; /* Stay on top */
-  top: 0;
-  left: 0;
-  background-color: #111; /* Black*/
-  overflow-x: hidden; /* Disable horizontal scroll */
-  padding-top: 60px; /* Place content 60px from the top */
-  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+/* CSS FOR RATINGS AND NOTES SECTIONS OF INDEX PAGE */
+
+.custom-icon {
+  color: gold;
 }
 
-.span-menu {
-  position: fixed;
-  color: rgb(6, 23, 106);
-  text-shadow: 1px 1px #fff;
-  font-size: larger;
-  cursor: pointer;
-  margin: 10px;
-  z-index: 9998;
+.rating-section {
+  padding: 10px;
+  border-bottom: 2px solid #ddd;
+  border-top: 2px solid #ddd;
 }
 
-/* The navigation menu links */
-.sidenav a {
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
-  transition: 0.3s;
+.rating-header {
+  font-size: 16px;
 }
 
-/* When you mouse over the navigation links, change their color */
-.sidenav a:hover {
-  color: #f1f1f1;
+.section-rating-header {
+  position: relative;
+  display: inline-block;
 }
 
-/* Position and style the close button (top right corner) */
-.sidenav .closebtn {
+.section-rating-header::after {
+  content: "";
   position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 50px;
+  left: -5%;
+  right: -5%;
+  bottom: -2px; /* Adjust this value to control the distance of the line from the text */
+  height: 1px;
+  background-color: #ddd;
 }
 
+.notes-cont {
+  background-color: transparent;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
+.notes-header {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.notes-subheader {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+#notes-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#notes-table th,
+#notes-table td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+#notes-table th {
+  font-weight: bold;
+}
+
+#notes-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/*!!!!!!!!CSS FOR PENTATONIX PAGE!!!!!!!!*/
+
+/* CSS FOR NAVBAR WITH DIALOG AND DROPDOWN MENU */
 .nav-bar-dialog {
   display: flex;
   justify-content: flex-end;
@@ -878,6 +938,8 @@ input:valid ~ label {
   margin-right: 5px; /* Add margin between icon and text */
 }
 
+/* CSS FOR TEXT SECTIONS ON PTX PAGE */
+
 b {
   font-size: larger;
   padding: 5px;
@@ -929,73 +991,6 @@ b {
   opacity: 0.8;
 }
 
-.custom-icon {
-  color: gold;
-}
-
-.rating-section {
-  padding: 10px;
-  border-bottom: 2px solid #ddd;
-  border-top: 2px solid #ddd;
-}
-
-.rating-header {
-  font-size: 16px;
-}
-
-.section-rating-header {
-  position: relative;
-  display: inline-block;
-}
-
-.section-rating-header::after {
-  content: "";
-  position: absolute;
-  left: -5%;
-  right: -5%;
-  bottom: -2px; /* Adjust this value to control the distance of the line from the text */
-  height: 1px;
-  background-color: #ddd;
-}
-
-.notes-cont {
-  background-color: transparent;
-  padding: 10px;
-  border-radius: 5px;
-  margin: 10px 0;
-}
-
-.notes-header {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.notes-subheader {
-  font-size: 14px;
-  margin-bottom: 5px;
-}
-
-#notes-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-#notes-table th,
-#notes-table td {
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
-  text-align: left;
-}
-
-#notes-table th {
-  font-weight: bold;
-}
-
-#notes-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
 .audio {
   padding: 15px;
 }
@@ -1007,13 +1002,7 @@ b {
   padding: 50px;
 }
 
-.index-stats {
-  color: white;
-}
-
-.index-p {
-  font-size: larger;
-}
+/* CSS FOR SONG LISTS PTX PAGE */
 
 ul {
   list-style: none;
@@ -1039,6 +1028,8 @@ ul {
   max-height: 400px;
   overflow: hidden;
 }
+
+/* CSS FOR PROFILE PIC AND ANIMATION */
 
 .profile-cont {
   display: flex;
@@ -1087,6 +1078,7 @@ ul {
   inherits: false;
 }
 
+/* CSS FOR STATS CONTAINER AND HEADER/TITLE CONTAINER */
 .parent {
   position: relative;
 }
@@ -1123,6 +1115,8 @@ ul {
   border-left: 15px solid rgb(6, 23, 106);
   border-right: 15px solid rgb(6, 23, 106);
 }
+
+/* !!!!!!!!MEDIA QUERIES!!!!!!!! */
 
 @media only screen and (max-width: 1250px) {
   #video-count,
