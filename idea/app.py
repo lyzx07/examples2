@@ -1341,6 +1341,12 @@ def pentatonix():
         formatted_date=formatted_date,
         watched=watched,
     )
+    
+@app.route("/contact")
+def contact():
+
+    # Redirect user to login form
+    return render_template("/contact.html")    
 
 
 @app.route("/logout")
