@@ -16,35 +16,39 @@ my logo displayed in the footer CHECK
 HOME
 place where user can input url or callsign of youtube account, which would go into a database CHECK
 
-list of all creators saved in their homepage CHECK, list of videos that the user has watched from url or title and 
+list of all creators saved in their homepage CHECK
+
+list of videos that the user has watched from url or title and 
 possibly a photo or their logo
 
 each creator should maybe have their own box with pic and information CHECK
 
-different 1-5 star ratings(likability, pity, sassy, nice, loud, quiet, etc)CHECK
+different 1-5 star ratings(likability, pity, sassy, nice, loud, quiet, etc) CHECK
 
 place for notes on the creator and order them CHECK
 
 date the creator was added with ability to estimate when they subscribed 
 
-how long ago was the creators last video released CHECK maybe an average of how often they upload
+how long ago was the creators last video released CHECK 
+
+maybe an average of how often they upload
 
 search bar to find creator easily go to that part of the page (MODIFIED WITH A LINK AND LIST OF CREATORS)
-
-maybe search bar to suggest other creators that are reacting to an artist you like(with view counts and likes)
 
 PENTATONIX
 make column that lists all ptx videos
 
-a column that lists all the songs a reactor has listened to. move from list of videos on click
+a column that lists all the songs a reactor has listened to. move from list of videos on click CHECK
 
-have section with lists/genres of ptx videos( best to start with, different moods, most popular, etc)
+have section with lists/genres of ptx videos( best to start with, different moods, most popular, etc) MOSTLY
 
 best practices for reacting to ptx (copyright, how to avoid, blur, opacity, pausings, etc)
 
-blurb about the band(how started with sing off, avi leaving, matt joining, etc)
+blurb about the band(how started with sing off, avi leaving, matt joining, etc) MOSTLY
 
-lists of superfruit videos solo projects and other side projects
+lists of superfruit videos solo projects and other side projects MOSTLY
+
+change refresh text to tool tip when hovering
 
 from validate_email import validate_email
 

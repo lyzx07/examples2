@@ -41,7 +41,69 @@
 
     <div class="cont-contact">
       <h1 class="text-center h1">React-i-rate</h1>
-      <h3 class="text-center h3">Contact Page</h3>
+      <h3 class="text-center h3">Contact/About</h3>
+    </div>
+    <div class="contact-big-cont">
+      <div class="contact-form-cont">
+        <div class="contact-form-content-cont text-center">
+          <div class="contact-img-cont">
+            <img
+              class="contact-img"
+              src="https://images.pexels.com/photos/19007755/pexels-photo-19007755/free-photo-of-view-of-the-milky-way-and-night-sky-over-the-forest.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              alt="#"
+            />
+            <h4 class="contact-form-header text-center">Contact Form</h4>
+            <h5 class="contact-form-h5 text-center">Message me with questions, comments, or suggestions!!</h5>
+          </div>
+          <form action="/contact" class="contact-form-content text-center">
+            <div class="label-icon-cont">
+              <label for="contact-name">Name</label>
+              <div class="ion-cont">
+                <ion-icon name="person-circle"></ion-icon>
+              </div>
+            </div>
+            <input
+              type="text"
+              name="contact-name"
+              class="contact-name text-center"
+              placeholder="Name"
+            />
+            <div class="label-icon-cont">
+              <label for="contact-email">Email Address</label>
+              <ion-icon name="mail-sharp"></ion-icon>
+            </div>
+            <input
+              id="contact-email"
+              class="text-center"
+              name="contact-email"
+              placeholder="Email address"
+              type="email"
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+            />
+            <div class="label-icon-cont">
+              <label for="message">Message:</label>
+              <ion-icon name="document-text"></ion-icon>
+            </div>
+            <textarea
+              class="text-center"
+              id="message"
+              name="message"
+              placeholder="Type Message Here"
+              rows="3"
+              cols="20"
+            ></textarea>
+            <div class="contact-form-btn-cont text-center">
+              <button
+                type="submit"
+                name="contact-submit-btn"
+                class="contact-submit-btn"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
 
     <div class="footer-cont">

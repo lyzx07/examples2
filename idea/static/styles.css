@@ -371,10 +371,9 @@ input:valid ~ label {
   margin-left: 50px;
 }
 
-
 /* !!!!!!!!CSS FOR INDEX PAGE!!!!!!!! */
 
-/* CSS FOR INDEX FORMS */
+/* CSS FOR INDEX FORMS AND CONTACT FORM*/
 .form-box,
 .index-form-box {
   position: relative;
@@ -406,7 +405,8 @@ input:valid ~ label {
 }
 
 .form2-cont,
-.rating {
+.rating,
+.contact-form-header {
   color: white;
 }
 
@@ -420,6 +420,107 @@ input:valid ~ label {
   color: black;
   background-color: white;
   opacity: 0.8;
+}
+
+.contact-form-content-cont {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 30px rgb(6, 23, 106);
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  margin: 0 auto;
+  padding-bottom: 30px;
+  box-sizing: border-box;
+}
+
+.contact-form-btn-cont {
+  width: 100%;
+}
+
+.contact-form-content button {
+  margin-top: 15px;
+}
+
+.contact-form-content input,
+.contact-form-content textarea {
+  width: 60%;
+  max-width: 500px;
+  align-self: center;
+  margin-bottom: 20px;
+  border: none;
+  border-bottom: 2px solid white;
+  color: black;
+}
+
+.contact-form-content .label-icon-cont label {
+  color: white;
+  padding: 10px 0 10px 5px;
+  text-align: center;
+}
+
+.label-icon-cont {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.label-icon-cont ion-icon, .contact-form-h5 {
+  color: white;
+}
+
+.label-icon-cont .icon-cont {
+  height: 30px;
+}
+
+.label-icon-cont label {
+  height: 30px;
+  font-size: 16px;
+}
+
+.contact-big-cont {
+  position: relative;
+}
+
+.contact-form-cont {
+  width: 50%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.contact-img-cont {
+  position: relative;
+  width: 100%;
+}
+
+.contact-img-cont img {
+  width: 100%;
+  max-width: 500px;
+  height: 200px;
+  border-radius: 20px 20px 0 0;
+}
+
+.contact-form-header {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+}
+
+.contact-form-h5 {
+  position: absolute;
+  top: 55%; /* Adjust the value as needed */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.7;
 }
 
 #message,
@@ -516,7 +617,8 @@ input:valid ~ label {
 .highlight-btn,
 .add-note-btn,
 .btn-show-more,
-.close-dialog-btn {
+.close-dialog-btn,
+.contact-submit-btn {
   margin-block: 15px;
   background-color: #fff;
   border: 1px solid #d5d9d9;
@@ -584,7 +686,8 @@ input:valid ~ label {
 
 /* CSS FOR ALL OR MOST SECTION HEADERS/TITLES */
 
-.cont-index, .cont-contact {
+.cont-index,
+.cont-contact {
   display: flex;
   height: 100vh;
   flex-direction: column;
@@ -1135,6 +1238,20 @@ ul {
   }
 }
 
+@media only screen and (max-width: 838px) {
+  .contact-form-h5 {
+    top: 70%; /* Adjust the value as needed */
+  }
+
+  .contact-form-content-cont {
+    width: 500px;
+  }
+
+  .contact-form-cont {
+    width: 75%;
+  }
+}
+
 @media only screen and (max-width: 600px) {
   .header #pic1 {
     display: none;
@@ -1156,6 +1273,18 @@ ul {
   .form-box {
     width: 300px;
     height: 385px;
+  }
+
+  .contact-form-content-cont {
+    width: 400px;
+  }
+
+  .contact-form-cont {
+    width: 85%;
+  }
+
+  .contact-form-h5 {
+    top: 70%; /* Adjust the value as needed */
   }
 
   h2 {
@@ -1241,5 +1370,13 @@ ul {
 
   .phrases dd {
     width: 250px;
+  }
+
+  .contact-form-content-cont {
+    width: 270px;
+  }
+
+  .contact-form-cont {
+    width: 95%;
   }
 }
