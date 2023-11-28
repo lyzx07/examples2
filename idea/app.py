@@ -11,6 +11,7 @@ from flask import (
     jsonify,
     url_for,
 )
+from flask_mail import Mail, Message
 import sqlite3
 from datetime import datetime
 import random
@@ -40,6 +41,15 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'lyzx07@gmail.com'
+app.config['MAIL_PASSWORD'] = 'qbldddsdmmpawmia'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
+mail = Mail(app)
+
 # Configure SQLite database
 conn = sqlite3.connect("rate-app-real.db", check_same_thread=False)
 c = conn.cursor()
@@ -58,6 +68,20 @@ def after_request(response):
     response.headers["Expires"] = 0
     response.headers["Pragma"] = "no-cache"
     return response
+
+@app.route('/send_email', methods=["POST"])
+def send_email():
+    try:
+        name = request.form.get("contact-name")
+        visitor_email = request.form.get("contact-email")
+        message = request.form.get("message")
+
+        msg = Message('Hello', sender = 'lyzx07@gmail.com', recipients = ['lyzx07@gmail.com'])
+        msg.body = f"This is the email body \n Name: {name} \n Email: {visitor_email} \n Message: {message}"
+        mail.send(msg)
+        return 'Mail sent!'
+    except Exception as e:
+        return(str(e))
 
 
 @app.route("/login", methods=["GET", "POST"])

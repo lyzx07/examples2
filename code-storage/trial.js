@@ -1,19 +1,49 @@
-// Prompt user for Website information
-/* let purpose = prompt("What is the purpose of the website?");
-let scope = prompt("What is the scope of the website?");
-let content = prompt("What type of content will be on the website?");
-let design = prompt("What are your design preferences?");
-let branding = prompt("Do you have any branding guidelines to follow?");
-let budget = prompt("What's your budget for the website?");
-let timeline = prompt("What is your timeline for building the website?");
+var colorDivs = document.getElementsByClassName("colors");
 
-// Log user inputs to console
-console.log("Purpose of website:", purpose);
-console.log("Scope of website:", scope);
-console.log("Type of content:", content);
-console.log("Design preferences:", design);
-console.log("Branding guidelines:", branding);
-console.log("Website budget:", budget);
-console.log("Website timeline:", timeline);
- */
+for (var i = 0; i < colorDivs.length; i++) {
+  var randomColor = getRandomColor();
+  colorDivs[i].style.backgroundColor = randomColor;
+}
+
+function getRandomColor() {
+  var letters = "0123456789ABCDEF";
+  var color = "#";
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+
+var colorContDivs = document.querySelectorAll('.color-cont');
+var usedPositions = [];
+
+colorContDivs.forEach(function(div) {
+  var randomX, randomY, randomSize;
+  var maxAttempts = 10;
+  var attempts = 0;
+
+  do {
+    randomX = Math.random() * (window.innerWidth - 100);
+    randomY = Math.random() * (window.innerHeight - 100);
+    randomSize = Math.floor(Math.random() * (200 - 60 + 1)) + 60;
+    attempts++;
+  } while (isOverlapping(randomX, randomY) && attempts < maxAttempts);
+
+  div.style.left = randomX + 'px';
+  div.style.top = randomY + 'px';
+  div.querySelector('.colors').style.width = randomSize + 'px';
+  div.querySelector('.colors').style.height = randomSize + 'px';
+  usedPositions.push({ x: randomX, y: randomY });
+});
+
+function isOverlapping(x, y) {
+  for (var i = 0; i < usedPositions.length; i++) {
+    var position = usedPositions[i];
+    if (Math.abs(x - position.x) < 100 && Math.abs(y - position.y) < 100) {
+      return true;
+    }
+  }
+  return false;
+}
 

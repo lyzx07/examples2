@@ -53,9 +53,16 @@
               alt="#"
             />
             <h4 class="contact-form-header text-center">Contact Form</h4>
-            <h5 class="contact-form-h5 text-center">Message me with questions, comments, or suggestions!!</h5>
+            <h5 class="contact-form-h5 text-center">
+              Message me with questions, comments, or suggestions!!
+            </h5>
           </div>
-          <form action="/contact" class="contact-form-content text-center">
+          <form
+            name="email-form"
+            action="/send_email"
+            method="POST"
+            class="contact-form-content text-center"
+          >
             <div class="label-icon-cont">
               <label for="contact-name">Name</label>
               <div class="ion-cont">

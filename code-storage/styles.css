@@ -13,9 +13,30 @@ html {
   margin: 0;
 }
 
-#canvas {
+.bg-index-body {
+  background-color: darkgray;
+}
+
+.big-color-cont {
+  position: relative;
+  height: 100svh;
+}
+
+.color-cont {
+  position: absolute;
+}
+
+.colors {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* #canvas {
     width: 500px;
     height: 500px;
     border: 1px solid black;
-  }
+} */
   
