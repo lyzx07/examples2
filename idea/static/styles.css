@@ -427,7 +427,8 @@ input:valid ~ label {
   opacity: 0.8;
 }
 
-.contact-form-content-cont {
+.contact-form-content-cont,
+.about-me-cont {
   position: relative;
   width: 100%;
   max-width: 500px;
@@ -477,7 +478,8 @@ input:valid ~ label {
   padding: 10px;
 }
 
-.label-icon-cont ion-icon, .contact-form-h5 {
+.label-icon-cont ion-icon,
+.contact-form-h5 {
   color: white;
 }
 
@@ -491,28 +493,61 @@ input:valid ~ label {
 }
 
 .contact-big-cont {
+  display: flex;
   position: relative;
-}
-
-.contact-form-cont {
-  width: 50%;
+  width: 95%;
+  max-width: 1175px;
   margin: 0 auto;
+  border-radius: 20px;
+  background-image: url("https://images.pexels.com/photos/19007755/pexels-photo-19007755/free-photo-of-view-of-the-milky-way-and-night-sky-over-the-forest.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  margin-top: 150px;
+}
+
+.contact-form-cont,
+.about-me-cont {
+  width: 50%;
   position: relative;
 }
 
-.contact-img-cont {
+.contact-img-cont, .about-img-cont {
   position: relative;
   width: 100%;
 }
 
-.contact-img-cont img {
+.contact-form-cont {
+  top: 120px;
+}
+
+.about-me-cont {
+  bottom: 120px;
+  color: white;
+}
+
+.about-me-p {
+  width: 50%;
+  line-height: 25px;
+  padding: 10px;
+}
+
+.contact-form-cont {
+  left: 10%;
+  transform: translateX(-50%);
+}
+.about-me-cont {
+  right: 10%;
+  transform: translateX(50%);
+}
+
+.contact-img-cont img, .about-img-cont img {
   width: 100%;
   max-width: 500px;
   height: 200px;
   border-radius: 20px 20px 0 0;
 }
 
-.contact-form-header {
+.contact-form-header, .about-header {
   position: absolute;
   top: 35%;
   left: 50%;
@@ -520,7 +555,7 @@ input:valid ~ label {
   font-size: 30px;
 }
 
-.contact-form-h5 {
+.contact-form-h5, .about-h5 {
   position: absolute;
   top: 55%; /* Adjust the value as needed */
   left: 50%;
@@ -1242,19 +1277,62 @@ ul {
     position: relative;
     text-align: center;
   }
+
+  .contact-big-cont {
+    width: 85%;
+    height: 613px;
+  }
+
+  .contact-form-cont {
+    left: 15%;
+  }
+
+  .about-me-cont {
+    right: 15%;
+  }
 }
+
+@media only screen and (max-width: 1066px) {
+  .contact-big-cont {
+    flex-direction: column;
+    justify-content: center;
+    height: auto;
+  }
+
+  .contact-form-cont, .about-me-cont {
+    position: static;
+    width: 100%;
+    transform: translateX(0%);
+  }
+
+  .contact-form-cont {
+    position: relative;
+    bottom: 20px;
+    left: 0;
+  }
+
+  .about-me-cont {
+    position: relative;
+    bottom: 70px;
+    right: 0;
+  }
+
+  .about-me-cont .about-me-p {
+    text-align: center;
+    width: 100%;
+    line-height: 50px;
+    font-size: larger;
+  }
+}
+
 
 @media only screen and (max-width: 838px) {
   .contact-form-h5 {
     top: 70%; /* Adjust the value as needed */
   }
 
-  .contact-form-content-cont {
+  .contact-form-content-cont, .about-me-cont {
     width: 500px;
-  }
-
-  .contact-form-cont {
-    width: 75%;
   }
 }
 
@@ -1281,12 +1359,8 @@ ul {
     height: 385px;
   }
 
-  .contact-form-content-cont {
+  .contact-form-content-cont, .about-me-cont {
     width: 400px;
-  }
-
-  .contact-form-cont {
-    width: 85%;
   }
 
   .contact-form-h5 {
@@ -1347,6 +1421,12 @@ ul {
   }
 }
 
+@media only screen and (max-width: 465px) {
+  .contact-form-content-cont, .about-me-cont {
+    width: 350px;
+  }
+}
+
 @media only screen and (max-width: 380px) {
   .h1,
   .h2 {
@@ -1360,6 +1440,16 @@ ul {
   .profile-pic {
     width: 325px;
     height: 325px;
+  }
+
+  .contact-form-content-cont, .about-me-cont {
+    width: 310px;
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  .contact-form-content-cont, .about-me-cont {
+    width: 270px;
   }
 }
 
@@ -1378,11 +1468,7 @@ ul {
     width: 250px;
   }
 
-  .contact-form-content-cont {
-    width: 270px;
-  }
-
-  .contact-form-cont {
-    width: 95%;
+  .contact-form-content-cont, .about-me-cont {
+    width: 265px;
   }
 }
