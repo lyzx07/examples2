@@ -3,7 +3,7 @@ add an email column to the users table CHECK
 
 add email input to registration modal CHECK
 
-make a php file to deal with the email
+add code to deal with the email CHECK
 
 figure out forgot password and forgot username in regards to email and resetting password
 
@@ -18,12 +18,9 @@ place where user can input url or callsign of youtube account, which would go in
 
 list of all creators saved in their homepage CHECK
 
-list of videos that the user has watched from url or title and 
-possibly a photo or their logo
-
 each creator should maybe have their own box with pic and information CHECK
 
-different 1-5 star ratings(likability, pity, sassy, nice, loud, quiet, etc) CHECK
+different 1-10 star ratings(likability, pity, sassy, nice, loud, quiet, etc) CHECK
 
 place for notes on the creator and order them CHECK
 
@@ -36,7 +33,7 @@ maybe an average of how often they upload
 search bar to find creator easily go to that part of the page (MODIFIED WITH A LINK AND LIST OF CREATORS)
 
 PENTATONIX
-make column that lists all ptx videos
+make columns that lists all ptx videos
 
 a column that lists all the songs a reactor has listened to. move from list of videos on click CHECK
 

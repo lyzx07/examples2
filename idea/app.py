@@ -27,6 +27,7 @@ from validate_email import validate_email
 from flask import flash
 from googleapiclient.discovery import build
 from helpers import apology, login_required
+import math
 
 # Configure application
 app = Flask(__name__)
@@ -41,12 +42,12 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-app.config['MAIL_SERVER']='smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'lyzx07@gmail.com'
-app.config['MAIL_PASSWORD'] = 'qbldddsdmmpawmia'
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 465
+app.config["MAIL_USERNAME"] = "lyzx07@gmail.com"
+app.config["MAIL_PASSWORD"] = "qbldddsdmmpawmia"
+app.config["MAIL_USE_TLS"] = False
+app.config["MAIL_USE_SSL"] = True
 
 mail = Mail(app)
 
@@ -69,19 +70,22 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
-@app.route('/send_email', methods=["POST"])
+
+@app.route("/send_email", methods=["POST"])
 def send_email():
     try:
         name = request.form.get("contact-name")
         visitor_email = request.form.get("contact-email")
         message = request.form.get("message")
 
-        msg = Message('Hello', sender = 'lyzx07@gmail.com', recipients = ['lyzx07@gmail.com'])
+        msg = Message(
+            "Hello", sender="lyzx07@gmail.com", recipients=["lyzx07@gmail.com"]
+        )
         msg.body = f"This is the email body \n Name: {name} \n Email: {visitor_email} \n Message: {message}"
         mail.send(msg)
-        return 'Mail sent!'
+        return "Mail sent!"
     except Exception as e:
-        return(str(e))
+        return str(e)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -133,8 +137,6 @@ def add_creator():
     youtube = build(
         YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY
     )
-
-    ### still need to add first and last video dates to this
 
     session_id = session.get("user_id")
 
@@ -191,7 +193,7 @@ def add_creator():
                 ),
             )
             conn.commit()
-            
+
         c.execute(
             "SELECT DISTINCT channel_id FROM creators WHERE user_id =?", (session_id,)
         )
@@ -239,7 +241,6 @@ def add_creator():
                     "last_video_date": formatted_last_video_date,
                 }
             )
-
 
         # Fetch the updated 'creators' variable
         c.execute(
@@ -444,6 +445,9 @@ def add_note():
         YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY
     )
 
+    form_name = request.form.get("form_name")
+    session_id = session.get("user_id")
+
     c.execute(
         "SELECT DISTINCT channel_id FROM creators WHERE user_id =?", (session_id,)
     )
@@ -491,9 +495,6 @@ def add_note():
                 "last_video_date": formatted_last_video_date,
             }
         )
-
-    form_name = request.form.get("form_name")
-    session_id = session.get("user_id")
 
     if form_name == "form3":
         channelId = request.form.get("channel_id")
@@ -1109,12 +1110,13 @@ def remove_song():
 @app.route("/watched", methods=["GET", "POST"])
 def watched():
     session_id = session.get("user_id")
+    page = request.args.get("page", 1, type=int)
 
     c.execute(
         "SELECT video_id FROM watched WHERE user_id=?",
         (session_id,),
     )
-    watched_songs = c.fetchall()
+    watched_ids = c.fetchall()
 
     c.execute(
         "SELECT * FROM watched WHERE user_id=?",
@@ -1122,10 +1124,31 @@ def watched():
     )
     watched = c.fetchall()
 
+    c.execute(
+        "SELECT COUNT(*) FROM watched WHERE user_id=?",
+        (session_id,),
+    )
+    song_count = c.fetchall()[0][0]
+
+    songs_per_page = 10
+
+    total_pages = math.ceil(song_count / songs_per_page)
+
+    start = (page - 1) * total_pages
+    end = start + songs_per_page
+
+    songs_on_page = watched[start:end]
+
+    print(song_count)
+    print(total_pages)
+
     response = {
         "status": "success",
         "watched": watched,
-        "watched_songs": watched_songs,
+        "watched_ids": watched_ids,
+        "song_count": song_count,
+        "total_pages": total_pages,
+        "songs_on_page": songs_on_page,
     }
     return jsonify(response)
 
@@ -1365,12 +1388,12 @@ def pentatonix():
         formatted_date=formatted_date,
         watched=watched,
     )
-    
+
+
 @app.route("/contact")
 def contact():
-
     # Redirect user to login form
-    return render_template("/contact.html")    
+    return render_template("/contact.html")
 
 
 @app.route("/logout")

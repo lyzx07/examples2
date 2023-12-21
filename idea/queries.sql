@@ -37,6 +37,14 @@ CREATE TABLE IF NOT EXISTS notes (
     FOREIGN KEY (channel_id) REFERENCES creators(channel_id),
     FOREIGN KEY (user_id) REFERENCES creators(user_id)
 );
+CREATE TABLE subscribed (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    channel_id TEXT NOT NULL,
+    subscribed BOOLEAN NOT NULL,
+    FOREIGN KEY (channel_id) REFERENCES creators(channel_id),
+    FOREIGN KEY (user_id) REFERENCES creators(user_id)
+);
 CREATE TABLE IF NOT EXISTS highlight_notes (
     id INTEGER PRIMARY KEY,
     user_id INTEGER NOT NULL,
