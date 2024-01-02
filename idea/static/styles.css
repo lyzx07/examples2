@@ -762,12 +762,14 @@ h2 {
 }
 
 .creator-link-cont {
+  display: flex;
   margin: 25px 0;
 }
 
 .creator-link-cont ul {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  flex-wrap: wrap;
   width: 80%;
   margin: 10px auto;
   background: transparent;
@@ -775,6 +777,11 @@ h2 {
   box-shadow: 0 0 30px rgb(6, 23, 106);
   border-radius: 20px;
   backdrop-filter: blur(15px);
+}
+
+.creator-link-cont ul li {
+  margin: 0 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .creator-link {
