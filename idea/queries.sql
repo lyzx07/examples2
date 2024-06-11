@@ -20,7 +20,7 @@ MODIFY username VARCHAR(255);
 ALTER TABLE users
 MODIFY COLUMN username VARCHAR(255);
 PRAGMA lock_status DROP TABLE songs;
-DROP TABLE highlight_note;
+DROP TABLE highlight_notes;
 ALTER TABLE creators
 ADD COLUMN user_id INTEGER REFERENCES users(id);
 ALTER TABLE creators
@@ -50,12 +50,14 @@ CREATE TABLE IF NOT EXISTS highlight_notes (
     user_id INTEGER NOT NULL,
     channel_id TEXT NOT NULL,
     highlighted_note TEXT,
-    created_at TEXT NOT NULL DEFAULT (
-        strftime('%d/%m/%Y %H:%M:%S', 'now', 'localtime')
-    ),
     FOREIGN KEY (channel_id) REFERENCES creators(channel_id),
     FOREIGN KEY (user_id) REFERENCES creators(user_id)
 );
+
+created_at TEXT NOT NULL DEFAULT (
+        strftime('%d/%m/%Y %H:%M:%S', 'now', 'localtime')
+    ),
+    
 CREATE TABLE IF NOT EXISTS watched (
     id INTEGER PRIMARY KEY,
     user_id INTEGER NOT NULL,

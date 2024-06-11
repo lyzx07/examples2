@@ -121,13 +121,14 @@
               >{{ creator[1] }}</a
             >
           </h4>
-          {% if highlighted_note[2] == creator[7] and highlighted_note[0] %}
+          {% for high in highlighted_note %} {% if high[1] == creator[7] and
+          high[0] %}
           <!-- Add the highlighted note above the image -->
           <div id="highlighted-note-cont-closed">
             <h4 id="hidden-pinned" class="pinned-note">Pinned Note:</h4>
-            <p id="hidden-p">"{{ highlighted_note[0] }}"</p>
+            <p id="hidden-p">"{{ high[0] }}"</p>
           </div>
-          {% endif %}
+          {% endif %} {% endfor %}
         </div>
         <div class="wrap" id="wrap" style="display: none">
           <div class="card-header card-item">
@@ -141,13 +142,14 @@
                 >
               </h2>
               <br />
-              {% if highlighted_note[2] == creator[7] and highlighted_note[0] %}
+              {% for high in highlighted_note %} {% if high[1] == creator[7] and
+              high[0] %}
               <!-- Add the highlighted note above the image -->
               <div id="highlighted-note-cont-open">
                 <h4 class="pinned-note">Pinned Note:</h4>
-                <p>"{{ highlighted_note[0] }}"</p>
+                <p>"{{ high[0] }}"</p>
               </div>
-              {% endif %}
+              {% endif %} {% endfor %}
               <br />
               <h4 class="card-text">Subscriber Count:</h4>
               <p class="card-text">{{ creator[4] }}</p>

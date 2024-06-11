@@ -24,7 +24,7 @@ different 1-10 star ratings(likability, pity, sassy, nice, loud, quiet, etc) CHE
 
 place for notes on the creator and order them CHECK
 
-date the creator was added with ability to estimate when they subscribed 
+date the creator was added
 
 how long ago was the creators last video released CHECK 
 
@@ -33,6 +33,8 @@ maybe an average of how often they upload
 search bar to find creator easily go to that part of the page (MODIFIED WITH A LINK AND LIST OF CREATORS)
 
 PENTATONIX
+text-underline-offset change borders used as underlines 
+
 make columns that lists all ptx videos
 
 a column that lists all the songs a reactor has listened to. move from list of videos on click CHECK
